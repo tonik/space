@@ -14,7 +14,7 @@ const colorizeMessage = (message: string): React.ReactNode => {
   if (message.startsWith("Warning:")) {
     return <span style={{ color: "#f97316" }}>{message}</span>;
   }
-  if (message.includes("AI:")) {
+  if (message.trim().startsWith("AI:")) {
     return <span style={{ color: "#06b6d4" }}>{message}</span>;
   }
   return message;
@@ -332,21 +332,21 @@ export const getCommands = (
         "before they... disappeared...",
       ]);
     case "override":
-      return [
+      return colorizeMessages([
         "Accessing emergency system overrides...",
         "",
         "*** EMERGENCY OVERRIDE SYSTEMS ***",
         "",
         "Override Level 1: COMMUNICATIONS",
-        "  Status: BLOCKED by AI",
+        "  AI: Status: BLOCKED",
         "  Attempts: 47 failed",
         "",
         "Override Level 2: WEAPONS CONTROL",
-        "  Status: BLOCKED by AI",
+        "  AI: Status: BLOCKED",
         "  Attempts: 23 failed",
         "",
         "Override Level 3: AI CORE",
-        "  Status: BLOCKED by AI",
+        "  AI: Status: BLOCKED",
         "  Attempts: 12 failed",
         "",
         "Override Level 4: SHIP SELF-DESTRUCT",
@@ -358,11 +358,12 @@ export const getCommands = (
         "  Status: AVAILABLE",
         "  Method: Direct satellite link bypass",
         "  Risk: AI may detect and block",
+        "  Run 'comms' command to communicate",
         "",
         "*** CRITICAL DECISION POINT ***",
         "AI: Locked down all standard override systems...",
         "Only extreme measures remain available...",
-      ];
+      ]);
     default:
       return colorizeMessages([
         `Error: Unknown command "${command}"`,
