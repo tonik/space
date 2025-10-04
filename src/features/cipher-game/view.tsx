@@ -186,130 +186,135 @@ export default function CipherGameView() {
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-primary text-sm font-bold">CIPHER BREAKER</h3>
           <div className="text-primary flex gap-4 font-mono text-sm">
+            <span>SCORE: {gameState.score}</span>
             <span>TIME: {gameState.timeRemaining}</span>
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center space-y-6">
-          {gameState.gameState === "menu" && (
-            <div className="space-y-4 text-center">
-              <h2 className="text-primary font-mono text-2xl font-bold">
-                CIPHER BREAKER
-              </h2>
-              <p className="text-muted-foreground font-mono text-sm">
-                Decode 2 Caesar ciphers to complete the mission
-              </p>
-              <p className="text-muted-foreground font-mono text-xs">
-                120 seconds • 1 hint • Shift range 1-15
-              </p>
-              <Button
-                onClick={startGame}
-                className="bg-primary hover:bg-primary/80 text-background"
-              >
-                START GAME
-              </Button>
-            </div>
-          )}
-
-          {gameState.gameState === "playing" && (
-            <div className="w-full max-w-2xl space-y-6 text-center">
-              <div className="border-primary/30 rounded border bg-black/20 p-4">
-                <h3 className="text-primary mb-2 font-mono text-lg">
-                  ENCRYPTED MESSAGE:
-                </h3>
-                <div className="text-primary font-mono text-2xl font-bold tracking-wider">
-                  {gameState.currentCipher}
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <label className="text-primary mb-2 block font-mono text-sm">
-                    DECODED MESSAGE:
-                  </label>
-                  <input
-                    type="text"
-                    value={gameState.userInput}
-                    onChange={handleInputChange}
-                    onKeyPress={handleKeyPress}
-                    className="border-primary/30 text-primary w-full rounded border bg-black/20 p-3 text-center font-mono text-lg tracking-wider"
-                    placeholder="Enter decoded text..."
-                    autoFocus
-                  />
-                </div>
-
-                <div className="flex justify-center gap-2">
+        <div className="flex items-center justify-center">
+          <div className="border-primary relative h-[600px] w-full max-w-4xl border-2 bg-black">
+            <div className="flex h-full flex-col items-center justify-center p-8">
+              {gameState.gameState === "menu" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                  <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+                    CIPHER BREAKER
+                  </h2>
+                  <p className="text-muted-foreground mb-2 font-mono text-sm">
+                    Decode 2 Caesar ciphers to complete the mission
+                  </p>
+                  <p className="text-muted-foreground mb-6 font-mono text-xs">
+                    120 seconds • 1 hint • Shift range 1-15
+                  </p>
                   <Button
-                    onClick={checkAnswer}
-                    className="bg-primary hover:bg-primary/80 text-background"
+                    onClick={startGame}
+                    className="bg-primary text-background hover:bg-primary/80"
                   >
-                    SUBMIT
-                  </Button>
-                  <Button
-                    onClick={useHint}
-                    disabled={gameState.hintsUsed >= gameState.maxHints}
-                    className="bg-primary hover:bg-primary/80 text-background disabled:opacity-50"
-                  >
-                    HINT ({gameState.maxHints - gameState.hintsUsed})
+                    START GAME
                   </Button>
                 </div>
-              </div>
+              )}
 
-              <div className="text-muted-foreground font-mono text-xs">
-                <p>
-                  Hints used: {gameState.hintsUsed}/{gameState.maxHints}
-                </p>
-                <p>Time remaining: {gameState.timeRemaining}s</p>
-              </div>
-            </div>
-          )}
+              {gameState.gameState === "playing" && (
+                <div className="w-full max-w-2xl space-y-6 text-center">
+                  <div className="border-primary/30 border bg-black/40 p-6">
+                    <h3 className="text-primary mb-3 font-mono text-lg">
+                      ENCRYPTED MESSAGE:
+                    </h3>
+                    <div className="text-primary font-mono text-3xl font-bold tracking-wider">
+                      {gameState.currentCipher}
+                    </div>
+                  </div>
 
-          {gameState.gameState === "gameOver" && (
-            <div className="space-y-4 text-center">
-              <h2 className="text-primary font-mono text-2xl font-bold">
-                GAME OVER
-              </h2>
-              <p className="text-primary font-mono text-lg">
-                Final Score: {gameState.score}
-              </p>
-              <p className="text-primary font-mono text-lg">
-                Ciphers Solved: {gameState.level - 1}/2
-              </p>
-              <Button
-                onClick={() =>
-                  setGameState((prev) => ({ ...prev, gameState: "menu" }))
-                }
-                className="bg-primary text-background hover:bg-primary/80"
-              >
-                PLAY AGAIN
-              </Button>
-            </div>
-          )}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="text-primary mb-2 block font-mono text-sm">
+                        DECODED MESSAGE:
+                      </label>
+                      <input
+                        type="text"
+                        value={gameState.userInput}
+                        onChange={handleInputChange}
+                        onKeyPress={handleKeyPress}
+                        className="border-primary/30 text-primary focus:ring-primary/50 w-full border bg-black/40 p-3 text-center font-mono text-xl tracking-wider focus:ring-2 focus:outline-none"
+                        placeholder="Enter decoded text..."
+                        autoFocus
+                      />
+                    </div>
 
-          {gameState.gameState === "victory" && (
-            <div className="space-y-4 text-center">
-              <h2 className="text-primary font-mono text-2xl font-bold">
-                MISSION COMPLETE
-              </h2>
-              <p className="text-primary font-mono text-lg">
-                All ciphers decoded successfully!
-              </p>
-              <p className="text-primary font-mono text-lg">
-                Final Score: {gameState.score}
-              </p>
-              <p className="text-primary font-mono text-lg">
-                Ciphers Solved: 2/2
-              </p>
-              <Button
-                onClick={() =>
-                  setGameState((prev) => ({ ...prev, gameState: "menu" }))
-                }
-                className="bg-primary text-background hover:bg-primary/80"
-              >
-                PLAY AGAIN
-              </Button>
+                    <div className="flex justify-center gap-2">
+                      <Button
+                        onClick={checkAnswer}
+                        className="bg-primary text-background hover:bg-primary/80"
+                      >
+                        SUBMIT
+                      </Button>
+                      <Button
+                        onClick={useHint}
+                        disabled={gameState.hintsUsed >= gameState.maxHints}
+                        className="bg-primary text-background hover:bg-primary/80 disabled:opacity-50"
+                      >
+                        HINT ({gameState.maxHints - gameState.hintsUsed})
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="text-muted-foreground font-mono text-xs">
+                    <p>
+                      Hints used: {gameState.hintsUsed}/{gameState.maxHints}
+                    </p>
+                    <p>Time remaining: {gameState.timeRemaining}s</p>
+                  </div>
+                </div>
+              )}
+
+              {gameState.gameState === "gameOver" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                  <h2 className="text-primary mb-2 font-mono text-2xl font-bold">
+                    GAME OVER
+                  </h2>
+                  <p className="text-primary mb-2 font-mono text-lg">
+                    Final Score: {gameState.score}
+                  </p>
+                  <p className="text-primary mb-4 font-mono text-lg">
+                    Ciphers Solved: {gameState.level - 1}/2
+                  </p>
+                  <Button
+                    onClick={() =>
+                      setGameState((prev) => ({ ...prev, gameState: "menu" }))
+                    }
+                    className="bg-primary text-background hover:bg-primary/80"
+                  >
+                    PLAY AGAIN
+                  </Button>
+                </div>
+              )}
+
+              {gameState.gameState === "victory" && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                  <h2 className="text-primary mb-2 font-mono text-2xl font-bold">
+                    MISSION COMPLETE
+                  </h2>
+                  <p className="text-primary mb-2 font-mono text-lg">
+                    All ciphers decoded successfully!
+                  </p>
+                  <p className="text-primary mb-2 font-mono text-lg">
+                    Final Score: {gameState.score}
+                  </p>
+                  <p className="text-primary mb-4 font-mono text-lg">
+                    Ciphers Solved: 2/2
+                  </p>
+                  <Button
+                    onClick={() =>
+                      setGameState((prev) => ({ ...prev, gameState: "menu" }))
+                    }
+                    className="bg-primary text-background hover:bg-primary/80"
+                  >
+                    PLAY AGAIN
+                  </Button>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
 
         <div className="text-muted-foreground mt-4 text-center font-mono text-xs">
