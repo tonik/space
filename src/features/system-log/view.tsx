@@ -6,13 +6,15 @@ export function SystemLogView() {
   const game = useGame();
   const logs = game.logs;
 
-  const addLog = () => {
-    game.addLog({
-      time: new Date().toLocaleTimeString(),
-      level: "INFO",
-      message: "Sample log",
-      id: "",
-      system: "",
+  const generateSampleLog = () => {
+    const randomLevel = levels[Math.floor(Math.random() * levels.length)];
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    const time = new Date().toLocaleTimeString();
+
+    addLog({
+      time,
+      level: randomLevel,
+      message: randomMessage,
     });
   };
 
@@ -23,7 +25,7 @@ export function SystemLogView() {
           <h3 className="text-sm font-bold text-[#00ff41]">SHIP SYSTEM LOGS</h3>
           <div className="flex gap-2">
             <button
-              onClick={addLog}
+              onClick={generateSampleLog}
               className="border border-[#00ff41]/30 bg-[#00ff41]/20 px-3 py-1 text-xs text-[#00ff41] transition-colors hover:bg-[#00ff41]/30"
             >
               Add Log

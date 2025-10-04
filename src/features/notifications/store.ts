@@ -25,6 +25,7 @@ export const useNotificationsStore = create<INotificationStore>((set) => ({
     logs: false,
   },
   trigger: (msg: IMessage, view?: View) => {
+    console.log("triggering notification", msg, view);
     if (view) {
       set((state) => ({
         notifications: {
