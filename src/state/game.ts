@@ -17,7 +17,8 @@ export type AvailableViewKeys =
   | "terminal"
   | "logs"
   | "captains-log"
-  | "arcade";
+  | "arcade"
+  | "cipher-game";
 
 export interface GameContext {
   commanderName: string;
@@ -130,6 +131,7 @@ const initialContext: GameContext = {
     logs: [],
     "captains-log": [],
     arcade: [],
+    "cipher-game": [],
   },
 
   systems: {

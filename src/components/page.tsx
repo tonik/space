@@ -8,6 +8,7 @@ import DashboardView from "@/features/dashboard/view";
 import CaptainsLogView from "@/features/captains-log/view";
 import { WelcomeScreen } from "@/components/welcome-screen";
 import ArcadeView from "@/features/arcade/view";
+import CipherGameView from "@/features/cipher-game/view";
 
 export default function SpaceshipOS() {
   const { context, changeView, enterMainApp } = useGame();
@@ -31,6 +32,7 @@ export default function SpaceshipOS() {
             {activeView === "logs" && <SystemLogView />}
             {activeView === "captains-log" && <CaptainsLogView />}
             {activeView === "arcade" && <ArcadeView />}
+            {activeView === "cipher-game" && <CipherGameView />}
           </div>
         </div>
       </div>

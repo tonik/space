@@ -5,6 +5,7 @@ import {
   TerminalIcon,
   BookOpen,
   Gamepad2,
+  Lock,
 } from "lucide-react";
 import type { AvailableViewKeys } from "./state";
 
@@ -42,5 +43,10 @@ export const navItems: {
     id: "arcade",
     label: "Arcade",
     icon: Gamepad2,
+  },
+  {
+    id: "cipher-game" as View,
+    label: "Cipher",
+    icon: Lock,
   },
 ];
