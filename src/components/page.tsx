@@ -1,4 +1,4 @@
-import { Terminal } from "@/components/Terminal";
+import { Terminal } from "@/components/terminal";
 import { SystemLogView } from "@/features/system-log/view";
 import { useGame } from "@/state/useGame";
 import { MessagingView } from "@/features/messaging/view";
