@@ -250,14 +250,6 @@ function MessagingView() {
 function TerminalView() {
   return (
     <Card className="bg-black border-[#00ff41]/30 p-4 max-w-4xl">
-      <div className="mb-4 flex items-center gap-2">
-        <div className="w-3 h-3 rounded-full bg-red-500" />
-        <div className="w-3 h-3 rounded-full bg-yellow-500" />
-        <div className="w-3 h-3 rounded-full bg-[#00ff41]" />
-        <span className="ml-2 text-xs text-[#00ff41]/60">
-          SHIP TERMINAL v2.4.1
-        </span>
-      </div>
       <Terminal />
     </Card>
   );
