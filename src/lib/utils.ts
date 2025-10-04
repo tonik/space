@@ -50,7 +50,7 @@ export async function displayLinesWithDelay(
 
   for (let i = 0; i < lines.length; i++) {
     addLineCallback(lines[i]);
-    if (i < lines.length - 1) {
+    if (i < lines.length - 1 && lines[i] !== "\n") {
       // Random delay between minDelay and maxDelay
       const randomDelay =
         Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
