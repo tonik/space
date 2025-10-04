@@ -21,41 +21,38 @@ import { ProgressBar } from "@/components/ui/progress-bar";
 
 export default function DashboardView() {
   const { systems, diagnostics, mission, repair } = useDashboardState();
-  const { send, startRepair, recoverEnergy } = useGame();
+  const { startRepair, recoverEnergy, completeRepair, updateDiagnostics } =
+    useGame();
 
-  // Auto-update diagnostics every 2 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      send({ type: "UPDATE_DIAGNOSTICS" });
+      updateDiagnostics();
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [send]);
+  }, [updateDiagnostics]);
 
-  // Auto-complete repairs when they finish
   useEffect(() => {
     const interval = setInterval(() => {
       const now = Date.now();
       Object.entries(repair.activeRepairs).forEach(([, repairData]) => {
         if (now - repairData.startTime >= repairData.duration) {
-          send({ type: "COMPLETE_REPAIR", systemName: repairData.systemName });
+          completeRepair(repairData.systemName);
         }
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [repair.activeRepairs, send]);
+  }, [repair.activeRepairs, completeRepair]);
 
-  // Auto-recover energy every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       recoverEnergy();
-    }, 30000); // 30 seconds
+    }, 30000);
 
     return () => clearInterval(interval);
   }, [recoverEnergy]);
 
-  // Calculate time to Earth return (14.2 hours from game description)
   const timeToEarth = "14.2 HOURS";
   const aiUpdateDue = mission.aiUpdateScheduled ? "TOMORROW" : "N/A";
   const missionTime = `${mission.daysInSpace} DAYS`;

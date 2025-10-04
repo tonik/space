@@ -77,6 +77,8 @@ export const useGame = () => {
         amount,
       }),
 
+    updateDiagnostics: () => gameActor.send({ type: "UPDATE_DIAGNOSTICS" }),
+
     send: gameActor.send,
   };
 };
