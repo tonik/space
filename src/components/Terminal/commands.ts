@@ -35,6 +35,10 @@ export const getCommand = (
           terminal.writeln(message);
         }, index * 600);
       });
+
+      setTimeout(() => {
+        terminal.write("\r\n> ");
+      }, messages.length * 600 + 100);
       break;
     }
     case "date":
