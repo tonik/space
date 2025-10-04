@@ -2,14 +2,19 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGame } from "@/state/useGame";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 export function SystemLogView() {
   const game = useGame();
   const logs = game.logs;
 
+  function formatTimestamp(timestamp: number) {
+    return format(timestamp, "MM/dd/yy");
+  }
+
   const addLog = () => {
     game.addLog({
-      time: new Date().toLocaleTimeString(),
+      timestamp: new Date().getTime(),
       level: "INFO",
       message: "Sample log",
       id: "",
@@ -38,7 +43,9 @@ export function SystemLogView() {
           ) : (
             logs.map((log, i) => (
               <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                <span className="text-muted-foreground">[{log.time}]</span>
+                <span className="text-muted-foreground">
+                  [{formatTimestamp(log.timestamp)}]
+                </span>
                 <span
                   className={
                     log.level === "WARN"
