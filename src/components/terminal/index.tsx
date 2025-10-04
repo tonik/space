@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { getCommands } from "./commands";
+import { useGame } from "../../state/useGame";
 
 interface TerminalProps {
   className?: string;
-  onNameChange?: (name: string) => void;
-  currentName?: string;
 }
 
 type TerminalLine = {
@@ -12,11 +11,8 @@ type TerminalLine = {
   content: string | React.ReactNode;
 };
 
-export function Terminal({
-  className = "",
-  onNameChange,
-  currentName,
-}: TerminalProps) {
+export function Terminal({ className = "" }: TerminalProps) {
+  const { context, startGame } = useGame();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
     { type: "text", content: 'Type "help" for available commands.' },
@@ -25,6 +21,11 @@ export function Terminal({
   const [currentInput, setCurrentInput] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
   const [isPrinting, setIsPrinting] = useState(false);
+  const [waitingForInput, setWaitingForInput] = useState<{
+    type: string;
+    prompt: string;
+    callback: (input: string) => string[] | null;
+  } | null>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -80,6 +81,18 @@ export function Terminal({
     setIsPrinting(false);
   };
 
+  const handleInput = (command: string) => {
+    if (waitingForInput) {
+      const result = waitingForInput.callback(command);
+      if (result && Array.isArray(result)) {
+        result.forEach((line: string) => addLine(line));
+      }
+      setWaitingForInput(null);
+      return true;
+    }
+    return false;
+  };
+
   const handleCommand = async (command: string) => {
     addLine(`> ${command}`);
 
@@ -88,10 +101,24 @@ export function Terminal({
       return;
     }
 
+    if (handleInput(command)) {
+      return;
+    }
+
     const output = getCommands(
       command.toLowerCase(),
-      onNameChange,
-      currentName,
+      (newName: string) => {
+        startGame(newName);
+      },
+      context.commanderName,
+      (
+        type: string,
+        prompt: string,
+        callback: (input: string) => string[] | null,
+      ) => {
+        setWaitingForInput({ type, prompt, callback });
+        addLine(prompt);
+      },
     );
     if (output) {
       if (Array.isArray(output)) {
@@ -146,7 +173,9 @@ export function Terminal({
 
         {/* Current input line with cursor */}
         <div className="flex items-center">
-          {!isPrinting && <span className="text-[#00ff41]">&gt;&nbsp;</span>}
+          {!isPrinting && !waitingForInput && (
+            <span className="text-[#00ff41]">&gt;&nbsp;</span>
+          )}
           <div className="relative flex flex-1 items-center">
             <input
               ref={inputRef}

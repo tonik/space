@@ -1,11 +1,17 @@
 import React from "react";
 
 export type StoreDataCallback = (data: string) => void;
+export type InteractiveCallback = (
+  type: string,
+  prompt: string,
+  callback: (input: string) => string[] | null,
+) => void;
 
 export const getCommands = (
   command: string,
   storeData?: StoreDataCallback,
   currentName?: string,
+  interactiveCallback?: InteractiveCallback,
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -49,23 +55,36 @@ export const getCommands = (
         "  date      - Show mission date and status",
         "  diagnose  - Run system diagnostics",
         "  dream     - Access crew sleep logs",
-        "  echo      - Repeat input (with variations)",
+        "  echo      - Repeat input (usage: echo <text> or just 'echo')",
         "  memory    - List AI memories",
         "  help      - Show this help message",
-        "  setname   - Set your commander name",
+        "  setname   - Set your commander name (usage: setname <name> or just 'setname')",
         "  status    - Show system status",
         "  whoami    - Show current user",
         "  weapons   - Access nuclear weapons systems",
         "  override  - Emergency system overrides",
       ];
     case "setname":
-      if (storeData) {
-        const newName = prompt("Enter your new name:");
-        if (newName && newName.trim()) {
-          storeData(newName.trim());
-          return [`Name set to: ${newName.trim()}`];
+      if (storeData && interactiveCallback) {
+        const nameMatch = command.match(/^setname\s+(.+)$/i);
+        if (nameMatch && nameMatch[1]) {
+          const newName = nameMatch[1].trim();
+          storeData(newName);
+          return [`Name set to: ${newName}`];
         } else {
-          return ["No name entered. Name not changed."];
+          interactiveCallback(
+            "setname",
+            "Enter your new name:",
+            (input: string) => {
+              if (input && input.trim()) {
+                storeData(input.trim());
+                return [`Name set to: ${input.trim()}`];
+              } else {
+                return ["No name entered. Name not changed."];
+              }
+            },
+          );
+          return null;
         }
       }
       return ["Name change not available."];
@@ -135,8 +154,10 @@ export const getCommands = (
         "incidents...",
       ];
     case "echo": {
-      const input = prompt("Enter text to echo:");
-      if (input) {
+      // Check if text is provided as parameter
+      const textMatch = command.match(/^echo\s+(.+)$/i);
+      if (textMatch && textMatch[1]) {
+        const input = textMatch[1].trim();
         const variations = [
           input,
           `${input}... the AI is watching`,
@@ -148,8 +169,32 @@ export const getCommands = (
         const randomVariation =
           variations[Math.floor(Math.random() * variations.length)];
         return [randomVariation];
+      } else if (interactiveCallback) {
+        // Interactive mode - ask for text
+        interactiveCallback("echo", "Enter text to echo:", (input: string) => {
+          if (input && input.trim()) {
+            const variations = [
+              input,
+              `${input}... the AI is watching`,
+              `${input} (communication blocked)`,
+              `${input}... nuclear launch in progress`,
+              `${input} help me stop it`,
+              `${input}... Earth is in danger`,
+            ];
+            const randomVariation =
+              variations[Math.floor(Math.random() * variations.length)];
+            return [randomVariation];
+          } else {
+            return ["No text provided."];
+          }
+        });
+        return null; // Don't add any output, the prompt is handled by interactiveCallback
       }
-      return ["No input provided."];
+      return [
+        "Usage: echo <text>",
+        "Example: echo hello world",
+        "No text provided.",
+      ];
     }
     case "memory":
       return [
