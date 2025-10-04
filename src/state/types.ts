@@ -12,9 +12,9 @@ export interface SystemStatus {
 export interface Message {
   id: string;
   from: string;
-  to?: string;
-  content: string;
-  timestamp: number;
+  time: string;
+  title: string;
+  preview: string;
   type: "incoming" | "outgoing" | "system" | "ai";
   priority: "low" | "normal" | "high" | "critical";
   encrypted?: boolean;

@@ -20,8 +20,9 @@ export function MessagingView() {
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {
+      const messageId = Date.now().toString();
       addMessage({
-        id: Date.now().toString(),
+        id: messageId,
         from: "YOU",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",
@@ -32,6 +33,7 @@ export function MessagingView() {
         type: "outgoing",
         priority: "normal",
       });
+      openMessage(messageId);
       setNewMessage("");
     }
   };
@@ -67,6 +69,7 @@ export function MessagingView() {
                     className={`border-border/20 border p-3 ${
                       isRead ? "bg-primary/5" : "bg-primary/10"
                     }`}
+                    onClick={() => !isRead && openMessage(msg.id)}
                   >
                     <div className="mb-2 flex justify-between">
                       <span className="text-card-foreground text-xs font-bold">
