@@ -12,12 +12,15 @@ interface SystemCardProps {
   className?: string;
 }
 
-export function SystemCard({ title, icon, metrics, className = "" }: SystemCardProps) {
+export function SystemCard({ title, icon, metrics, status, className = "" }: SystemCardProps) {
   return (
     <Card className={cn(`bg-background p-4 ${className}`)}>
-      <div className="mb-1 flex items-center justify-between">
+      <div className="mb-1 flex items-center justify-between relative">
         <h3 className="font-bold">{title}</h3>
         {icon}
+        {status.critical && (
+        <span className="border-destructive bg-destructive shadow-destructive absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full border" />
+        )}
       </div>
       <div className="space-y-2">
         {metrics.map((metric, index) => (
