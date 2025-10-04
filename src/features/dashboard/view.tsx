@@ -11,13 +11,13 @@ import {
   Brain,
   Database,
   Rocket,
+  ToolCase,
 } from "lucide-react";
 import { AIChat } from "./components/AIChat";
 import { MissionStatus } from "./components/MissionStatus";
 import { SystemDiagnostics } from "./components/SystemDiagnostics";
 import { Card } from "@/components/ui/card";
 import { ProgressBar } from "@/components/ui/progress-bar";
-import { Battery } from "lucide-react";
 
 export default function DashboardView() {
   const { systems, diagnostics, mission, repair } = useDashboardState();
@@ -91,7 +91,7 @@ export default function DashboardView() {
               <h3 className="text-primary text-sm font-bold">
                 REPAIR RESOURCES
               </h3>
-              <Battery className="text-primary h-4 w-4" />
+              <ToolCase className="text-primary h-4 w-4" />
             </div>
             <div className="space-y-3 font-mono text-xs">
               <div>
