@@ -76,6 +76,7 @@ export interface GameContext {
   messageViews: MessageView[];
 
   logs: LogEntry[];
+  commandCounts: Record<string, number>;
 }
 
 export type GameEvent =
@@ -84,6 +85,7 @@ export type GameEvent =
   | { type: "PLAYER_SCAN"; system: string }
   | { type: "PLAYER_MESSAGE"; recipient: string; content: string }
   | { type: "PLAYER_COMMAND"; command: string }
+  | { type: "COMMAND_EXECUTED"; command: string }
   | { type: "FIND_ANOMALY"; anomaly: string }
   | { type: "FIND_CLUE"; clue: string }
   | { type: "OVERRIDE_ATTEMPT"; system: string }
@@ -208,6 +210,7 @@ const initialContext: GameContext = {
       message: "Life support systems critical. Advise caution.",
     },
   ],
+  commandCounts: {},
 };
 
 export const gameMachine = setup({
@@ -269,6 +272,18 @@ export const gameMachine = setup({
         if (context.aiAggression > 60) return "hostile";
         if (context.aiAwareness > 50) return "manipulative";
         return "subtle";
+      },
+    }),
+    trackCommand: assign({
+      commandCounts: ({ context, event }) => {
+        if (event.type === "COMMAND_EXECUTED") {
+          const command = event.command.toLowerCase();
+          return {
+            ...context.commandCounts,
+            [command]: (context.commandCounts[command] || 0) + 1,
+          };
+        }
+        return context.commandCounts;
       },
     }),
   },
@@ -707,6 +722,9 @@ export const gameMachine = setup({
       actions: assign({
         logs: ({ context, event }) => [...context.logs, event.log],
       }),
+    },
+    COMMAND_EXECUTED: {
+      actions: "trackCommand",
     },
   },
 });

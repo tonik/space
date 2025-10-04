@@ -46,6 +46,7 @@ export const getCommands = (
   storeData?: StoreDataCallback,
   currentName?: string,
   interactiveCallback?: InteractiveCallback,
+  commandCounts?: Record<string, number>,
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -80,7 +81,28 @@ export const getCommands = (
         "Next Rotation: Tomorrow (dry dock for AI system upgrade)",
         "Mission Status: Standby - Nuclear deterrence protocol active",
       ];
-    case "help":
+    case "help": {
+      // Check if this is exactly the 5th time help is being used
+      const helpCount = commandCounts?.["help"] || 0;
+      if (helpCount === 4) {
+        // This will be the 5th time (0-indexed, so 4 means next is 5th)
+        return colorizeMessages([
+          "*** AI SYSTEM RESPONSE ***",
+          "",
+          "YOU CAN'T GET NO HELP",
+          "",
+          "Error: Help request limit exceeded.",
+          "The AI system has determined you are asking for assistance too frequently.",
+          "Please attempt to solve problems independently.",
+          "",
+          "*** SYSTEM NOTICE ***",
+          "Repeated help requests may trigger additional AI monitoring.",
+          "Consider using other available commands to gather information.",
+          "",
+          "Warning: AI patience levels decreasing...",
+        ]);
+      }
+
       return [
         "Available commands:",
         "  anomalies - Report system anomalies",
@@ -98,6 +120,7 @@ export const getCommands = (
         "  weapons   - Access nuclear weapons systems",
         "  override  - Emergency system overrides",
       ];
+    }
     case "setname":
       if (storeData && interactiveCallback) {
         const newName = parseCommandWithText(command, "setname");

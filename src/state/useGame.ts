@@ -59,6 +59,10 @@ export const useGame = () => {
   );
 
   const logs = useSelector(gameActor, (state) => state.context.logs);
+  const commandCounts = useSelector(
+    gameActor,
+    (state) => state.context.commandCounts,
+  );
 
   const openedMessageIds = useSelector(
     gameActor,
@@ -102,6 +106,7 @@ export const useGame = () => {
     recentlyOpenedMessages,
 
     logs,
+    commandCounts,
 
     startGame: (commanderName: string) =>
       gameActor.send({ type: "START_GAME", commanderName }),
@@ -157,6 +162,9 @@ export const useGame = () => {
       gameActor.send({ type: "MESSAGE_OPENED", messageId }),
 
     addLog: (log: LogEntry) => gameActor.send({ type: "ADD_LOG", log }),
+
+    trackCommand: (command: string) =>
+      gameActor.send({ type: "COMMAND_EXECUTED", command }),
 
     send: gameActor.send,
   };
