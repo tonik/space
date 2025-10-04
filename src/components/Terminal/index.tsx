@@ -95,7 +95,10 @@ export function Terminal({
             command.toLowerCase() === "memory" ||
             command.toLowerCase() === "diagnose" ||
             command.toLowerCase() === "anomalies" ||
-            command.toLowerCase() === "comms");
+            command.toLowerCase() === "comms" ||
+            command.toLowerCase() === "weapons" ||
+            command.toLowerCase() === "override" ||
+            command.toLowerCase() === "status");
 
         if (shouldDelay) {
           await addLinesWithDelay(output, 600);
