@@ -185,7 +185,7 @@ export function Terminal({ className = "" }: TerminalProps) {
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
               readOnly={isPrinting}
-              className={`text-primary bg-transparent font-mono caret-transparent outline-none ${
+              className={`text-primary w-full bg-transparent font-mono caret-transparent outline-none ${
                 isPrinting ? "opacity-50" : ""
               }`}
               style={{
