@@ -1,13 +1,7 @@
 import type { Message } from "@/state/types";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import {
-  SimpleDialog,
-  SimpleDialogContent,
-  SimpleDialogDescription,
-  SimpleDialogHeader,
-  SimpleDialogTitle,
-} from "@/components/ui/simple-dialog";
+import { Button } from "@/components/ui/button";
 import {
   Shield,
   AlertTriangle,
@@ -16,17 +10,15 @@ import {
   MessageSquare,
   Lock,
   AlertCircle,
+  ArrowLeft,
 } from "lucide-react";
 
-interface MessageModalProps {
-  message: Message | null;
-  isOpen: boolean;
-  onClose: () => void;
+interface MessageDetailProps {
+  message: Message;
+  onBack: () => void;
 }
 
-export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
-  if (!message) return null;
-
+export function MessageDetail({ message, onBack }: MessageDetailProps) {
   const getPriorityIcon = (priority: Message["priority"]) => {
     switch (priority) {
       case "critical":
@@ -39,21 +31,33 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
   };
 
   return (
-    <SimpleDialog open={isOpen} onOpenChange={onClose}>
-      <SimpleDialogContent className="max-w-2xl" onClose={onClose}>
-        <SimpleDialogHeader>
+    <div className="max-w-4xl">
+      <Card className="bg-card mb-4 p-4">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            {getPriorityIcon(message.priority)}
-            <SimpleDialogTitle className="text-left">
-              {message.title}
-            </SimpleDialogTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={onBack}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h3 className="text-card-foreground text-sm font-bold">
+              MESSAGE DETAILS
+            </h3>
           </div>
-          <SimpleDialogDescription className="text-left">
-            Message details and metadata
-          </SimpleDialogDescription>
-        </SimpleDialogHeader>
+        </div>
 
         <div className="space-y-4">
+          {/* Message Header */}
+          <div className="flex items-center gap-2">
+            {getPriorityIcon(message.priority)}
+            <h2 className="text-card-foreground text-lg font-bold">
+              {message.title}
+            </h2>
+          </div>
+
           {/* Message Content */}
           <Card className="p-4">
             <div className="space-y-3">
@@ -70,7 +74,7 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
                 </div>
               </div>
 
-              <div className="border-primary/20 border-l-2 pl-4">
+              <div className="border-border/30 border-l-2 pl-4">
                 <p className="text-sm leading-relaxed">{message.preview}</p>
               </div>
             </div>
@@ -83,7 +87,7 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
                 <h4 className="text-muted-foreground text-sm font-medium">
                   Type
                 </h4>
-                <Badge className="bg-primary/10 text-primary border-primary/20">
+                <Badge className="bg-primary/10 text-primary border-border/30">
                   {message.type.toUpperCase()}
                 </Badge>
               </div>
@@ -96,7 +100,7 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
                 </h4>
                 <Badge
                   variant="outline"
-                  className="text-primary border-primary"
+                  className="text-primary border-border/30"
                 >
                   {message.priority.toUpperCase()}
                 </Badge>
@@ -112,13 +116,13 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
               </h4>
               <div className="flex gap-2">
                 {message.encrypted && (
-                  <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                  <Badge className="bg-primary/10 text-primary border-border/30 flex items-center gap-1">
                     <Lock className="h-3 w-3" />
                     Encrypted
                   </Badge>
                 )}
                 {message.corrupted && (
-                  <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
+                  <Badge className="bg-primary/10 text-primary border-border/30 flex items-center gap-1">
                     <Shield className="h-3 w-3" />
                     Corrupted
                   </Badge>
@@ -139,7 +143,7 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
             </div>
           </Card>
         </div>
-      </SimpleDialogContent>
-    </SimpleDialog>
+      </Card>
+    </div>
   );
 }

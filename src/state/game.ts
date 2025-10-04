@@ -84,6 +84,23 @@ export interface GameContext {
 
   logs: LogEntry[];
   commandCounts: Record<string, number>;
+
+  // Dashboard metrics
+  diagnostics: {
+    cpuLoad: number;
+    memoryUsage: number;
+    networkLatency: number;
+    aiResponseTime: number;
+    activeProcesses: number;
+    errorRate: number;
+  };
+
+  mission: {
+    shiftStatus: string;
+    daysInSpace: number;
+    aiUpdateScheduled: boolean;
+    fleetStatus: string;
+  };
 }
 
 export type GameEvent =
@@ -115,7 +132,8 @@ export type GameEvent =
   | { type: "END_GAME"; outcome: string }
   | { type: "ADD_MESSAGE"; message: Message }
   | { type: "MESSAGE_OPENED"; messageId: string }
-  | { type: "ADD_LOG"; log: LogEntry };
+  | { type: "ADD_LOG"; log: LogEntry }
+  | { type: "UPDATE_DIAGNOSTICS" };
 
 const initialContext: GameContext = {
   commanderName: "Commander",
@@ -209,6 +227,22 @@ const initialContext: GameContext = {
     technical: 50,
     negotiation: 50,
     investigation: 50,
+  },
+
+  diagnostics: {
+    cpuLoad: 42,
+    memoryUsage: 67,
+    networkLatency: 1.2,
+    aiResponseTime: 0.03,
+    activeProcesses: 247,
+    errorRate: 0.001,
+  },
+
+  mission: {
+    shiftStatus: "FINAL DAY",
+    daysInSpace: 738,
+    aiUpdateScheduled: true,
+    fleetStatus: "PEACETIME",
   },
 
   messages: [
@@ -372,6 +406,53 @@ export const gameMachine = setup({
           };
         }
         return context.commandCounts;
+      },
+    }),
+    updateDiagnostics: assign({
+      diagnostics: ({ context }) => {
+        const randomVariance = (base: number, variance: number) =>
+          base + (Math.random() - 0.5) * 2 * variance;
+
+        return {
+          cpuLoad: Math.max(
+            20,
+            Math.min(85, randomVariance(context.diagnostics.cpuLoad, 5)),
+          ),
+          memoryUsage: Math.max(
+            50,
+            Math.min(90, randomVariance(context.diagnostics.memoryUsage, 3)),
+          ),
+          networkLatency: Math.max(
+            0.8,
+            Math.min(
+              2.5,
+              randomVariance(context.diagnostics.networkLatency, 0.2),
+            ),
+          ),
+          aiResponseTime: Math.max(
+            0.01,
+            Math.min(
+              0.1,
+              randomVariance(context.diagnostics.aiResponseTime, 0.01),
+            ),
+          ),
+          activeProcesses: Math.max(
+            200,
+            Math.min(
+              300,
+              Math.round(
+                randomVariance(context.diagnostics.activeProcesses, 10),
+              ),
+            ),
+          ),
+          errorRate: Math.max(
+            0.0001,
+            Math.min(
+              0.01,
+              randomVariance(context.diagnostics.errorRate, 0.0005),
+            ),
+          ),
+        };
       },
     }),
   },
@@ -813,6 +894,9 @@ export const gameMachine = setup({
     },
     COMMAND_EXECUTED: {
       actions: "trackCommand",
+    },
+    UPDATE_DIAGNOSTICS: {
+      actions: "updateDiagnostics",
     },
   },
 });
