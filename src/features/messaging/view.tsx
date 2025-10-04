@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { useMessagingStore } from "./store";
+import { useGame } from "@/state/useGame";
 
 export function MessagingView() {
   const { notifications, dismiss } = useNotificationsStore();
-  const { messages, addMessage, markAllAsRead, getUnreadCount } =
-    useMessagingStore();
+  const game = useGame();
+  const { messages, unreadCount, addMessage, openMessage } = game;
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -21,19 +21,27 @@ export function MessagingView() {
   const handleSendMessage = () => {
     if (newMessage.trim()) {
       addMessage({
+        id: Date.now().toString(),
         from: "YOU",
         time: new Date().toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         }),
-        message: newMessage.trim(),
+        title: "Outgoing Message",
+        preview: newMessage.trim(),
+        type: "outgoing",
+        priority: "normal",
       });
       setNewMessage("");
     }
   };
 
   const handleMarkAllAsRead = () => {
-    markAllAsRead();
+    messages.forEach((msg) => {
+      if (!game.openedMessageIds.has(msg.id)) {
+        openMessage(msg.id);
+      }
+    });
   };
 
   return (
@@ -44,9 +52,9 @@ export function MessagingView() {
             INCOMING TRANSMISSIONS
           </h3>
           <div className="flex gap-2">
-            {getUnreadCount() > 0 && (
+            {unreadCount > 0 && (
               <span className="text-xs text-[#00ff41]/60">
-                {getUnreadCount()} unread
+                {unreadCount} unread
               </span>
             )}
             <button
@@ -64,24 +72,29 @@ export function MessagingView() {
                 No messages available
               </div>
             ) : (
-              messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`border border-[#00ff41]/20 p-3 ${
-                    msg.isRead ? "bg-[#00ff41]/5" : "bg-[#00ff41]/10"
-                  }`}
-                >
-                  <div className="mb-2 flex justify-between">
-                    <span className="text-xs font-bold text-[#00ff41]">
-                      {msg.from}
-                    </span>
-                    <span className="text-xs text-[#00ff41]/60">
-                      {msg.time}
-                    </span>
+              messages.map((msg) => {
+                const isRead = game.openedMessageIds.has(msg.id);
+                
+                return (
+                  <div
+                    key={msg.id}
+                    className={`border border-[#00ff41]/20 p-3 ${
+                      isRead ? "bg-[#00ff41]/5" : "bg-[#00ff41]/10"
+                    }`}
+                    onClick={() => !isRead && openMessage(msg.id)}
+                  >
+                    <div className="mb-2 flex justify-between">
+                      <span className="text-xs font-bold text-[#00ff41]">
+                        {msg.from}
+                      </span>
+                      <span className="text-xs text-[#00ff41]/60">
+                        {msg.time}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#00ff41]/80">{msg.preview}</p>
                   </div>
-                  <p className="text-sm text-[#00ff41]/80">{msg.message}</p>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </ScrollArea>
