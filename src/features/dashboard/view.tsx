@@ -1,15 +1,12 @@
-import { useSystemLogStore } from "@/features/system-log/store";
+import { useGame } from "@/state/useGame";
 import { useNotificationsStore } from "@/features/notifications/store";
 import { Card } from "@/components/ui/card";
-import { Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Zap, Activity, Globe, AlertTriangle } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Activity } from "lucide-react";
-import { Globe } from "lucide-react";
-import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardView() {
-  const { logs } = useSystemLogStore();
+  const { logs } = useGame();
 
   const recentAlerts = logs.filter(
     (log) => log.level === "WARN" || log.level === "ERROR",

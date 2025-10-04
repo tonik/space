@@ -1,6 +1,11 @@
 import { createActor } from "xstate";
 import { useSelector } from "@xstate/react";
-import { gameMachine, type GameContext, type Message } from "./game";
+import {
+  gameMachine,
+  type GameContext,
+  type LogEntry,
+  type Message,
+} from "./game";
 
 const gameActor = createActor(gameMachine);
 gameActor.start();
@@ -53,6 +58,8 @@ export const useGame = () => {
     (state) => state.context.messageViews,
   );
 
+  const logs = useSelector(gameActor, (state) => state.context.logs);
+
   const openedMessageIds = useSelector(
     gameActor,
     (state) => new Set(state.context.messageViews.map((v) => v.messageId)),
@@ -93,6 +100,8 @@ export const useGame = () => {
     openedMessageIds,
     unreadCount,
     recentlyOpenedMessages,
+
+    logs,
 
     startGame: (commanderName: string) =>
       gameActor.send({ type: "START_GAME", commanderName }),
@@ -146,6 +155,8 @@ export const useGame = () => {
       gameActor.send({ type: "ADD_MESSAGE", message }),
     openMessage: (messageId: string) =>
       gameActor.send({ type: "MESSAGE_OPENED", messageId }),
+
+    addLog: (log: LogEntry) => gameActor.send({ type: "ADD_LOG", log }),
 
     send: gameActor.send,
   };
