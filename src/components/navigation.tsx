@@ -37,7 +37,7 @@ export default function Navigation({
             >
               <Icon className="h-5 w-5" />
             </Button>
-            {hasNotification(item.id as View) && (
+            {hasNotification(item.id) && (
               <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
             )}
           </div>

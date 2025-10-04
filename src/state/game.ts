@@ -1,6 +1,12 @@
 import { setup, assign } from "xstate";
 
-export interface SystemStatus {
+export interface SystemMetric {
+  label: string;
+  value: string | number;
+  progress?: number;
+}
+
+export interface System {
   integrity: number;
   status:
     | "online"
@@ -10,6 +16,7 @@ export interface SystemStatus {
     | "compromised"
     | "critical";
   critical: boolean;
+  metrics: SystemMetric[];
 }
 
 export interface Message {
@@ -59,11 +66,11 @@ export interface GameContext {
   timeRemaining: number;
 
   systems: {
-    communications: SystemStatus;
-    navigation: SystemStatus;
-    lifeSupport: SystemStatus;
-    power: SystemStatus;
-    weapons: SystemStatus;
+    communications: System;
+    navigation: System;
+    lifeSupport: System;
+    power: System;
+    weapons: System;
   };
 
   playerSkills: {
@@ -134,11 +141,68 @@ const initialContext: GameContext = {
   timeRemaining: 1800,
 
   systems: {
-    communications: { integrity: 100, status: "online", critical: false },
-    navigation: { integrity: 100, status: "online", critical: false },
-    lifeSupport: { integrity: 100, status: "critical", critical: true },
-    power: { integrity: 100, status: "online", critical: true },
-    weapons: { integrity: 100, status: "online", critical: true },
+    communications: {
+      integrity: 100,
+      status: "online",
+      critical: false,
+      metrics: [],
+    },
+    navigation: {
+      integrity: 100,
+      status: "online",
+      critical: false,
+      metrics: [
+        {
+          label: "Velocity",
+          value: "0.8c",
+        },
+        {
+          label: "Heading",
+          value: "045° MARK 12",
+        },
+        {
+          label: "ETA to Destination",
+          value: "14.2 HOURS",
+        },
+      ],
+    },
+    lifeSupport: {
+      integrity: 100,
+      status: "critical",
+      critical: true,
+      metrics: [
+        {
+          label: "Oxygen Level",
+          value: "OPTIMAL",
+        },
+        {
+          label: "Temperature",
+          value: "21.5°C",
+        },
+        {
+          label: "Pressure",
+          value: "101.3 kPa",
+        },
+      ],
+    },
+    power: {
+      integrity: 100,
+      status: "online",
+      critical: true,
+      metrics: [
+        {
+          label: "Main Reactor",
+          value: "98%",
+          progress: 98,
+        },
+        {
+          label: "Auxiliary",
+          value: "87%",
+          progress: 87,
+        },
+      ],
+    },
+    weapons: { integrity: 100, status: "online", critical: true, metrics: [] },
   },
 
   playerSkills: {

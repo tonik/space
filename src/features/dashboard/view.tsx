@@ -20,60 +20,21 @@ export default function DashboardView() {
       <SystemCard
         title="POWER SYSTEMS"
         icon={<Zap className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Main Reactor",
-            value: "98%",
-            showProgress: true,
-            progressValue: 98,
-          },
-          {
-            label: "Auxiliary",
-            value: "87%",
-            showProgress: true,
-            progressValue: 87,
-          },
-        ]}
+        metrics={systems.power.metrics}
         status={systems.power}
       />
 
       <SystemCard
         title="LIFE SUPPORT"
         icon={<Activity className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Oxygen Level",
-            value: "OPTIMAL",
-          },
-          {
-            label: "Temperature",
-            value: "21.5°C",
-          },
-          {
-            label: "Pressure",
-            value: "101.3 kPa",
-          },
-        ]}
+        metrics={systems.lifeSupport.metrics}
         status={systems.lifeSupport}
       />
 
       <SystemCard
         title="NAVIGATION"
         icon={<Globe className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Velocity",
-            value: "0.8c",
-          },
-          {
-            label: "Heading",
-            value: "045° MARK 12",
-          },
-          {
-            label: "ETA to Destination",
-            value: "14.2 HOURS",
-          },
-        ]}
+        metrics={systems.navigation.metrics}
         status={systems.navigation}
       />
 
