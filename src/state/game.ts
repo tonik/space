@@ -779,7 +779,7 @@ export const gameMachine = setup({
     },
     ENTER_MAIN_APP: {
       actions: assign({
-        showWelcomeScreen: false,
+        showWelcomeScreen: () => false,
       }),
     },
     SYSTEM_DEGRADE: {

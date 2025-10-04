@@ -46,20 +46,20 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
     startAnimation();
   }
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Enter" && canEnter && !isExiting) {
-      e.preventDefault();
-      setIsExiting(true);
-      setTimeout(() => {
-        onEnter();
-      }, 500);
-    }
-  };
-
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Enter" && canEnter && !isExiting) {
+        e.preventDefault();
+        setIsExiting(true);
+        setTimeout(() => {
+          onEnter();
+        }, 500);
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [canEnter]);
+  }, [canEnter, isExiting, onEnter]);
 
   return (
     <div
