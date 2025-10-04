@@ -5,8 +5,14 @@ import { MessagingView } from "@/features/messaging/view";
 import Navigation from "@/components/navigation";
 import TopNav from "@/components/top-nav";
 import DashboardView from "@/features/dashboard/view";
+import CaptainsLogView from "@/features/captains-log/view";
 
-export type View = "messaging" | "dashboard" | "terminal" | "logs";
+export type View =
+  | "messaging"
+  | "dashboard"
+  | "terminal"
+  | "logs"
+  | "captains-log";
 
 export default function SpaceshipOS() {
   const { context, changeView } = useGame();
@@ -24,6 +30,7 @@ export default function SpaceshipOS() {
           {activeView === "messaging" && <MessagingView />}
           {activeView === "terminal" && <Terminal />}
           {activeView === "logs" && <SystemLogView />}
+          {activeView === "captains-log" && <CaptainsLogView />}
         </div>
       </div>
     </div>

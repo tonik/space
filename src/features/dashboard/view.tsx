@@ -34,6 +34,13 @@ export default function DashboardView() {
   const missionTime = `${context.mission.daysInSpace} DAYS`;
   const uptime = `${context.mission.daysInSpace} DAYS`;
 
+  const defaultSystemStatus = {
+    status: "online" as const,
+    integrity: 100,
+    critical: false,
+    metrics: [],
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       <SystemAlerts logs={logs} />
@@ -79,7 +86,12 @@ export default function DashboardView() {
             value: "24H AGO",
           },
         ]}
-        status={systems.ai || "OPERATIONAL"}
+        status={{
+          status: "online",
+          integrity: 100,
+          critical: false,
+          metrics: [],
+        }}
       />
 
       <SystemCard
@@ -104,7 +116,7 @@ export default function DashboardView() {
             value: "AES-512",
           },
         ]}
-        status={systems.communications || "OPERATIONAL"}
+        status={systems.communications || defaultSystemStatus}
       />
 
       <SystemCard
@@ -128,7 +140,7 @@ export default function DashboardView() {
             value: "INACTIVE",
           },
         ]}
-        status={systems.weapons || "OPERATIONAL"}
+        status={systems.weapons || defaultSystemStatus}
       />
 
       <SystemCard
@@ -170,7 +182,7 @@ export default function DashboardView() {
             value: "READY",
           },
         ]}
-        status={systems.defense || "OPERATIONAL"}
+        status={systems.weapons || "OPERATIONAL"}
       />
 
       <SystemCard
@@ -192,7 +204,7 @@ export default function DashboardView() {
             progress: 80,
           },
         ]}
-        status={systems.propulsion || "OPERATIONAL"}
+        status={defaultSystemStatus}
       />
 
       <SystemCard
@@ -214,7 +226,7 @@ export default function DashboardView() {
             value: "SYNCED",
           },
         ]}
-        status={systems.data || "OPERATIONAL"}
+        status={defaultSystemStatus}
       />
     </div>
   );

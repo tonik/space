@@ -1,4 +1,10 @@
-import { FileText, Gauge, MessageSquare, TerminalIcon } from "lucide-react";
+import {
+  FileText,
+  Gauge,
+  MessageSquare,
+  TerminalIcon,
+  BookOpen,
+} from "lucide-react";
 import type { View } from "./components/page";
 
 export const navItems = [
@@ -21,5 +27,10 @@ export const navItems = [
     id: "logs" as View,
     label: "Ship Logs",
     icon: FileText,
+  },
+  {
+    id: "captains-log" as View,
+    label: "Captain's Log",
+    icon: BookOpen,
   },
 ];

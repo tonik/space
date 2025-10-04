@@ -3,6 +3,11 @@ import { Button } from "@/components/ui/button";
 import { useNotificationsStore } from "@/features/notifications/store";
 import type { View } from "./page";
 import { navItems } from "@/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Navigation({
   activeView,
@@ -25,21 +30,28 @@ export default function Navigation({
         const Icon = item.icon;
         return (
           <div key={item.id} className="relative">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setActiveView(item.id as View)}
-              className={`hover:bg-primary/10 hover:text-primary h-12 w-12 transition-colors ${
-                activeView === item.id
-                  ? "border-primary bg-primary/20 text-primary border"
-                  : "text-muted-foreground border border-transparent"
-              }`}
-            >
-              <Icon className="h-5 w-5" />
-            </Button>
-            {hasNotification(item.id) && (
-              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
-            )}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setActiveView(item.id as View)}
+                  className={`hover:bg-primary/10 hover:text-primary h-12 w-12 transition-colors ${
+                    activeView === item.id
+                      ? "border-primary bg-primary/20 text-primary border"
+                      : "text-muted-foreground border border-transparent"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  {hasNotification(item.id) && (
+                    <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+                  )}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{item.label}</p>
+              </TooltipContent>
+            </Tooltip>
           </div>
         );
       })}

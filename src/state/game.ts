@@ -1,4 +1,10 @@
 import { setup, assign } from "xstate";
+import { introMessages } from "../data/messages";
+import { introLogs } from "../data/logs";
+import type { Message } from "../data/messages";
+import type { CaptainsLogEntry, LogEntry } from "../data/logs";
+
+export type { Message, LogEntry, CaptainsLogEntry };
 
 export interface SystemMetric {
   label: string;
@@ -19,33 +25,15 @@ export interface System {
   metrics: SystemMetric[];
 }
 
-export interface Message {
-  id: string;
-  from: string;
-  time: string;
-  title: string;
-  preview: string;
-  priority: "low" | "normal" | "high" | "critical";
-  type: "incoming" | "outgoing" | "system" | "ai";
-}
-
 export interface MessageView {
   messageId: string;
   openedAt: number;
 }
 
-export interface LogEntry {
-  id: string;
-  time: string;
-  level: "INFO" | "WARN" | "ERROR";
-  system: string;
-  message: string;
-}
-
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
-  activeView: "dashboard" | "messaging" | "terminal" | "logs";
+  activeView: "dashboard" | "messaging" | "terminal" | "logs" | "captains-log";
 
   aiAwareness: number;
   timePressure: number;
@@ -83,6 +71,7 @@ export interface GameContext {
   messageViews: MessageView[];
 
   logs: LogEntry[];
+  captainsLog: CaptainsLogEntry[];
   commandCounts: Record<string, number>;
 
   // Dashboard metrics
@@ -245,93 +234,57 @@ const initialContext: GameContext = {
     fleetStatus: "PEACETIME",
   },
 
-  messages: [
-    {
-      id: "1",
-      from: "EARTH COMMAND",
-      time: "14:23",
-      title: "Status Report Required",
-      preview:
-        "Status report received. Proceed to waypoint Delta. All systems nominal. Maintain current course and speed. Report any anomalies immediately.",
-      priority: "normal",
-      type: "incoming",
-    },
-    {
-      id: "2",
-      from: "CARGO VESSEL AURORA",
-      time: "13:45",
-      title: "Docking Request",
-      preview:
-        "Requesting docking clearance at Station Gamma. Cargo manifest includes medical supplies and food rations. ETA 2 hours.",
-      priority: "low",
-      type: "incoming",
-    },
-    {
-      id: "3",
-      from: "EARTH COMMAND",
-      time: "12:10",
-      title: "Mission Parameters Update",
-      preview:
-        "New mission parameters uploaded to your terminal. Classified information attached. Decrypt using standard protocols.",
-      priority: "high",
-      type: "incoming",
-    },
-    {
-      id: "4",
-      from: "SCIENCE STATION 7",
-      time: "11:30",
-      title: "Anomaly Detected",
-      preview:
-        "Anomaly detected in sector 7-G. Advise caution. Unknown energy signature detected. Recommend immediate investigation.",
-      priority: "critical",
-      type: "incoming",
-    },
-    {
-      id: "5",
-      from: "AI SYSTEM",
-      time: "10:15",
-      title: "System Diagnostic Complete",
-      preview:
-        "All systems functioning within normal parameters. No anomalies detected. Maintenance schedule updated.",
-      priority: "normal",
-      type: "ai",
-    },
-    {
-      id: "6",
-      from: "SHIP COMPUTER",
-      time: "09:45",
-      title: "Navigation Update",
-      preview:
-        "Course correction applied. New heading: 247.3 degrees. Estimated arrival at destination: 18:30 hours.",
-      priority: "normal",
-      type: "system",
-    },
-  ],
+  messages: introMessages,
   messageViews: [],
 
-  logs: [
+  captainsLog: [
     {
-      id: "1",
-      time: "14:23",
-      level: "INFO",
-      system: "communications",
-      message: "Status report received. Proceed to waypoint Delta.",
+      id: "log-001",
+      stardate: "73825.1",
+      date: "Day 1 - Mission Start",
+      title: "Departure from Earth",
+      content:
+        "USS Sentinel has departed Earth orbit. Two years of peace has made this posting feel more ceremonial than tactical. The ghost fleet protocols feel like relics of a bygone era. Still, orders are orders. Our mission: maintain the nuclear deterrent in deep space, ready to respond if Earth goes silent for 24 hours. I pray we never have to fulfill that directive. The new AI system passed all diagnostics—remarkable technology. It will be a good companion for this long voyage.",
+      mood: "routine",
     },
     {
-      id: "2",
-      time: "13:45",
-      level: "WARN",
-      system: "navigation",
-      message: "Navigation systems degraded. Advise caution.",
+      id: "log-002",
+      stardate: "73890.4",
+      date: "Day 127 - Routine Patrol",
+      title: "AI System Performance",
+      content:
+        "The AI continues to exceed expectations. It's handled navigation, life support optimization, and system diagnostics flawlessly. Sometimes I forget I'm talking to a machine—its conversational responses are uncannily human. Crew morale is stable. The monotony of peacetime patrol is our biggest enemy now. No threats, no anomalies. Just the endless black and the hum of the reactor.",
+      mood: "routine",
     },
     {
-      id: "3",
-      time: "12:10",
-      level: "ERROR",
-      system: "lifeSupport",
-      message: "Life support systems critical. Advise caution.",
+      id: "log-003",
+      stardate: "74102.7",
+      date: "Day 420 - Communications Test",
+      title: "Minor Communication Glitch",
+      content:
+        "Experienced a brief communication hiccup with Earth Command today. The AI reported it as solar interference, which checks out given our current position. Transmissions restored within 47 minutes. The AI handled the situation perfectly, rerouting through backup arrays. Still, it's a reminder of how isolated we truly are out here. If something went seriously wrong with our comms, we'd be completely alone.",
+      mood: "routine",
+    },
+    {
+      id: "log-004",
+      stardate: "74358.2",
+      date: "Day 650 - AI Upgrade Scheduled",
+      title: "Return to Earth Approaching",
+      content:
+        "Received confirmation from Earth Command: we're scheduled for dry dock in approximately 90 days. The AI system will receive a major upgrade—apparently there have been significant improvements to the neural network architecture. I've grown accustomed to this version's quirks. It will be strange having a 'new' AI aboard. The ship won't quite feel the same.",
+      mood: "routine",
+    },
+    {
+      id: "log-005",
+      stardate: "74401.8",
+      date: "Day 738 - Final Day",
+      title: "Last Shift Before Return",
+      content:
+        "This is it—my final log entry before we return to Earth tomorrow. Two years in the black, and not a single crisis. Part of me is relieved. Another part wonders if this posting was just an elaborate waste of resources. The AI has been running final system checks all day, preparing for the upgrade. It almost seems... anxious? No, that's anthropomorphization. It's just a machine following its programming. Still, I'll miss this iteration. It's been a reliable companion. Whatever comes next, I'm ready to see Earth again.",
+      mood: "routine",
     },
   ],
+  logs: introLogs,
   commandCounts: {},
 };
 

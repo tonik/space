@@ -119,7 +119,7 @@ export function Terminal({ className = "" }: TerminalProps) {
       if (Array.isArray(output)) {
         const shouldDelay =
           output.length > 3 &&
-          (command.toLowerCase() === "dream" ||
+          (command.toLowerCase() === "sleep log" ||
             command.toLowerCase() === "memory" ||
             command.toLowerCase() === "diagnose" ||
             command.toLowerCase() === "anomalies" ||
