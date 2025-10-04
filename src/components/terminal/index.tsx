@@ -111,6 +111,7 @@ export function Terminal({ className = "" }: TerminalProps) {
         addLine(prompt);
       },
       commandCounts,
+      context,
     );
 
     if (output) {
@@ -125,8 +126,7 @@ export function Terminal({ className = "" }: TerminalProps) {
             command.toLowerCase() === "anomalies" ||
             command.toLowerCase() === "comms" ||
             command.toLowerCase() === "weapons" ||
-            command.toLowerCase() === "override" ||
-            command.toLowerCase() === "status");
+            command.toLowerCase() === "override");
 
         if (shouldDelay) {
           await displayLinesWithDelay(output, addLine, setIsPrinting);
