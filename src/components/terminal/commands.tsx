@@ -1,3 +1,4 @@
+import type { GameContext } from "@/state";
 import React from "react";
 
 export type StoreDataCallback = (data: string) => void;
@@ -50,7 +51,7 @@ export const getCommands = (
   currentName?: string,
   interactiveCallback?: InteractiveCallback,
   commandCounts?: Record<string, number>,
-  mission?: any,
+  mission?: GameContext["mission"],
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -248,10 +249,9 @@ export const getCommands = (
         "",
         "Scanning for irregular patterns...",
         "",
-        "No anomalies detected. All systems operating within normal parameters.",
+        "AI: No anomalies detected. All systems operating within normal parameters.",
         "",
         "*** SCAN COMPLETE ***",
-        "Use 'help' for other available commands.",
       ];
 
       return colorizeMessages(anomalyReport);
