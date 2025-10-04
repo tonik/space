@@ -14,7 +14,6 @@ export default function SpaceshipOS() {
     { id: "dashboard" as View, label: "Control", icon: Gauge },
     { id: "messaging" as View, label: "Comms", icon: MessageSquare },
     { id: "terminal" as View, label: "Terminal", icon: TerminalIcon },
-    { id: "news" as View, label: "Earth Feed", icon: Globe },
     { id: "logs" as View, label: "Ship Logs", icon: FileText },
   ]
 
@@ -70,7 +69,6 @@ export default function SpaceshipOS() {
           {activeView === "dashboard" && <DashboardView />}
           {activeView === "messaging" && <MessagingView />}
           {activeView === "terminal" && <TerminalView />}
-          {activeView === "news" && <NewsView />}
           {activeView === "logs" && <LogsView />}
         </div>
       </div>
@@ -230,42 +228,6 @@ function TerminalView() {
         </div>
       </ScrollArea>
     </Card>
-  )
-}
-
-function NewsView() {
-  const news = [
-    { title: "Mars Colony Reaches 1 Million Population", time: "2 hours ago", category: "COLONY" },
-    { title: "New Warp Drive Technology Tested Successfully", time: "5 hours ago", category: "TECH" },
-    { title: "Earth-Moon Trade Agreement Renewed", time: "8 hours ago", category: "POLITICS" },
-    { title: "Solar Storm Warning Issued for Outer Sectors", time: "12 hours ago", category: "ALERT" },
-    { title: "Jupiter Mining Operations Exceed Quota", time: "1 day ago", category: "INDUSTRY" },
-  ]
-
-  return (
-    <div className="max-w-4xl">
-      <Card className="bg-black border-[#00ff41]/30 p-4">
-        <h3 className="text-sm font-bold text-[#00ff41] mb-4">EARTH NEWS FEED</h3>
-        <ScrollArea className="h-[500px]">
-          <div className="space-y-3">
-            {news.map((item, i) => (
-              <div
-                key={i}
-                className="border border-[#00ff41]/20 p-4 bg-[#00ff41]/5 hover:bg-[#00ff41]/10 transition-colors cursor-pointer"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <Badge variant="outline" className="border-[#00ff41] text-[#00ff41] text-xs">
-                    {item.category}
-                  </Badge>
-                  <span className="text-xs text-[#00ff41]/60">{item.time}</span>
-                </div>
-                <h4 className="text-sm text-[#00ff41] font-medium">{item.title}</h4>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      </Card>
-    </div>
   )
 }
 
