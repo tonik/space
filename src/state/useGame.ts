@@ -1,6 +1,6 @@
 import { createActor } from "xstate";
 import { gameMachine, type GameContext } from "./game";
-import type { Message, LogEntry } from "./types";
+import type { Message, LogEntry, System } from "./types";
 
 // commented out because when we are mutating initial state new keys and changes aren't loaded from localStorage
 // const stateString = localStorage.getItem("gameState");
@@ -33,6 +33,27 @@ export const useGame = () => {
 
     trackCommand: (command: string) =>
       gameActor.send({ type: "COMMAND_EXECUTED", command }),
+
+    updateSystemStatus: (
+      systemName: keyof GameContext["systems"],
+      status: System["status"],
+      integrity?: number,
+    ) =>
+      gameActor.send({
+        type: "UPDATE_SYSTEM_STATUS",
+        systemName,
+        status,
+        integrity,
+      }),
+    updateSystemIntegrity: (
+      systemName: keyof GameContext["systems"],
+      integrity: number,
+    ) =>
+      gameActor.send({
+        type: "UPDATE_SYSTEM_INTEGRITY",
+        systemName,
+        integrity,
+      }),
 
     send: gameActor.send,
   };
