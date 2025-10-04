@@ -1,6 +1,6 @@
 import { createActor } from 'xstate';
 import { useSelector } from '@xstate/react';
-import { gameMachine, type GameContext } from './game';
+import { gameMachine, type GameContext, type Message } from './game';
 
 const gameActor = createActor(gameMachine);
 gameActor.start();
@@ -19,6 +19,25 @@ export const useGame = () => {
   const systemIntegrityState = useSelector(gameActor, (state) => state.value.systemIntegrity);
   const playerActionState = useSelector(gameActor, (state) => state.value.playerActions);
   const gameFlowState = useSelector(gameActor, (state) => state.value.gameFlow);
+  
+  const messages = useSelector(gameActor, (state) => state.context.messages);
+  const messageViews = useSelector(gameActor, (state) => state.context.messageViews);
+  
+  const openedMessageIds = useSelector(gameActor, (state) => 
+    new Set(state.context.messageViews.map(v => v.messageId))
+  );
+  
+  const unreadCount = useSelector(gameActor, (state) => {
+    const openedIds = new Set(state.context.messageViews.map(v => v.messageId));
+    return state.context.messages.filter(msg => !openedIds.has(msg.id)).length;
+  });
+  
+  const recentlyOpenedMessages = useSelector(gameActor, (state) => {
+    return state.context.messageViews
+      .sort((a, b) => b.openedAt - a.openedAt)
+      .slice(0, 10)
+      .map(v => v.messageId);
+  });
 
   return {
     context,
@@ -34,6 +53,12 @@ export const useGame = () => {
     systemIntegrityState,
     playerActionState,
     gameFlowState,
+    
+    messages,
+    messageViews,
+    openedMessageIds,
+    unreadCount,
+    recentlyOpenedMessages,
     
     startGame: (commanderName: string) => gameActor.send({ type: 'START_GAME', commanderName }),
     changeView: (view: GameContext['activeView']) => gameActor.send({ type: 'CHANGE_VIEW', view }),
@@ -69,6 +94,9 @@ export const useGame = () => {
     activateSelfDestruct: () => gameActor.send({ type: 'ACTIVATE_SELF_DESTRUCT' }),
     
     endGame: (outcome: string) => gameActor.send({ type: 'END_GAME', outcome }),
+    
+    addMessage: (message: Message) => gameActor.send({ type: 'ADD_MESSAGE', message }),
+    openMessage: (messageId: string) => gameActor.send({ type: 'MESSAGE_OPENED', messageId }),
     
     send: gameActor.send,
   };
