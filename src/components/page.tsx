@@ -20,7 +20,7 @@ import { useGame } from "@/state/useGame";
 import { useNotificationsStore } from "@/features/notifications/store";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import MessagingView from "@/features/messaging/view";
+import { MessagingView } from "@/features/messaging/view";
 
 export type View = "messaging" | "dashboard" | "terminal" | "logs";
 
