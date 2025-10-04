@@ -2,26 +2,26 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSystemLogStore } from "./store";
 
+const messages = [
+  "Navigation systems online",
+  "Life support systems nominal",
+  "Engine temperature rising",
+  "Communication array active",
+  "Shield generator at 85%",
+  "Fuel levels critical",
+  "Autopilot engaged",
+  "Docking sequence initiated",
+  "Warning: Proximity alert",
+  "System diagnostic complete",
+  "Thruster calibration required",
+  "Emergency protocols activated",
+];
+const levels = ["INFO", "WARN", "ERROR"] as const;
+
 export function SystemLogView() {
   const { logs, addLog } = useSystemLogStore();
 
   const generateSampleLog = () => {
-    const levels = ["INFO", "WARN", "ERROR"] as const;
-    const messages = [
-      "Navigation systems online",
-      "Life support systems nominal",
-      "Engine temperature rising",
-      "Communication array active",
-      "Shield generator at 85%",
-      "Fuel levels critical",
-      "Autopilot engaged",
-      "Docking sequence initiated",
-      "Warning: Proximity alert",
-      "System diagnostic complete",
-      "Thruster calibration required",
-      "Emergency protocols activated",
-    ];
-
     const randomLevel =
       levels[Math.floor(Math.random() * levels.length)];
     const randomMessage =
