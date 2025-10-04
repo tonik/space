@@ -36,14 +36,6 @@ export function MessagingView() {
     }
   };
 
-  const handleMarkAllAsRead = () => {
-    messages.forEach((msg) => {
-      if (!game.openedMessageIds.has(msg.id)) {
-        openMessage(msg.id);
-      }
-    });
-  };
-
   return (
     <div className="max-w-4xl">
       <Card className="mb-4 border-[#00ff41]/30 bg-black p-4">
@@ -57,12 +49,6 @@ export function MessagingView() {
                 {unreadCount} unread
               </span>
             )}
-            <button
-              onClick={handleMarkAllAsRead}
-              className="border border-[#00ff41]/30 bg-[#00ff41]/20 px-3 py-1 text-xs text-[#00ff41] transition-colors hover:bg-[#00ff41]/30"
-            >
-              Mark All Read
-            </button>
           </div>
         </div>
         <ScrollArea className="h-[500px]">
