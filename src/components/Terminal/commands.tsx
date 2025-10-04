@@ -1,9 +1,8 @@
 import React from "react";
-import { Button } from "../ui/button";
 
 export type StoreDataCallback = (data: string) => void;
 
-export const getCommand = (
+export const getCommands = (
   command: string,
   storeData?: StoreDataCallback,
   currentName?: string,
@@ -52,7 +51,6 @@ export const getCommand = (
         "  dream     - Access crew sleep logs",
         "  echo      - Repeat input (with variations)",
         "  memory    - List AI memories",
-        "  react     - Demonstrate React component",
         "  help      - Show this help message",
         "  setname   - Set your commander name",
         "  status    - Show system status",
@@ -102,8 +100,8 @@ export const getCommand = (
         "Tomorrow I return to Earth for ship upgrades and AI system updates.",
         "Something feels... different about the AI today.",
       ];
-    case "react":
-      return <Button>Click me</Button>;
+    // case "react":
+    //   return <MyCustomReactComponent />;
     case "dream":
       return [
         "Accessing crew sleep logs...",
