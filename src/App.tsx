@@ -1,13 +1,11 @@
-import "./index.css";
-import SpaceshipOS from "./components/page";
+import { Toaster } from "./components/ui/sonner";
+import SpaceshipOs from "./components/page";
 
-function App() {
-
+export default function App() {
   return (
     <>
-      <SpaceshipOS />
+      <SpaceshipOs />
+      <Toaster position="bottom-right" expand richColors />
     </>
   );
 }
-
-export default App;

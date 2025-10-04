@@ -1,30 +1,37 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   MessageSquare,
   Gauge,
   TerminalIcon,
-  Globe,
   FileText,
   Radio,
   Zap,
   AlertTriangle,
   Activity,
+  Globe,
 } from "lucide-react";
 import { Terminal } from "@/components/Terminal";
 import { SystemLogView } from "@/features/system-log/view";
 import { useSystemLogStore } from "@/features/system-log/store";
+import { useGame } from "@/state/useGame";
 
-type View = "messaging" | "dashboard" | "terminal" | "news" | "logs";
+import { useNotificationsStore } from "@/features/notifications/store";
+import { Card } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import MessagingView from "@/features/messaging/view";
+
+export type View = "messaging" | "dashboard" | "terminal" | "logs";
 
 export default function SpaceshipOS() {
+  useGame();
   const [activeView, setActiveView] = useState<View>("dashboard");
   const [commanderName, setCommanderName] = useState<string>(
     "spaceship-commander",
   );
+
+  const { notifications } = useNotificationsStore();
 
   const navItems = [
     {
@@ -49,6 +56,8 @@ export default function SpaceshipOS() {
     },
   ];
 
+  const hasNotification = (id: View) => notifications[id];
+
   return (
     <div className="h-screen bg-black text-[#00ff41] font-mono flex overflow-hidden">
       {/* Left Navigation */}
@@ -60,19 +69,23 @@ export default function SpaceshipOS() {
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
-            <Button
-              key={item.id}
-              variant="ghost"
-              size="icon"
-              onClick={() => setActiveView(item.id)}
-              className={`w-12 h-12 hover:bg-[#00ff41]/10 hover:text-[#00ff41] transition-colors ${
-                activeView === item.id
-                  ? "bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]"
-                  : "text-[#00ff41]/60 border border-transparent"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-            </Button>
+            <div key={item.id} className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setActiveView(item.id)}
+                className={`w-12 h-12 hover:bg-[#00ff41]/10 hover:text-[#00ff41] transition-colors ${
+                  activeView === item.id
+                    ? "bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]"
+                    : "text-[#00ff41]/60 border border-transparent"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+              </Button>
+              {hasNotification(item.id) && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-red-400 shadow-[0_0_6px_rgba(239,68,68,0.6)] animate-pulse" />
+              )}
+            </div>
           );
         })}
       </div>
@@ -106,9 +119,9 @@ export default function SpaceshipOS() {
           {activeView === "dashboard" && <DashboardView />}
           {activeView === "messaging" && <MessagingView />}
           {activeView === "terminal" && (
-            <TerminalView
+            <Terminal
               onNameChange={setCommanderName}
-              commanderName={commanderName}
+              currentName={commanderName}
             />
           )}
           {activeView === "logs" && <SystemLogView />}
@@ -124,6 +137,8 @@ function DashboardView() {
   const recentAlerts = logs.filter(
     (log) => log.level === "WARN" || log.level === "ERROR",
   );
+
+  const { trigger } = useNotificationsStore();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -225,83 +240,9 @@ function DashboardView() {
           </div>
         </ScrollArea>
       </Card>
+      <Button onClick={() => trigger("You have new message!.", "messaging")}>
+        Trigger Notification
+      </Button>
     </div>
-  );
-}
-
-function MessagingView() {
-  const messages = [
-    {
-      from: "EARTH COMMAND",
-      time: "14:23",
-      message: "Status report received. Proceed to waypoint Delta.",
-    },
-    {
-      from: "CARGO VESSEL AURORA",
-      time: "13:45",
-      message: "Requesting docking clearance at Station Gamma.",
-    },
-    {
-      from: "EARTH COMMAND",
-      time: "12:10",
-      message: "New mission parameters uploaded to your terminal.",
-    },
-    {
-      from: "SCIENCE STATION 7",
-      time: "11:30",
-      message: "Anomaly detected in sector 7-G. Advise caution.",
-    },
-  ];
-
-  return (
-    <div className="max-w-4xl">
-      <Card className="bg-black border-[#00ff41]/30 p-4 mb-4">
-        <h3 className="text-sm font-bold text-[#00ff41] mb-4">
-          INCOMING TRANSMISSIONS
-        </h3>
-        <ScrollArea className="h-[500px]">
-          <div className="space-y-3">
-            {messages.map((msg, i) => (
-              <div
-                key={i}
-                className="border border-[#00ff41]/20 p-3 bg-[#00ff41]/5"
-              >
-                <div className="flex justify-between mb-2">
-                  <span className="text-xs font-bold text-[#00ff41]">
-                    {msg.from}
-                  </span>
-                  <span className="text-xs text-[#00ff41]/60">{msg.time}</span>
-                </div>
-                <p className="text-sm text-[#00ff41]/80">{msg.message}</p>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      </Card>
-      <div className="flex gap-2">
-        <input
-          type="text"
-          placeholder="Type message..."
-          className="flex-1 bg-black border border-[#00ff41]/30 px-4 py-2 text-sm text-[#00ff41] placeholder:text-[#00ff41]/40 focus:outline-none focus:border-[#00ff41]"
-        />
-        <Button className="bg-[#00ff41] text-black hover:bg-[#00ff41]/80">
-          SEND
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-function TerminalView({
-  onNameChange,
-  commanderName,
-}: {
-  onNameChange: (name: string) => void;
-  commanderName: string;
-}) {
-  return (
-    <Card className="bg-black border-[#00ff41]/30 p-4">
-      <Terminal onNameChange={onNameChange} currentName={commanderName} />
-    </Card>
   );
 }
