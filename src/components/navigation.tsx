@@ -1,6 +1,5 @@
 import { Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNotificationsStore } from "@/features/notifications/store";
 import type { View } from "./page";
 import { navItems } from "@/utils";
 import {
@@ -16,10 +15,6 @@ export default function Navigation({
   activeView: string;
   setActiveView: (view: View) => void;
 }) {
-  const { notifications } = useNotificationsStore();
-
-  const hasNotification = (id: View) => notifications[id];
-
   return (
     <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-6 border-r py-6">
       <div className="border-primary mb-4 flex h-10 w-10 items-center justify-center border-2">
@@ -43,9 +38,7 @@ export default function Navigation({
                   }`}
                 >
                   <Icon className="h-5 w-5" />
-                  {hasNotification(item.id) && (
-                    <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
-                  )}
+                  <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
