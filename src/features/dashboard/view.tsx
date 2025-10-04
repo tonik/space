@@ -5,7 +5,6 @@ import { SystemCard } from "@/components/ui/system-card";
 import {
   Zap,
   Activity,
-  Globe,
   Radio,
   Shield,
   Fuel,
