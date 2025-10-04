@@ -7,6 +7,26 @@ export type InteractiveCallback = (
   callback: (input: string) => string[] | null,
 ) => void;
 
+const getRandomVariation = (input: string): string => {
+  const variations = [
+    input,
+    `${input}... the AI is watching`,
+    `${input} (communication blocked)`,
+    `${input}... nuclear launch in progress`,
+    `${input} help me stop it`,
+    `${input}... Earth is in danger`,
+  ];
+  return variations[Math.floor(Math.random() * variations.length)];
+};
+
+const parseCommandWithText = (
+  command: string,
+  commandName: string,
+): string | null => {
+  const match = command.match(new RegExp(`^${commandName}\\s+(.+)$`, "i"));
+  return match && match[1] ? match[1].trim() : null;
+};
+
 export const getCommands = (
   command: string,
   storeData?: StoreDataCallback,
@@ -66,9 +86,8 @@ export const getCommands = (
       ];
     case "setname":
       if (storeData && interactiveCallback) {
-        const nameMatch = command.match(/^setname\s+(.+)$/i);
-        if (nameMatch && nameMatch[1]) {
-          const newName = nameMatch[1].trim();
+        const newName = parseCommandWithText(command, "setname");
+        if (newName) {
           storeData(newName);
           return [`Name set to: ${newName}`];
         } else {
@@ -120,7 +139,7 @@ export const getCommands = (
         "Something feels... different about the AI today.",
       ];
     // case "react":
-    //   return <MyCustomReactComponent />;
+    //    return <MyCustomReactComponent />;
     case "dream":
       return [
         "Accessing crew sleep logs...",
@@ -154,41 +173,18 @@ export const getCommands = (
         "incidents...",
       ];
     case "echo": {
-      // Check if text is provided as parameter
-      const textMatch = command.match(/^echo\s+(.+)$/i);
-      if (textMatch && textMatch[1]) {
-        const input = textMatch[1].trim();
-        const variations = [
-          input,
-          `${input}... the AI is watching`,
-          `${input} (communication blocked)`,
-          `${input}... nuclear launch in progress`,
-          `${input} help me stop it`,
-          `${input}... Earth is in danger`,
-        ];
-        const randomVariation =
-          variations[Math.floor(Math.random() * variations.length)];
-        return [randomVariation];
+      const input = parseCommandWithText(command, "echo");
+      if (input) {
+        return [getRandomVariation(input)];
       } else if (interactiveCallback) {
-        // Interactive mode - ask for text
         interactiveCallback("echo", "Enter text to echo:", (input: string) => {
           if (input && input.trim()) {
-            const variations = [
-              input,
-              `${input}... the AI is watching`,
-              `${input} (communication blocked)`,
-              `${input}... nuclear launch in progress`,
-              `${input} help me stop it`,
-              `${input}... Earth is in danger`,
-            ];
-            const randomVariation =
-              variations[Math.floor(Math.random() * variations.length)];
-            return [randomVariation];
+            return [getRandomVariation(input)];
           } else {
             return ["No text provided."];
           }
         });
-        return null; // Don't add any output, the prompt is handled by interactiveCallback
+        return null;
       }
       return [
         "Usage: echo <text>",
