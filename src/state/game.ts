@@ -185,7 +185,28 @@ const initialContext: GameContext = {
   ],
   messageViews: [],
 
-  logs: [],
+  logs: [{
+    id: "1",
+    time: "14:23",
+    level: "INFO",
+    system: "communications",
+    message: "Status report received. Proceed to waypoint Delta.",
+  },
+  {
+    id: "2",
+    time: "13:45",
+    level: "WARN",
+    system: "navigation",
+    message: "Navigation systems degraded. Advise caution.",
+  },
+  {
+    id: "3",
+    time: "12:10",
+    level: "ERROR",
+    system: "lifeSupport",
+    message: "Life support systems critical. Advise caution.",
+  },
+  ],
 };
 
 export const gameMachine = setup({
