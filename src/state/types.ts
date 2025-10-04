@@ -3,7 +3,7 @@
 export interface SystemStatus {
   name: string;
   integrity: number; // 0-100
-  status: 'online' | 'degraded' | 'offline' | 'compromised';
+  status: "online" | "degraded" | "offline" | "compromised";
   lastUpdate: number;
   anomalies: string[];
   critical: boolean;
@@ -15,8 +15,8 @@ export interface Message {
   to?: string;
   content: string;
   timestamp: number;
-  type: 'incoming' | 'outgoing' | 'system' | 'ai';
-  priority: 'low' | 'normal' | 'high' | 'critical';
+  type: "incoming" | "outgoing" | "system" | "ai";
+  priority: "low" | "normal" | "high" | "critical";
   encrypted?: boolean;
   corrupted?: boolean;
 }
@@ -24,7 +24,7 @@ export interface Message {
 export interface LogEntry {
   id: string;
   timestamp: number;
-  level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR' | 'CRITICAL';
+  level: "DEBUG" | "INFO" | "WARN" | "ERROR" | "CRITICAL";
   system: string;
   message: string;
   details?: string;
@@ -35,7 +35,7 @@ export interface LogEntry {
 
 export interface GameNotification {
   id: string;
-  type: 'info' | 'warning' | 'critical';
+  type: "info" | "warning" | "critical";
   message: string;
   timestamp: number;
 }
@@ -44,7 +44,7 @@ export interface SystemManipulation {
   system: string;
   timestamp: number;
   description: string;
-  severity: 'minor' | 'moderate' | 'severe';
+  severity: "minor" | "moderate" | "severe";
 }
 
 export interface NavigationData {

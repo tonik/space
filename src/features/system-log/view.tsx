@@ -12,7 +12,7 @@ export function SystemLogView() {
       level: "INFO",
       message: "Sample log",
       id: "",
-      system: ""
+      system: "",
     });
   };
 

@@ -1,6 +1,11 @@
 import { createActor } from "xstate";
 import { useSelector } from "@xstate/react";
-import { gameMachine, type GameContext, type LogEntry, type Message } from "./game";
+import {
+  gameMachine,
+  type GameContext,
+  type LogEntry,
+  type Message,
+} from "./game";
 
 const gameActor = createActor(gameMachine);
 gameActor.start();
