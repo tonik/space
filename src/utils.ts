@@ -4,6 +4,7 @@ import {
   MessageSquare,
   TerminalIcon,
   BookOpen,
+  Gamepad2,
 } from "lucide-react";
 import type { View } from "./components/page";
 
@@ -32,5 +33,10 @@ export const navItems = [
     id: "captains-log" as View,
     label: "Captain's Log",
     icon: BookOpen,
+  },
+  {
+    id: "arcade" as View,
+    label: "Arcade",
+    icon: Gamepad2,
   },
 ];
