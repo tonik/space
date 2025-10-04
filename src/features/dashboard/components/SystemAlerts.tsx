@@ -3,7 +3,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle } from "lucide-react";
 import type { LogEntry } from "@/state/types";
 import { format } from "date-fns";
-import { DEFAULT_DATE_FORMAT } from "@/utils";
+import { DEFAULT_DATE_FORMAT } from "@/lib/utils";
 
 interface SystemAlertsProps {
   logs: LogEntry[];

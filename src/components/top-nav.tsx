@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { useDashboardState } from "@/features/dashboard/selectors";
 import type { AvailableViewKeys } from "@/state";
-import { navItems } from "@/utils";
+import { navItems } from "@/lib/utils";
 
 export default function TopNav({
   activeView,

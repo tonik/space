@@ -1,7 +1,7 @@
 import type { Message } from "@/state/types";
 import { set, subDays } from "date-fns";
-import { INITIAL_CURRENT_DATE } from "./game-constants";
 import { nanoid } from "nanoid";
+import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 
 export const introMessages: Message[] = [
   {

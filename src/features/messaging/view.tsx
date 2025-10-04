@@ -7,10 +7,10 @@ import { useMessagingState } from "./selectors";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
 import { User } from "lucide-react";
-import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
+import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "sonner";
-import { DEFAULT_DATETIME_FORMAT } from "@/utils";
+import { DEFAULT_DATETIME_FORMAT } from "@/lib/utils";
 
 export function MessagingView() {
   const { messages, unreadCount, openedMessageIds, systems } =

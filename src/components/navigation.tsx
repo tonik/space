@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { navItems } from "@/utils";
+import { navItems } from "@/lib/utils";
 import {
   Tooltip,
   TooltipContent,

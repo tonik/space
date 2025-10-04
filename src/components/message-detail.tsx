@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
-import { DEFAULT_DATETIME_FORMAT } from "@/utils";
+import { DEFAULT_DATETIME_FORMAT } from "@/lib/utils";
 
 interface MessageDetailProps {
   message: Message;

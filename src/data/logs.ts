@@ -1,5 +1,5 @@
 import type { LogEntry } from "@/state/types";
-import { INITIAL_CURRENT_DATE } from "./game-constants";
+import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 
 export const introLogs: LogEntry[] = [
   {

@@ -10,7 +10,7 @@ import type {
   System,
   SystemMetric,
 } from "./types";
-import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
+import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 
 function generateSystemMetrics(
   systemName: string,
