@@ -20,7 +20,7 @@ import { useGame } from "@/state/useGame";
 import { useNotificationsStore } from "@/features/notifications/store";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import MessagingView from "@/features/messaging/view";
+import { MessagingView } from "@/features/messaging/view";
 
 export type View = "messaging" | "dashboard" | "terminal" | "logs";
 
@@ -240,9 +240,41 @@ function DashboardView() {
           </div>
         </ScrollArea>
       </Card>
-      <Button onClick={() => trigger("You have new message!.", "messaging")}>
-        Trigger Notification
-      </Button>
+      <Card className="bg-black border-[#00ff41]/30 p-4 flex flex-col gap-2">
+        <Button
+          onClick={() =>
+            trigger({
+              title: "New message received!",
+            })
+          }
+        >
+          Trigger simple notification
+        </Button>
+        <Button
+          onClick={() =>
+            trigger({
+              title: "New message received!",
+              description: "This is a description of the notification.",
+            })
+          }
+        >
+          Trigger notification with description
+        </Button>
+        <Button
+          onClick={() =>
+            trigger({
+              title: "New message received!",
+              description: "This is a description of the notification.",
+              action: {
+                label: "Click me!",
+                onClick: () => console.log("View message"),
+              },
+            })
+          }
+        >
+          Trigger notification with action
+        </Button>
+      </Card>
     </div>
   );
 }

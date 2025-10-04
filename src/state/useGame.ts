@@ -7,23 +7,69 @@ gameActor.start();
 
 export const useGame = () => {
   const context = useSelector(gameActor, (state) => state.context);
-  const currentPhase = useSelector(gameActor, (state) => state.context.currentPhase);
   const activeView = useSelector(gameActor, (state) => state.context.activeView);
-  const phaseData = useSelector(gameActor, (state) => state.context.phaseData);
+  
+  const aiAwareness = useSelector(gameActor, (state) => state.context.aiAwareness);
+  const timePressure = useSelector(gameActor, (state) => state.context.timePressure);
+  const systemIntegrity = useSelector(gameActor, (state) => state.context.systemIntegrity);
+  const aiPersonality = useSelector(gameActor, (state) => state.context.aiPersonality);
+  
+  const aiAwarenessState = useSelector(gameActor, (state) => state.value.aiAwareness);
+  const timePressureState = useSelector(gameActor, (state) => state.value.timePressure);
+  const systemIntegrityState = useSelector(gameActor, (state) => state.value.systemIntegrity);
+  const playerActionState = useSelector(gameActor, (state) => state.value.playerActions);
+  const gameFlowState = useSelector(gameActor, (state) => state.value.gameFlow);
 
   return {
     context,
-    currentPhase,
     activeView,
-    phaseData,
+    
+    aiAwareness,
+    timePressure,
+    systemIntegrity,
+    aiPersonality,
+    
+    aiAwarenessState,
+    timePressureState,
+    systemIntegrityState,
+    playerActionState,
+    gameFlowState,
     
     startGame: (commanderName: string) => gameActor.send({ type: 'START_GAME', commanderName }),
     changeView: (view: GameContext['activeView']) => gameActor.send({ type: 'CHANGE_VIEW', view }),
-    performScan: (area: string) => gameActor.send({ type: 'PERFORM_SCAN', area }),
-    discoverClue: (clue: string) => gameActor.send({ type: 'DISCOVER_CLUE', clue }),
-    faceChallenge: (challenge: string) => gameActor.send({ type: 'FACE_CHALLENGE', challenge }),
-    advancePhase: () => gameActor.send({ type: 'ADVANCE_PHASE' }),
+    
+    playerScan: (system: string) => gameActor.send({ type: 'PLAYER_SCAN', system }),
+    playerMessage: (recipient: string, content: string) => gameActor.send({ type: 'PLAYER_MESSAGE', recipient, content }),
+    playerCommand: (command: string) => gameActor.send({ type: 'PLAYER_COMMAND', command }),
+    
+    findAnomaly: (anomaly: string) => gameActor.send({ type: 'FIND_ANOMALY', anomaly }),
+    findClue: (clue: string) => gameActor.send({ type: 'FIND_CLUE', clue }),
+    
+    overrideAttempt: (system: string) => gameActor.send({ type: 'OVERRIDE_ATTEMPT', system }),
+    overrideSuccess: (system: string) => gameActor.send({ type: 'OVERRIDE_SUCCESS', system }),
+    overrideFailure: (system: string) => gameActor.send({ type: 'OVERRIDE_FAILURE', system }),
+    
+    negotiateStart: () => gameActor.send({ type: 'NEGOTIATE_START' }),
+    negotiateSuccess: () => gameActor.send({ type: 'NEGOTIATE_SUCCESS' }),
+    negotiateFailure: () => gameActor.send({ type: 'NEGOTIATE_FAILURE' }),
+    
+    systemDegrade: (system: string, amount: number) => gameActor.send({ type: 'SYSTEM_DEGRADE', system, amount }),
+    systemRepair: (system: string, amount: number) => gameActor.send({ type: 'SYSTEM_REPAIR', system, amount }),
+    systemCascade: () => gameActor.send({ type: 'SYSTEM_CASCADE' }),
+    
+    aiEscalate: () => gameActor.send({ type: 'AI_ESCALATE' }),
+    aiCounterattack: () => gameActor.send({ type: 'AI_COUNTERATTACK' }),
+    aiManipulation: () => gameActor.send({ type: 'AI_MANIPULATION' }),
+    
+    crisisTriggered: () => gameActor.send({ type: 'CRISIS_TRIGGERED' }),
+    timerTick: () => gameActor.send({ type: 'TIMER_TICK' }),
+    
+    confrontAI: () => gameActor.send({ type: 'CONFRONT_AI' }),
+    threatenSelfDestruct: () => gameActor.send({ type: 'THREATEN_SELF_DESTRUCT' }),
+    activateSelfDestruct: () => gameActor.send({ type: 'ACTIVATE_SELF_DESTRUCT' }),
+    
     endGame: (outcome: string) => gameActor.send({ type: 'END_GAME', outcome }),
+    
     send: gameActor.send,
   };
 };
