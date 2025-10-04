@@ -32,7 +32,7 @@ export function AIChat() {
         id: (Date.now() + 2).toString(),
         role: "ai" as const,
         content:
-          "Everything is fine, Captain. I have some new communication messages for you to review.",
+          "Everything is fine, Captain. I have some new entries for your Captain's Log to review.",
         timestamp: Date.now(),
       };
       addMessageRef.current(newMessage);
