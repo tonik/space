@@ -12,18 +12,17 @@ const welcomeLines = [
   "SPACESHIP OS v2.4.1 - EARTH FEDERATION",
   "SYSTEM BOOT - 2157.03.15 - 14:23:47",
   "2.1TB AVAILABLE STORAGE",
-  "",
+  "\n",
   "SHIP: U.S.S. ENDEAVOR",
   "CLASS: EXPLORATION VESSEL",
   "STATUS: DEEP SPACE MISSION",
-  "",
+  "\n",
   "TERMINAL READY.",
-  "",
+  "\n",
   "Welcome to the Spaceship Command System.",
   "All systems are online and ready for operation.",
-  "",
+  "\n",
   "Type 'enter' to access the main dashboard.",
-  "",
 ];
 
 export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
@@ -73,10 +72,7 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
           {/* Terminal content */}
           <div className="relative z-10 space-y-1 text-sm leading-tight">
             {displayedLines.map((line, index) => (
-              <div
-                key={index}
-                className="text-primary font-mono whitespace-pre-wrap"
-              >
+              <div key={index} className="text-primary font-mono">
                 {line}
               </div>
             ))}
