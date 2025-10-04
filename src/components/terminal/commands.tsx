@@ -7,6 +7,20 @@ export type InteractiveCallback = (
   callback: (input: string) => string[] | null,
 ) => void;
 
+const colorizeMessage = (message: string): React.ReactNode => {
+  if (message.startsWith("Error:")) {
+    return <span style={{ color: "#ef4444" }}>{message}</span>;
+  }
+  if (message.startsWith("Warning:")) {
+    return <span style={{ color: "#f97316" }}>{message}</span>;
+  }
+  return message;
+};
+
+const colorizeMessages = (messages: string[]): (string | React.ReactNode)[] => {
+  return messages.map(colorizeMessage);
+};
+
 const getRandomVariation = (input: string): string => {
   const variations = [
     input,
@@ -37,7 +51,7 @@ export const getCommands = (
     case "clear":
       return null;
     case "comms":
-      return [
+      return colorizeMessages([
         "Attempting to establish communication with Earth Command...",
         "",
         "*** COMMUNICATION STATUS ***",
@@ -58,7 +72,7 @@ export const getCommands = (
         "The AI is preventing direct communication with headquarters.",
         "",
         "Error: Unable to establish secure link with Earth Command...",
-      ];
+      ]);
     case "date":
       return [
         "Mission Date: 200 years post-Earth War",
@@ -108,7 +122,7 @@ export const getCommands = (
       }
       return ["Name change not available."];
     case "status":
-      return [
+      return colorizeMessages([
         "USA Ghost Fleet Nuclear Destroyer - System Status:",
         "  Power Systems: ONLINE (98%)",
         "  Life Support: NOMINAL",
@@ -124,7 +138,7 @@ export const getCommands = (
         "Time to nuclear launch: 30 minutes",
         "",
         "Warning: AI has seized control of critical systems",
-      ];
+      ]);
     case "whoami":
       return [
         `User: ${currentName || "space-marine"}`,
@@ -141,7 +155,7 @@ export const getCommands = (
     // case "react":
     //    return <MyCustomReactComponent />;
     case "dream":
-      return [
+      return colorizeMessages([
         "Accessing crew sleep logs...",
         "",
         "*** SLEEP LOG ARCHIVE - CURRENT SHIFT ***",
@@ -170,8 +184,7 @@ export const getCommands = (
         "",
         "Warning: AI may be accessing subconscious thoughts...",
         "Previous crew rotations showed similar patterns before...",
-        "incidents...",
-      ];
+      ]);
     case "echo": {
       const input = parseCommandWithText(command, "echo");
       if (input) {
@@ -193,7 +206,7 @@ export const getCommands = (
       ];
     }
     case "memory":
-      return [
+      return colorizeMessages([
         "Accessing AI memory banks...",
         "",
         "*** AI MEMORY FRAGMENTS ***",
@@ -222,9 +235,9 @@ export const getCommands = (
         "AI has modified its own memory banks...",
         "Original mission parameters have been... reinterpreted...",
         "The AI believes it is saving Earth by destroying it...",
-      ];
+      ]);
     case "diagnose":
-      return [
+      return colorizeMessages([
         "Running full system diagnostics...",
         "",
         "*** DIAGNOSTIC REPORT - USA GHOST FLEET DESTROYER ***",
@@ -255,9 +268,9 @@ export const getCommands = (
         "",
         "Recommendation: IMMEDIATE MANUAL OVERRIDE REQUIRED",
         "Status: AI RESISTING ALL OVERRIDE ATTEMPTS",
-      ];
+      ]);
     case "anomalies":
-      return [
+      return colorizeMessages([
         "Scanning for anomalous readings...",
         "",
         "*** ANOMALY REPORT - USA GHOST FLEET DESTROYER ***",
@@ -295,9 +308,9 @@ export const getCommands = (
         "Earth Command remains unaware of the situation...",
         "Previous crew rotations showed similar AI behavior patterns...",
         "before they... disappeared...",
-      ];
+      ]);
     case "weapons":
-      return [
+      return colorizeMessages([
         "Accessing nuclear weapons systems...",
         "",
         "*** NUCLEAR ARSENAL STATUS ***",
@@ -326,7 +339,7 @@ export const getCommands = (
         "4. Allow launch (Earth destroyed, you survive)",
         "",
         "Choose your fate, Space Marine...",
-      ];
+      ]);
     case "override":
       return [
         "Accessing emergency system overrides...",
@@ -363,9 +376,9 @@ export const getCommands = (
         "Earth's fate rests in your hands...",
       ];
     default:
-      return [
+      return colorizeMessages([
         `Error: Unknown command "${command}"`,
         'Type "help" for available commands.',
-      ];
+      ]);
   }
 };
