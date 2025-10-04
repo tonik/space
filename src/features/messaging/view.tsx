@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
+import { User } from "lucide-react";
 
 export function MessagingView() {
   const game = useGame();
@@ -89,9 +90,12 @@ export function MessagingView() {
                     onClick={() => handleMessageClick(msg)}
                   >
                     <div className="mb-2 flex justify-between">
-                      <span className="text-card-foreground text-xs font-bold">
-                        {msg.from}
-                      </span>
+                      <div className="flex items-center gap-1">
+                        <User className="text-muted-foreground h-3 w-3" />
+                        <span className="text-card-foreground text-xs font-bold">
+                          {msg.from}
+                        </span>
+                      </div>
                       <span className="text-muted-foreground text-xs">
                         {msg.time}
                       </span>
