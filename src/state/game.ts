@@ -354,7 +354,7 @@ export type AvailableViewKeys =
 
 export interface GameContext {
   commanderName: string;
-  gameStartTime: number;
+  gameStartTimestamp: number;
   showWelcomeScreen: boolean;
   activeView: AvailableViewKeys;
 
@@ -474,7 +474,7 @@ export type GameEvent =
 
 const initialContext: GameContext = {
   commanderName: "Commander",
-  gameStartTime: INITIAL_CURRENT_DATE.getTime(),
+  gameStartTimestamp: Date.now(),
   activeView: "dashboard",
   showWelcomeScreen: true,
 

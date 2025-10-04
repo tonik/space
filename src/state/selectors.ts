@@ -1,7 +1,18 @@
 import { useSelector } from "@xstate/react";
-import { gameActor } from "@/state/useGame";
+import { gameActor } from "./useGame";
+import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 
-export const useMessagingState = () => {
+export function useGameDateNow(): Date {
+  return useSelector(gameActor, (state) => {
+    const stateTimestamp = state.context.gameStartTimestamp;
+    const nowTimestamp = Date.now();
+    const diff = nowTimestamp - stateTimestamp;
+    const gameTimestamp = INITIAL_CURRENT_DATE.getTime();
+    return new Date(gameTimestamp + diff);
+  });
+}
+
+export function useMessagingState() {
   return useSelector(gameActor, (state) => {
     const openedIds = new Set(
       state.context.messageViews.map((v) => v.messageId),
@@ -22,4 +33,4 @@ export const useMessagingState = () => {
         .map((v) => v.messageId),
     };
   });
-};
+}

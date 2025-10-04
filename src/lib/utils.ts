@@ -4,7 +4,6 @@ import {
   MessageSquare,
   TerminalIcon,
   BookOpen,
-  Database,
 } from "lucide-react";
 import type { AvailableViewKeys } from "@/state";
 import { clsx, type ClassValue } from "clsx";

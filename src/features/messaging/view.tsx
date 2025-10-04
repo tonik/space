@@ -3,14 +3,14 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
-import { useMessagingState } from "./selectors";
+import { useMessagingState } from "@/state/selectors";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
 import { User } from "lucide-react";
-import { INITIAL_CURRENT_DATE } from "@/lib/utils";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { DEFAULT_DATETIME_FORMAT } from "@/lib/utils";
+import { useGameDateNow } from "@/state/selectors";
 
 export function MessagingView() {
   const { messages, unreadCount, openedMessageIds, systems } =
@@ -20,6 +20,8 @@ export function MessagingView() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "message">("list");
   const isCommunicationsOnline = systems.communications.status === "online";
+
+  const gameDateNow = useGameDateNow();
 
   const handleSendMessage = () => {
     if (!isCommunicationsOnline) {
@@ -35,7 +37,7 @@ export function MessagingView() {
         id: messageId,
         from: "YOU",
         // update to dynamic time
-        timestamp: INITIAL_CURRENT_DATE.getTime(),
+        timestamp: gameDateNow.getTime(),
         title: "Outgoing Message",
         preview: newMessage.trim(),
         type: "outgoing",
