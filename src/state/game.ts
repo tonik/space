@@ -396,6 +396,24 @@ export interface GameContext {
     aiUpdateScheduled: boolean;
     fleetStatus: string;
   };
+
+  repair: {
+    energy: number;
+    materials: number;
+    maxEnergy: number;
+    energyRecoveryRate: number;
+    lastEnergyRecovery: number;
+    activeRepairs: Record<
+      string,
+      {
+        systemName: keyof GameContext["systems"];
+        repairType: "quick" | "standard" | "thorough";
+        startTime: number;
+        duration: number;
+        progress: number;
+      }
+    >;
+  };
 }
 
 export type GameEvent =
@@ -417,6 +435,24 @@ export type GameEvent =
       type: "UPDATE_SYSTEM_INTEGRITY";
       systemName: keyof GameContext["systems"];
       integrity: number;
+    }
+  | {
+      type: "REPAIR_SYSTEM";
+      systemName: keyof GameContext["systems"];
+      repairAmount: number;
+    }
+  | {
+      type: "START_REPAIR";
+      systemName: keyof GameContext["systems"];
+      repairType: "quick" | "standard" | "thorough";
+    }
+  | {
+      type: "COMPLETE_REPAIR";
+      systemName: keyof GameContext["systems"];
+    }
+  | {
+      type: "RECOVER_ENERGY";
+      amount?: number;
     };
 
 const initialContext: GameContext = {
@@ -497,6 +533,15 @@ const initialContext: GameContext = {
     daysInSpace: 738,
     aiUpdateScheduled: true,
     fleetStatus: "PEACETIME",
+  },
+
+  repair: {
+    energy: 85, // Start with good energy reserves
+    materials: 70, // Moderate material reserves
+    maxEnergy: 100, // Maximum energy capacity
+    energyRecoveryRate: 2, // 2 energy per minute
+    lastEnergyRecovery: Date.now(), // Initialize with current time
+    activeRepairs: {},
   },
 
   messages: introMessages,
@@ -672,6 +717,251 @@ export const gameMachine = setup({
         return context.systems;
       },
     }),
+    startRepair: assign({
+      repair: ({ context, event }) => {
+        if (event.type === "START_REPAIR") {
+          const repairId = `${event.systemName}-${Date.now()}`;
+          const repairDurations = {
+            quick: 5000, // 5 seconds
+            standard: 15000, // 15 seconds
+            thorough: 30000, // 30 seconds
+          };
+
+          const energyCosts = {
+            quick: 10,
+            standard: 20,
+            thorough: 35,
+          };
+
+          const materialCosts = {
+            quick: 5,
+            standard: 15,
+            thorough: 25,
+          };
+
+          // Check if we have enough resources
+          if (
+            context.repair.energy < energyCosts[event.repairType] ||
+            context.repair.materials < materialCosts[event.repairType]
+          ) {
+            return context.repair; // Not enough resources
+          }
+
+          return {
+            ...context.repair,
+            energy: Math.max(
+              0,
+              context.repair.energy - energyCosts[event.repairType],
+            ),
+            materials: Math.max(
+              0,
+              context.repair.materials - materialCosts[event.repairType],
+            ),
+            activeRepairs: {
+              ...context.repair.activeRepairs,
+              [repairId]: {
+                systemName: event.systemName,
+                repairType: event.repairType,
+                startTime: Date.now(),
+                duration: repairDurations[event.repairType],
+                progress: 0,
+              },
+            },
+          };
+        }
+        return context.repair;
+      },
+      logs: ({ context, event }) => {
+        if (event.type === "START_REPAIR") {
+          const energyCosts = { quick: 10, standard: 20, thorough: 35 };
+          const materialCosts = { quick: 5, standard: 15, thorough: 25 };
+
+          // Check if we have enough resources
+          if (
+            context.repair.energy < energyCosts[event.repairType] ||
+            context.repair.materials < materialCosts[event.repairType]
+          ) {
+            return [
+              ...context.logs,
+              {
+                id: `repair-failed-${Date.now()}`,
+                timestamp: Date.now(),
+                level: "WARN" as const,
+                system: event.systemName,
+                message: `Repair failed: Insufficient resources (need ${energyCosts[event.repairType]} energy, ${materialCosts[event.repairType]} materials)`,
+              },
+            ];
+          }
+
+          return [
+            ...context.logs,
+            {
+              id: `repair-start-${Date.now()}`,
+              timestamp: Date.now(),
+              level: "INFO" as const,
+              system: event.systemName,
+              message: `Started ${event.repairType} repair (${energyCosts[event.repairType]} energy, ${materialCosts[event.repairType]} materials consumed)`,
+            },
+          ];
+        }
+        return context.logs;
+      },
+    }),
+    completeRepair: assign({
+      systems: ({ context, event }) => {
+        if (event.type === "COMPLETE_REPAIR") {
+          const system = context.systems[event.systemName];
+          const repairAmounts = {
+            quick: 15,
+            standard: 35,
+            thorough: 60,
+          };
+
+          // Find the active repair for this system
+          const activeRepair = Object.values(context.repair.activeRepairs).find(
+            (repair) => repair.systemName === event.systemName,
+          );
+
+          if (!activeRepair) return context.systems;
+
+          const newIntegrity = Math.min(
+            100,
+            system.integrity + repairAmounts[activeRepair.repairType],
+          );
+          const newStatus =
+            newIntegrity >= 90
+              ? "online"
+              : newIntegrity >= 70
+                ? "degraded"
+                : newIntegrity >= 40
+                  ? "critical"
+                  : "offline";
+
+          const newMetrics = generateSystemMetrics(
+            event.systemName,
+            newStatus,
+            newIntegrity,
+          );
+
+          return {
+            ...context.systems,
+            [event.systemName]: {
+              ...system,
+              integrity: newIntegrity,
+              status: newStatus,
+              metrics: newMetrics,
+            },
+          };
+        }
+        return context.systems;
+      },
+      repair: ({ context, event }) => {
+        if (event.type === "COMPLETE_REPAIR") {
+          // Remove the completed repair from active repairs
+          const newActiveRepairs = { ...context.repair.activeRepairs };
+          const repairToRemove = Object.keys(newActiveRepairs).find(
+            (key) => newActiveRepairs[key].systemName === event.systemName,
+          );
+
+          if (repairToRemove) {
+            delete newActiveRepairs[repairToRemove];
+          }
+
+          return {
+            ...context.repair,
+            activeRepairs: newActiveRepairs,
+          };
+        }
+        return context.repair;
+      },
+      logs: ({ context, event }) => {
+        if (event.type === "COMPLETE_REPAIR") {
+          const system = context.systems[event.systemName];
+          const repairAmounts = { quick: 15, standard: 35, thorough: 60 };
+
+          const activeRepair = Object.values(context.repair.activeRepairs).find(
+            (repair) => repair.systemName === event.systemName,
+          );
+
+          if (!activeRepair) return context.logs;
+
+          const newIntegrity = Math.min(
+            100,
+            system.integrity + repairAmounts[activeRepair.repairType],
+          );
+
+          return [
+            ...context.logs,
+            {
+              id: `repair-complete-${Date.now()}`,
+              timestamp: Date.now(),
+              level: "INFO" as const,
+              system: event.systemName,
+              message: `Repair completed: ${event.systemName} integrity increased to ${newIntegrity}%`,
+            },
+          ];
+        }
+        return context.logs;
+      },
+    }),
+    recoverEnergy: assign({
+      repair: ({ context, event }) => {
+        if (event.type === "RECOVER_ENERGY") {
+          const now = Date.now();
+          const timeSinceLastRecovery = now - context.repair.lastEnergyRecovery;
+          const minutesPassed = timeSinceLastRecovery / (1000 * 60); // Convert to minutes
+
+          // Calculate energy to recover based on time passed
+          const energyToRecover =
+            event.amount ||
+            Math.floor(minutesPassed * context.repair.energyRecoveryRate);
+
+          if (energyToRecover > 0) {
+            const newEnergy = Math.min(
+              context.repair.maxEnergy,
+              context.repair.energy + energyToRecover,
+            );
+
+            return {
+              ...context.repair,
+              energy: newEnergy,
+              lastEnergyRecovery: now,
+            };
+          }
+        }
+        return context.repair;
+      },
+      logs: ({ context, event }) => {
+        if (event.type === "RECOVER_ENERGY") {
+          const now = Date.now();
+          const timeSinceLastRecovery = now - context.repair.lastEnergyRecovery;
+          const minutesPassed = timeSinceLastRecovery / (1000 * 60);
+
+          const energyToRecover =
+            event.amount ||
+            Math.floor(minutesPassed * context.repair.energyRecoveryRate);
+
+          if (energyToRecover > 0) {
+            const newEnergy = Math.min(
+              context.repair.maxEnergy,
+              context.repair.energy + energyToRecover,
+            );
+
+            return [
+              ...context.logs,
+              {
+                id: `energy-recovery-${Date.now()}`,
+                timestamp: now,
+                level: "INFO" as const,
+                system: "power",
+                message: `Energy recovered: +${energyToRecover} energy (${newEnergy}/${context.repair.maxEnergy})`,
+              },
+            ];
+          }
+        }
+        return context.logs;
+      },
+    }),
   },
 }).createMachine({
   id: "gameOrchestrator",
@@ -724,6 +1014,15 @@ export const gameMachine = setup({
     },
     UPDATE_SYSTEM_INTEGRITY: {
       actions: "updateSystemIntegrity",
+    },
+    START_REPAIR: {
+      actions: "startRepair",
+    },
+    COMPLETE_REPAIR: {
+      actions: "completeRepair",
+    },
+    RECOVER_ENERGY: {
+      actions: "recoverEnergy",
     },
   },
 });

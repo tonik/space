@@ -5,7 +5,6 @@ import { SystemCard } from "@/components/ui/system-card";
 import {
   Zap,
   Activity,
-  Globe,
   Radio,
   Shield,
   Fuel,
@@ -16,10 +15,13 @@ import {
 import { AIChat } from "./components/AIChat";
 import { MissionStatus } from "./components/MissionStatus";
 import { SystemDiagnostics } from "./components/SystemDiagnostics";
+import { Card } from "@/components/ui/card";
+import { ProgressBar } from "@/components/ui/progress-bar";
+import { Battery } from "lucide-react";
 
 export default function DashboardView() {
-  const { systems, diagnostics, mission } = useDashboardState();
-  const { send } = useGame();
+  const { systems, diagnostics, mission, repair } = useDashboardState();
+  const { send, startRepair, recoverEnergy } = useGame();
 
   // Auto-update diagnostics every 2 seconds
   useEffect(() => {
@@ -30,6 +32,29 @@ export default function DashboardView() {
     return () => clearInterval(interval);
   }, [send]);
 
+  // Auto-complete repairs when they finish
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+      Object.entries(repair.activeRepairs).forEach(([, repairData]) => {
+        if (now - repairData.startTime >= repairData.duration) {
+          send({ type: "COMPLETE_REPAIR", systemName: repairData.systemName });
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [repair.activeRepairs, send]);
+
+  // Auto-recover energy every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      recoverEnergy();
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, [recoverEnergy]);
+
   // Calculate time to Earth return (14.2 hours from game description)
   const timeToEarth = "14.2 HOURS";
   const aiUpdateDue = mission.aiUpdateScheduled ? "TOMORROW" : "N/A";
@@ -38,8 +63,7 @@ export default function DashboardView() {
 
   return (
     <div className="flex h-full flex-col gap-6">
-      {/* Top row - Mainframe Diagnostics and Mission Status */}
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-4 gap-6">
         <div className="col-span-2">
           <SystemDiagnostics
             cpuLoad={diagnostics.cpuLoad}
@@ -61,16 +85,58 @@ export default function DashboardView() {
             fleetStatus={mission.fleetStatus}
           />
         </div>
+        <div className="col-span-1">
+          <Card className="border-border/30 bg-background p-6">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-primary text-sm font-bold">
+                REPAIR RESOURCES
+              </h3>
+              <Battery className="text-primary h-4 w-4" />
+            </div>
+            <div className="space-y-3 font-mono text-xs">
+              <div>
+                <div className="mb-1 flex justify-between">
+                  <span className="text-muted-foreground">Energy</span>
+                  <span className="text-primary">
+                    {repair.energy}/{repair.maxEnergy}
+                  </span>
+                </div>
+                <ProgressBar
+                  value={(repair.energy / repair.maxEnergy) * 100}
+                  className="h-2"
+                />
+                <div className="text-muted-foreground mt-1 text-xs">
+                  Recovery: {repair.energyRecoveryRate}/min
+                </div>
+              </div>
+              <div>
+                <div className="mb-1 flex justify-between">
+                  <span className="text-muted-foreground">Materials</span>
+                  <span className="text-primary">{repair.materials}%</span>
+                </div>
+                <ProgressBar value={repair.materials} className="h-2" />
+              </div>
+              <div className="border-border/20 border-t pt-2">
+                <div className="text-muted-foreground">
+                  Active Repairs: {Object.keys(repair.activeRepairs).length}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
 
       {/* Bottom section - System cards and AI Chat */}
-      <div className="grid flex-1 grid-cols-3 gap-6">
+      <div className="grid flex-1 grid-cols-3 gap-6 pb-6">
         <div className="col-span-2 grid grid-cols-2 gap-6">
           <SystemCard
             title="AI CORE SYSTEM"
             icon={<Brain className="h-4 w-4" />}
             metrics={systems.aiCore.metrics}
             status={systems.aiCore}
+            systemName="aiCore"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -78,6 +144,9 @@ export default function DashboardView() {
             icon={<Radio className="h-4 w-4" />}
             metrics={systems.communications.metrics}
             status={systems.communications}
+            systemName="communications"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -85,6 +154,9 @@ export default function DashboardView() {
             icon={<Rocket className="h-4 w-4" />}
             metrics={systems.weapons.metrics}
             status={systems.weapons}
+            systemName="weapons"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -92,6 +164,9 @@ export default function DashboardView() {
             icon={<Zap className="h-4 w-4" />}
             metrics={systems.power.metrics}
             status={systems.power}
+            systemName="power"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -99,6 +174,9 @@ export default function DashboardView() {
             icon={<Activity className="h-4 w-4" />}
             metrics={systems.lifeSupport.metrics}
             status={systems.lifeSupport}
+            systemName="lifeSupport"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -106,6 +184,9 @@ export default function DashboardView() {
             icon={<Shield className="h-4 w-4" />}
             metrics={systems.defensive.metrics}
             status={systems.defensive}
+            systemName="defensive"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -113,6 +194,9 @@ export default function DashboardView() {
             icon={<Fuel className="h-4 w-4" />}
             metrics={systems.propulsion.metrics}
             status={systems.propulsion}
+            systemName="propulsion"
+            onRepair={startRepair}
+            repairState={repair}
           />
 
           <SystemCard
@@ -120,6 +204,9 @@ export default function DashboardView() {
             icon={<Database className="h-4 w-4" />}
             metrics={systems.dataSystems.metrics}
             status={systems.dataSystems}
+            systemName="dataSystems"
+            onRepair={startRepair}
+            repairState={repair}
           />
         </div>
 

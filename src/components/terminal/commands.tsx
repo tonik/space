@@ -52,6 +52,13 @@ export const getCommands = (
   interactiveCallback?: InteractiveCallback,
   commandCounts?: Record<string, number>,
   mission?: GameContext["mission"],
+  repairState?: GameContext["repair"],
+  startRepair?: (
+    systemName: keyof GameContext["systems"],
+    repairType: "quick" | "standard" | "thorough",
+  ) => void,
+  completeRepair?: (systemName: keyof GameContext["systems"]) => void,
+  recoverEnergy?: (amount?: number) => void,
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -120,6 +127,9 @@ export const getCommands = (
         "  setname   - Set your commander name (usage: setname <name> or just 'setname')",
         "  whoami    - Show current user",
         "  override  - Emergency system overrides",
+        "  repair    - Repair ship systems (usage: repair <system> <type>)",
+        "  status    - Show repair resources and active repairs",
+        "  recharge  - Manually recover energy",
       ];
     }
     case "setname":
@@ -283,6 +293,100 @@ export const getCommands = (
         "",
         "*** PROCEED WITH EXTREME CAUTION ***",
       ]);
+    }
+    case "repair": {
+      const repairArgs = command.split(" ");
+      if (repairArgs.length < 3) {
+        return [
+          "Usage: repair <system> <type>",
+          "Systems: communications, navigation, lifeSupport, power, weapons, aiCore, defensive, propulsion, dataSystems",
+          "Types: quick, standard, thorough",
+          "Example: repair power quick",
+        ];
+      }
+
+      const systemName = repairArgs[1] as keyof GameContext["systems"];
+      const repairType = repairArgs[2] as "quick" | "standard" | "thorough";
+
+      const validSystems: (keyof GameContext["systems"])[] = [
+        "communications",
+        "navigation",
+        "lifeSupport",
+        "power",
+        "weapons",
+        "aiCore",
+        "defensive",
+        "propulsion",
+        "dataSystems",
+      ];
+      const validTypes = ["quick", "standard", "thorough"];
+
+      if (!validSystems.includes(systemName)) {
+        return [
+          `Error: Invalid system "${systemName}". Valid systems: ${validSystems.join(", ")}`,
+        ];
+      }
+
+      if (!validTypes.includes(repairType)) {
+        return [
+          `Error: Invalid repair type "${repairType}". Valid types: ${validTypes.join(", ")}`,
+        ];
+      }
+
+      if (startRepair) {
+        startRepair(systemName, repairType);
+        return [
+          `Starting ${repairType} repair on ${systemName}...`,
+          "Repair initiated. Use 'status' to monitor progress.",
+        ];
+      }
+
+      return ["Error: Repair system not available."];
+    }
+    case "status": {
+      if (!repairState) {
+        return ["Error: Repair status not available."];
+      }
+
+      const activeRepairs = Object.values(repairState.activeRepairs);
+      const repairInfo = activeRepairs
+        .map((repair) => {
+          const elapsed = Date.now() - repair.startTime;
+          const progress = Math.min(100, (elapsed / repair.duration) * 100);
+          const remaining = Math.max(0, repair.duration - elapsed);
+
+          return [
+            `  ${repair.systemName}: ${repair.repairType} repair`,
+            `    Progress: ${Math.round(progress)}%`,
+            `    Time remaining: ${Math.round(remaining / 1000)}s`,
+          ].join("\n");
+        })
+        .join("\n");
+
+      return [
+        "*** REPAIR SYSTEM STATUS ***",
+        "",
+        `Energy: ${repairState.energy}%`,
+        `Materials: ${repairState.materials}%`,
+        "",
+        "Active Repairs:",
+        activeRepairs.length === 0 ? "  None" : repairInfo,
+        "",
+        "Repair Types:",
+        "  quick    - 5s, +15 integrity, 10 energy, 5 materials",
+        "  standard - 15s, +35 integrity, 20 energy, 15 materials",
+        "  thorough - 30s, +60 integrity, 35 energy, 25 materials",
+      ];
+    }
+    case "recharge": {
+      if (recoverEnergy) {
+        recoverEnergy();
+        return [
+          "Initiating energy recovery sequence...",
+          "Energy recovery completed.",
+        ];
+      }
+      return ["Error: Energy recovery system not available."];
     }
     default:
       return colorizeMessages([

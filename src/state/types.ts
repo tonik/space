@@ -101,3 +101,11 @@ export interface MessageView {
   messageId: string;
   openedAt: number;
 }
+
+export interface Repair {
+  systemName: string;
+  repairType: "quick" | "standard" | "thorough";
+  startTime: number;
+  duration: number;
+  progress: number;
+}

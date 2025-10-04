@@ -55,6 +55,28 @@ export const useGame = () => {
         integrity,
       }),
 
+    startRepair: (
+      systemName: keyof GameContext["systems"],
+      repairType: "quick" | "standard" | "thorough",
+    ) =>
+      gameActor.send({
+        type: "START_REPAIR",
+        systemName,
+        repairType,
+      }),
+
+    completeRepair: (systemName: keyof GameContext["systems"]) =>
+      gameActor.send({
+        type: "COMPLETE_REPAIR",
+        systemName,
+      }),
+
+    recoverEnergy: (amount?: number) =>
+      gameActor.send({
+        type: "RECOVER_ENERGY",
+        amount,
+      }),
+
     send: gameActor.send,
   };
 };

@@ -6,5 +6,6 @@ export const useTerminalState = () => {
     commanderName: state.context.commanderName,
     commandCounts: state.context.commandCounts,
     mission: state.context.mission,
+    repair: state.context.repair,
   }));
 };

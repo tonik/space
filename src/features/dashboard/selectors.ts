@@ -6,5 +6,6 @@ export const useDashboardState = () => {
     systems: state.context.systems,
     diagnostics: state.context.diagnostics,
     mission: state.context.mission,
+    repair: state.context.repair,
   }));
 };
