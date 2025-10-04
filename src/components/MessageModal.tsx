@@ -30,45 +30,11 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
   const getPriorityIcon = (priority: Message["priority"]) => {
     switch (priority) {
       case "critical":
-        return <AlertTriangle className="h-4 w-4 text-red-500" />;
+        return <AlertTriangle className="text-primary h-4 w-4" />;
       case "high":
-        return <AlertCircle className="h-4 w-4 text-orange-500" />;
-      case "normal":
-        return <MessageSquare className="h-4 w-4 text-blue-500" />;
-      case "low":
-        return <MessageSquare className="h-4 w-4 text-gray-500" />;
+        return <AlertCircle className="text-primary h-4 w-4" />;
       default:
-        return <MessageSquare className="h-4 w-4 text-blue-500" />;
-    }
-  };
-
-  const getPriorityColor = (priority: Message["priority"]) => {
-    switch (priority) {
-      case "critical":
-        return "destructive";
-      case "high":
-        return "secondary";
-      case "normal":
-        return "default";
-      case "low":
-        return "outline";
-      default:
-        return "default";
-    }
-  };
-
-  const getTypeColor = (type: Message["type"]) => {
-    switch (type) {
-      case "incoming":
-        return "bg-green-500/10 text-green-700 border-green-500/20";
-      case "outgoing":
-        return "bg-blue-500/10 text-blue-700 border-blue-500/20";
-      case "system":
-        return "bg-purple-500/10 text-purple-700 border-purple-500/20";
-      case "ai":
-        return "bg-orange-500/10 text-orange-700 border-orange-500/20";
-      default:
-        return "bg-gray-500/10 text-gray-700 border-gray-500/20";
+        return <MessageSquare className="text-primary h-4 w-4" />;
     }
   };
 
@@ -117,7 +83,7 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
                 <h4 className="text-muted-foreground text-sm font-medium">
                   Type
                 </h4>
-                <Badge className={getTypeColor(message.type)}>
+                <Badge className="bg-primary/10 text-primary border-primary/20">
                   {message.type.toUpperCase()}
                 </Badge>
               </div>
@@ -128,7 +94,10 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
                 <h4 className="text-muted-foreground text-sm font-medium">
                   Priority
                 </h4>
-                <Badge variant={getPriorityColor(message.priority)}>
+                <Badge
+                  variant="outline"
+                  className="text-primary border-primary"
+                >
                   {message.priority.toUpperCase()}
                 </Badge>
               </div>
@@ -143,16 +112,13 @@ export function MessageModal({ message, isOpen, onClose }: MessageModalProps) {
               </h4>
               <div className="flex gap-2">
                 {message.encrypted && (
-                  <Badge variant="outline" className="flex items-center gap-1">
+                  <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
                     <Lock className="h-3 w-3" />
                     Encrypted
                   </Badge>
                 )}
                 {message.corrupted && (
-                  <Badge
-                    variant="destructive"
-                    className="flex items-center gap-1"
-                  >
+                  <Badge className="bg-primary/10 text-primary border-primary/20 flex items-center gap-1">
                     <Shield className="h-3 w-3" />
                     Corrupted
                   </Badge>
