@@ -1,22 +1,136 @@
+import { useEffect } from "react";
 import { useGame } from "@/state/useGame";
-import { useNotificationsStore } from "@/features/notifications/store";
-import { Card } from "@/components/ui/card";
 import { SystemCard } from "@/components/ui/system-card";
-import { Zap, Activity, Globe, AlertTriangle } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
+import {
+  Zap,
+  Activity,
+  Globe,
+  Radio,
+  Shield,
+  Fuel,
+  Brain,
+  Database,
+  Rocket,
+} from "lucide-react";
+import { SystemAlerts } from "./components/SystemAlerts";
+import { MissionStatus } from "./components/MissionStatus";
+import { SystemDiagnostics } from "./components/SystemDiagnostics";
 
 export default function DashboardView() {
-  const { logs, systems } = useGame();
+  const { logs, systems, context, send } = useGame();
 
-  const recentAlerts = logs.filter(
-    (log) => log.level === "WARN" || log.level === "ERROR",
-  );
+  // Auto-update diagnostics every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      send({ type: "UPDATE_DIAGNOSTICS" });
+    }, 2000);
 
-  const { trigger } = useNotificationsStore();
+    return () => clearInterval(interval);
+  }, [send]);
+
+  // Calculate time to Earth return (14.2 hours from game description)
+  const timeToEarth = "14.2 HOURS";
+  const aiUpdateDue = context.mission.aiUpdateScheduled ? "TOMORROW" : "N/A";
+  const missionTime = `${context.mission.daysInSpace} DAYS`;
+  const uptime = `${context.mission.daysInSpace} DAYS`;
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <SystemAlerts logs={logs} />
+
+      <MissionStatus
+        shiftStatus={context.mission.shiftStatus}
+        returnToEarth={timeToEarth}
+        aiUpdateDue={aiUpdateDue}
+        missionTime={missionTime}
+        fleetStatus={context.mission.fleetStatus}
+      />
+
+      <SystemDiagnostics
+        cpuLoad={context.diagnostics.cpuLoad}
+        memoryUsage={context.diagnostics.memoryUsage}
+        networkLatency={context.diagnostics.networkLatency}
+        uptime={uptime}
+        aiResponseTime={context.diagnostics.aiResponseTime}
+        systemIntegrity={context.systemIntegrity}
+        activeProcesses={context.diagnostics.activeProcesses}
+        errorRate={context.diagnostics.errorRate}
+      />
+
+      <SystemCard
+        title="AI CORE SYSTEM"
+        icon={<Brain className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "AI Status",
+            value: "OPERATIONAL",
+          },
+          {
+            label: "Processing Load",
+            value: "73%",
+            progress: 73,
+          },
+          {
+            label: "Neural Network",
+            value: "STABLE",
+          },
+          {
+            label: "Last Update",
+            value: "24H AGO",
+          },
+        ]}
+        status={systems.ai || "OPERATIONAL"}
+      />
+
+      <SystemCard
+        title="COMMUNICATIONS"
+        icon={<Radio className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "Earth Uplink",
+            value: "ACTIVE",
+          },
+          {
+            label: "Signal Strength",
+            value: "92%",
+            progress: 92,
+          },
+          {
+            label: "Last Contact",
+            value: "2.3 HOURS",
+          },
+          {
+            label: "Encryption",
+            value: "AES-512",
+          },
+        ]}
+        status={systems.communications || "OPERATIONAL"}
+      />
+
+      <SystemCard
+        title="WEAPON SYSTEMS"
+        icon={<Rocket className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "Nuclear Arsenal",
+            value: "READY",
+          },
+          {
+            label: "Launch Status",
+            value: "SAFE",
+          },
+          {
+            label: "Auto-Fire",
+            value: "DISABLED",
+          },
+          {
+            label: "24H Countdown",
+            value: "INACTIVE",
+          },
+        ]}
+        status={systems.weapons || "OPERATIONAL"}
+      />
+
       <SystemCard
         title="POWER SYSTEMS"
         icon={<Zap className="h-4 w-4" />}
@@ -38,85 +152,70 @@ export default function DashboardView() {
         status={systems.navigation}
       />
 
-      <Card className="border-border/30 bg-background col-span-full p-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-primary text-sm font-bold">SYSTEM ALERTS</h3>
-          <AlertTriangle className="text-primary h-4 w-4" />
-        </div>
-        <ScrollArea className="h-[200px] font-mono text-xs">
-          <div className="space-y-1">
-            {recentAlerts.length === 0 ? (
-              <div className="text-muted-foreground/40 py-8 text-center">
-                No system logs available
-              </div>
-            ) : (
-              recentAlerts.map((log, i) => (
-                <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                  <span className="text-muted-foreground">[{log.time}]</span>
-                  <span
-                    className={
-                      log.level === "WARN"
-                        ? "text-yellow-500"
-                        : log.level === "ERROR"
-                          ? "text-red-400"
-                          : "text-primary"
-                    }
-                  >
-                    [{log.level}]
-                  </span>
-                  <span className="text-muted-foreground/80">
-                    {log.message}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
-        </ScrollArea>
-      </Card>
-      <Card className="border-border/30 bg-background flex flex-col gap-2 p-4">
-        <Button
-          onClick={() =>
-            trigger(
-              {
-                title: "New message received!",
-              },
-              "messaging",
-            )
-          }
-        >
-          Trigger simple notification
-        </Button>
-        <Button
-          onClick={() =>
-            trigger(
-              {
-                title: "New message received!",
-                description: "This is a description of the notification.",
-              },
-              "messaging",
-            )
-          }
-        >
-          Trigger notification with description
-        </Button>
-        <Button
-          onClick={() =>
-            trigger(
-              {
-                title: "New message received!",
-                description: "This is a description of the notification.",
-                action: {
-                  label: "Click me!",
-                  onClick: () => console.log("View message"),
-                },
-              },
-              "messaging",
-            )
-          }
-        >
-          Trigger notification with action
-        </Button>
-      </Card>
+      <SystemCard
+        title="DEFENSIVE SYSTEMS"
+        icon={<Shield className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "Shield Status",
+            value: "ONLINE",
+          },
+          {
+            label: "Integrity",
+            value: "96%",
+            progress: 96,
+          },
+          {
+            label: "Counter Measures",
+            value: "READY",
+          },
+        ]}
+        status={systems.defense || "OPERATIONAL"}
+      />
+
+      <SystemCard
+        title="PROPULSION"
+        icon={<Fuel className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "Main Engine",
+            value: "NOMINAL",
+          },
+          {
+            label: "Fuel Level",
+            value: "84%",
+            progress: 84,
+          },
+          {
+            label: "Thrust Output",
+            value: "80%",
+            progress: 80,
+          },
+        ]}
+        status={systems.propulsion || "OPERATIONAL"}
+      />
+
+      <SystemCard
+        title="DATA SYSTEMS"
+        icon={<Database className="h-4 w-4" />}
+        metrics={[
+          {
+            label: "Core Memory",
+            value: "67%",
+            progress: 67,
+          },
+          {
+            label: "Log Storage",
+            value: "45%",
+            progress: 45,
+          },
+          {
+            label: "Backup Status",
+            value: "SYNCED",
+          },
+        ]}
+        status={systems.data || "OPERATIONAL"}
+      />
     </div>
   );
 }
