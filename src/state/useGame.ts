@@ -119,6 +119,7 @@ export const useGame = () => {
       gameActor.send({ type: "START_GAME", commanderName }),
     changeView: (view: GameContext["activeView"]) =>
       gameActor.send({ type: "CHANGE_VIEW", view }),
+    enterMainApp: () => gameActor.send({ type: "ENTER_MAIN_APP" }),
 
     playerScan: (system: string) =>
       gameActor.send({ type: "PLAYER_SCAN", system }),

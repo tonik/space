@@ -34,7 +34,7 @@ export interface GameContext {
   commanderName: string;
   gameStartTime: number;
   activeView: "dashboard" | "messaging" | "terminal" | "logs" | "captains-log";
-
+  showWelcomeScreen: boolean;
   aiAwareness: number;
   timePressure: number;
   systemIntegrity: number;
@@ -95,6 +95,7 @@ export interface GameContext {
 export type GameEvent =
   | { type: "START_GAME"; commanderName: string }
   | { type: "CHANGE_VIEW"; view: GameContext["activeView"] }
+  | { type: "ENTER_MAIN_APP" }
   | { type: "PLAYER_SCAN"; system: string }
   | { type: "PLAYER_MESSAGE"; recipient: string; content: string }
   | { type: "PLAYER_COMMAND"; command: string }
@@ -128,6 +129,7 @@ const initialContext: GameContext = {
   commanderName: "Commander",
   gameStartTime: Date.now(),
   activeView: "dashboard",
+  showWelcomeScreen: true,
 
   aiAwareness: 0,
   timePressure: 0,
@@ -787,6 +789,11 @@ export const gameMachine = setup({
     CHANGE_VIEW: {
       actions: assign({
         activeView: ({ event }) => event.view,
+      }),
+    },
+    ENTER_MAIN_APP: {
+      actions: assign({
+        showWelcomeScreen: false,
       }),
     },
     SYSTEM_DEGRADE: {
