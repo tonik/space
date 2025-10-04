@@ -44,6 +44,11 @@
   --shadow-spread: 0px;
   --shadow-opacity: 0.5;
   --shadow-color: #00ff41;
+
+  /* Terminal-specific variables */
+  --terminal-cursor: #00ff41;
+  --terminal-cursor-glow: 0 0 4px #00ff41, 0 0 8px #00ff41;
+  --terminal-text-glow: 0 0 2px #00ff41;
 }
 
 @theme inline {
@@ -152,4 +157,32 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Terminal scan line effect */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.terminal-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--primary),
+    transparent
+  );
+  opacity: 0.3;
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
 }

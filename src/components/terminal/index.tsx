@@ -157,14 +157,22 @@ export function Terminal({ className = "" }: TerminalProps) {
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className} h-[500px] overflow-auto border border-[#00ff41] bg-black font-mono text-sm leading-[1.2] text-[#00ff41]`}
+      className={`terminal-container ${className} border-primary bg-background text-primary h-[500px] overflow-auto border font-mono text-sm leading-[1.2]`}
+      style={{
+        textShadow: "0 0 2px var(--primary)",
+        fontFamily: '"Space Mono", "Courier New", monospace',
+        fontWeight: 500,
+        boxShadow:
+          "0 0 20px oklch(0.832 0.189 142.5 / 0.1), inset 0 0 40px oklch(0.832 0.189 142.5 / 0.05)",
+        position: "relative",
+      }}
     >
       <div className="space-y-1 p-4">
         {lines.map((line, index) => (
           <div
             key={index}
             className={
-              line.type === "text" ? "whitespace-pre-wrap text-[#00ff41]" : ""
+              line.type === "text" ? "text-primary whitespace-pre-wrap" : ""
             }
           >
             {line.type === "text" ? line.content : line.content}
@@ -174,7 +182,7 @@ export function Terminal({ className = "" }: TerminalProps) {
         {/* Current input line with cursor */}
         <div className="flex items-center">
           {!isPrinting && !waitingForInput && (
-            <span className="text-[#00ff41]">&gt;&nbsp;</span>
+            <span className="text-primary">&gt;&nbsp;</span>
           )}
           <div className="relative flex flex-1 items-center">
             <input
@@ -184,7 +192,7 @@ export function Terminal({ className = "" }: TerminalProps) {
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
               readOnly={isPrinting}
-              className={`bg-transparent font-mono text-[#00ff41] caret-transparent outline-none ${
+              className={`text-primary bg-transparent font-mono caret-transparent outline-none ${
                 isPrinting ? "opacity-50" : ""
               }`}
               style={{
@@ -196,11 +204,12 @@ export function Terminal({ className = "" }: TerminalProps) {
             />
             {cursorVisible && !isPrinting && (
               <span
-                className="absolute text-[#00ff41]"
+                className="text-primary absolute animate-pulse"
                 style={{
                   fontSize: "16px",
                   fontWeight: "bold",
                   left: `${currentInput.length * 8.4}px`,
+                  textShadow: "0 0 4px var(--primary), 0 0 8px var(--primary)",
                 }}
               >
                 ▊
