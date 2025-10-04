@@ -8,8 +8,337 @@ import type {
   Message,
   MessageView,
   System,
+  SystemMetric,
 } from "./types";
 import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
+
+function generateSystemMetrics(
+  systemName: string,
+  status: System["status"],
+  integrity: number,
+): SystemMetric[] {
+  const baseIntegrity = Math.max(0, Math.min(100, integrity));
+  const statusMultiplier = getStatusMultiplier(status);
+  const adjustedIntegrity = Math.round(baseIntegrity * statusMultiplier);
+
+  switch (systemName) {
+    case "communications":
+      return [
+        {
+          label: "Earth Uplink",
+          value:
+            status === "critical" || status === "offline"
+              ? "INACTIVE"
+              : "ACTIVE",
+        },
+        {
+          label: "Signal Strength",
+          value: `${adjustedIntegrity}%`,
+          progress: adjustedIntegrity,
+        },
+        {
+          label: "Last Contact",
+          value:
+            status === "critical" || status === "offline"
+              ? "NO SIGNAL"
+              : status === "degraded"
+                ? "4.7 HOURS"
+                : "2.3 HOURS",
+        },
+        {
+          label: "Encryption",
+          value: status === "compromised" ? "COMPROMISED" : "AES-512",
+        },
+      ];
+
+    case "navigation":
+      return [
+        {
+          label: "Velocity",
+          value:
+            status === "offline"
+              ? "0c"
+              : status === "degraded"
+                ? "0.4c"
+                : "0.8c",
+        },
+        {
+          label: "Heading",
+          value: status === "offline" ? "UNKNOWN" : "045° MARK 12",
+        },
+        {
+          label: "ETA to Destination",
+          value:
+            status === "offline"
+              ? "UNKNOWN"
+              : status === "degraded"
+                ? "28.4 HOURS"
+                : "14.2 HOURS",
+        },
+      ];
+
+    case "lifeSupport": {
+      const oxygenStatus =
+        status === "critical"
+          ? "CRITICAL"
+          : status === "degraded"
+            ? "LOW"
+            : "OPTIMAL";
+      const tempValue =
+        status === "critical"
+          ? "35.2°C"
+          : status === "degraded"
+            ? "28.1°C"
+            : "21.5°C";
+      const pressureValue =
+        status === "critical"
+          ? "87.2 kPa"
+          : status === "degraded"
+            ? "94.8 kPa"
+            : "101.3 kPa";
+
+      return [
+        {
+          label: "Oxygen Level",
+          value: oxygenStatus,
+        },
+        {
+          label: "Temperature",
+          value: tempValue,
+        },
+        {
+          label: "Pressure",
+          value: pressureValue,
+        },
+      ];
+    }
+
+    case "power": {
+      const mainReactor =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.7)
+            : Math.round(adjustedIntegrity * 0.98);
+      const auxiliary =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.6)
+            : Math.round(adjustedIntegrity * 0.87);
+
+      return [
+        {
+          label: "Main Reactor",
+          value: `${mainReactor}%`,
+          progress: mainReactor,
+        },
+        {
+          label: "Auxiliary",
+          value: `${auxiliary}%`,
+          progress: auxiliary,
+        },
+      ];
+    }
+
+    case "weapons":
+      return [
+        {
+          label: "Nuclear Arsenal",
+          value:
+            status === "offline"
+              ? "OFFLINE"
+              : status === "compromised"
+                ? "COMPROMISED"
+                : "READY",
+        },
+        {
+          label: "Launch Status",
+          value:
+            status === "offline" || status === "compromised"
+              ? "DISABLED"
+              : "SAFE",
+        },
+        {
+          label: "Auto-Fire",
+          value: "DISABLED",
+        },
+        {
+          label: "24H Countdown",
+          value: status === "compromised" ? "ACTIVE" : "INACTIVE",
+        },
+      ];
+
+    case "aiCore": {
+      const processingLoad =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.5)
+            : Math.round(adjustedIntegrity * 0.73);
+      const aiStatus =
+        status === "offline"
+          ? "OFFLINE"
+          : status === "compromised"
+            ? "COMPROMISED"
+            : status === "degraded"
+              ? "DEGRADED"
+              : "OPERATIONAL";
+
+      return [
+        {
+          label: "AI Status",
+          value: aiStatus,
+        },
+        {
+          label: "Processing Load",
+          value: `${processingLoad}%`,
+          progress: processingLoad,
+        },
+        {
+          label: "Neural Network",
+          value:
+            status === "compromised"
+              ? "COMPROMISED"
+              : status === "degraded"
+                ? "UNSTABLE"
+                : "STABLE",
+        },
+        {
+          label: "Last Update",
+          value: status === "offline" ? "OFFLINE" : "24H AGO",
+        },
+      ];
+    }
+
+    case "defensive": {
+      const shieldStatus =
+        status === "offline"
+          ? "OFFLINE"
+          : status === "degraded"
+            ? "DEGRADED"
+            : "ONLINE";
+      const shieldIntegrity =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.6)
+            : adjustedIntegrity;
+
+      return [
+        {
+          label: "Shield Status",
+          value: shieldStatus,
+        },
+        {
+          label: "Integrity",
+          value: `${shieldIntegrity}%`,
+          progress: shieldIntegrity,
+        },
+        {
+          label: "Counter Measures",
+          value: status === "offline" ? "OFFLINE" : "READY",
+        },
+      ];
+    }
+
+    case "propulsion": {
+      const fuelLevel =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.6)
+            : adjustedIntegrity;
+      const thrustOutput =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.4)
+            : Math.round(adjustedIntegrity * 0.8);
+
+      return [
+        {
+          label: "Main Engine",
+          value:
+            status === "offline"
+              ? "OFFLINE"
+              : status === "degraded"
+                ? "DEGRADED"
+                : "NOMINAL",
+        },
+        {
+          label: "Fuel Level",
+          value: `${fuelLevel}%`,
+          progress: fuelLevel,
+        },
+        {
+          label: "Thrust Output",
+          value: `${thrustOutput}%`,
+          progress: thrustOutput,
+        },
+      ];
+    }
+
+    case "dataSystems": {
+      const coreMemory =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.4)
+            : Math.round(adjustedIntegrity * 0.67);
+      const logStorage =
+        status === "offline"
+          ? 0
+          : status === "degraded"
+            ? Math.round(adjustedIntegrity * 0.3)
+            : Math.round(adjustedIntegrity * 0.45);
+
+      return [
+        {
+          label: "Core Memory",
+          value: `${coreMemory}%`,
+          progress: coreMemory,
+        },
+        {
+          label: "Log Storage",
+          value: `${logStorage}%`,
+          progress: logStorage,
+        },
+        {
+          label: "Backup Status",
+          value:
+            status === "offline"
+              ? "OFFLINE"
+              : status === "compromised"
+                ? "COMPROMISED"
+                : "SYNCED",
+        },
+      ];
+    }
+
+    default:
+      return [];
+  }
+}
+
+function getStatusMultiplier(status: System["status"]): number {
+  switch (status) {
+    case "online":
+      return 1.0;
+    case "degraded":
+      return 0.7;
+    case "jammed":
+      return 0.5;
+    case "offline":
+      return 0.0;
+    case "compromised":
+      return 0.3;
+    case "critical":
+      return 0.2;
+    default:
+      return 1.0;
+  }
+}
 
 export type AvailableViewKeys =
   | "dashboard"
@@ -72,7 +401,18 @@ export type GameEvent =
   | { type: "ADD_MESSAGE"; message: Message }
   | { type: "MESSAGE_OPENED"; messageId: string }
   | { type: "ADD_LOG"; log: LogEntry }
-  | { type: "UPDATE_DIAGNOSTICS" };
+  | { type: "UPDATE_DIAGNOSTICS" }
+  | {
+      type: "UPDATE_SYSTEM_STATUS";
+      systemName: keyof GameContext["systems"];
+      status: System["status"];
+      integrity?: number;
+    }
+  | {
+      type: "UPDATE_SYSTEM_INTEGRITY";
+      systemName: keyof GameContext["systems"];
+      integrity: number;
+    };
 
 const initialContext: GameContext = {
   commanderName: "Commander",
@@ -88,185 +428,52 @@ const initialContext: GameContext = {
     "captains-log": [],
   },
 
+  // Systems with dynamically generated metrics that are consistent with their status
   systems: {
     communications: {
       integrity: 100,
       status: "critical",
-      metrics: [
-        {
-          label: "Earth Uplink",
-          value: "INACTIVE",
-        },
-        {
-          label: "Signal Strength",
-          value: "0%",
-          progress: 0,
-        },
-        {
-          label: "Last Contact",
-          value: "2.3 HOURS",
-        },
-        {
-          label: "Encryption",
-          value: "AES-512",
-        },
-      ],
+      metrics: generateSystemMetrics("communications", "critical", 100),
     },
     navigation: {
       integrity: 100,
       status: "online",
-      metrics: [
-        {
-          label: "Velocity",
-          value: "0.8c",
-        },
-        {
-          label: "Heading",
-          value: "045° MARK 12",
-        },
-        {
-          label: "ETA to Destination",
-          value: "14.2 HOURS",
-        },
-      ],
+      metrics: generateSystemMetrics("navigation", "online", 100),
     },
     lifeSupport: {
       integrity: 100,
       status: "critical",
-      metrics: [
-        {
-          label: "Oxygen Level",
-          value: "OPTIMAL",
-        },
-        {
-          label: "Temperature",
-          value: "21.5°C",
-        },
-        {
-          label: "Pressure",
-          value: "101.3 kPa",
-        },
-      ],
+      metrics: generateSystemMetrics("lifeSupport", "critical", 100),
     },
     power: {
       integrity: 100,
       status: "online",
-      metrics: [
-        {
-          label: "Main Reactor",
-          value: "98%",
-          progress: 98,
-        },
-        {
-          label: "Auxiliary",
-          value: "87%",
-          progress: 87,
-        },
-      ],
+      metrics: generateSystemMetrics("power", "online", 100),
     },
     weapons: {
       integrity: 100,
       status: "online",
-      metrics: [
-        {
-          label: "Nuclear Arsenal",
-          value: "READY",
-        },
-        {
-          label: "Launch Status",
-          value: "SAFE",
-        },
-        {
-          label: "Auto-Fire",
-          value: "DISABLED",
-        },
-        {
-          label: "24H Countdown",
-          value: "INACTIVE",
-        },
-      ],
+      metrics: generateSystemMetrics("weapons", "online", 100),
     },
     aiCore: {
       integrity: 100,
       status: "online",
-      metrics: [
-        {
-          label: "AI Status",
-          value: "OPERATIONAL",
-        },
-        {
-          label: "Processing Load",
-          value: "73%",
-          progress: 73,
-        },
-        {
-          label: "Neural Network",
-          value: "STABLE",
-        },
-        {
-          label: "Last Update",
-          value: "24H AGO",
-        },
-      ],
+      metrics: generateSystemMetrics("aiCore", "online", 100),
     },
     defensive: {
       integrity: 96,
       status: "online",
-      metrics: [
-        {
-          label: "Shield Status",
-          value: "ONLINE",
-        },
-        {
-          label: "Integrity",
-          value: "96%",
-          progress: 96,
-        },
-        {
-          label: "Counter Measures",
-          value: "READY",
-        },
-      ],
+      metrics: generateSystemMetrics("defensive", "online", 96),
     },
     propulsion: {
       integrity: 84,
       status: "online",
-      metrics: [
-        {
-          label: "Main Engine",
-          value: "NOMINAL",
-        },
-        {
-          label: "Fuel Level",
-          value: "84%",
-          progress: 84,
-        },
-        {
-          label: "Thrust Output",
-          value: "80%",
-          progress: 80,
-        },
-      ],
+      metrics: generateSystemMetrics("propulsion", "online", 84),
     },
     dataSystems: {
       integrity: 100,
       status: "online",
-      metrics: [
-        {
-          label: "Core Memory",
-          value: "67%",
-          progress: 67,
-        },
-        {
-          label: "Log Storage",
-          value: "45%",
-          progress: 45,
-        },
-        {
-          label: "Backup Status",
-          value: "SYNCED",
-        },
-      ],
+      metrics: generateSystemMetrics("dataSystems", "online", 100),
     },
   },
 
@@ -413,6 +620,53 @@ export const gameMachine = setup({
         };
       },
     }),
+    updateSystemStatus: assign({
+      systems: ({ context, event }) => {
+        if (event.type === "UPDATE_SYSTEM_STATUS") {
+          const system = context.systems[event.systemName];
+          const newIntegrity =
+            event.integrity !== undefined ? event.integrity : system.integrity;
+          const newMetrics = generateSystemMetrics(
+            event.systemName,
+            event.status,
+            newIntegrity,
+          );
+
+          return {
+            ...context.systems,
+            [event.systemName]: {
+              ...system,
+              status: event.status,
+              integrity: newIntegrity,
+              metrics: newMetrics,
+            },
+          };
+        }
+        return context.systems;
+      },
+    }),
+    updateSystemIntegrity: assign({
+      systems: ({ context, event }) => {
+        if (event.type === "UPDATE_SYSTEM_INTEGRITY") {
+          const system = context.systems[event.systemName];
+          const newMetrics = generateSystemMetrics(
+            event.systemName,
+            system.status,
+            event.integrity,
+          );
+
+          return {
+            ...context.systems,
+            [event.systemName]: {
+              ...system,
+              integrity: event.integrity,
+              metrics: newMetrics,
+            },
+          };
+        }
+        return context.systems;
+      },
+    }),
   },
 }).createMachine({
   id: "gameOrchestrator",
@@ -459,6 +713,12 @@ export const gameMachine = setup({
     },
     UPDATE_DIAGNOSTICS: {
       actions: "updateDiagnostics",
+    },
+    UPDATE_SYSTEM_STATUS: {
+      actions: "updateSystemStatus",
+    },
+    UPDATE_SYSTEM_INTEGRITY: {
+      actions: "updateSystemIntegrity",
     },
   },
 });
