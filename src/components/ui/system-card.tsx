@@ -19,7 +19,7 @@ export function SystemCard({ title, icon, metrics, status, className = "" }: Sys
         <h3 className="font-bold">{title}</h3>
         {icon}
         {status.critical && (
-        <span className="border-destructive bg-destructive shadow-destructive absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full border" />
+          <span className="border-destructive bg-destructive shadow-destructive absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full border" />
         )}
       </div>
       <div className="space-y-2">
