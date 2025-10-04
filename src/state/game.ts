@@ -33,8 +33,15 @@ export interface MessageView {
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
-  activeView: "dashboard" | "messaging" | "terminal" | "logs" | "captains-log";
   showWelcomeScreen: boolean;
+  activeView:
+    | "dashboard"
+    | "messaging"
+    | "terminal"
+    | "logs"
+    | "captains-log"
+    | "arcade";
+
   aiAwareness: number;
   timePressure: number;
   systemIntegrity: number;
