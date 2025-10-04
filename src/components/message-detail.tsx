@@ -2,6 +2,7 @@ import type { Message } from "@/state/types";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 import {
   Shield,
   AlertTriangle,
@@ -68,7 +69,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
               <div className="flex items-center gap-2">
                 <Clock className="text-muted-foreground h-4 w-4" />
                 <span className="text-muted-foreground text-sm">
-                  {message.time}
+                  {format(message.timestamp, "hh:mm aa")}
                 </span>
               </div>
             </div>

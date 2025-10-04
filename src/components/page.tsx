@@ -1,18 +1,17 @@
 import { Terminal } from "@/components/terminal";
 import { SystemLogView } from "@/features/system-log/view";
 import { useGame } from "@/state/useGame";
+import { useNavigationState } from "@/components/navigation/selectors";
 import { MessagingView } from "@/features/messaging/view";
 import Navigation from "@/components/navigation";
 import TopNav from "@/components/top-nav";
 import DashboardView from "@/features/dashboard/view";
 import CaptainsLogView from "@/features/captains-log/view";
 // import { WelcomeScreen } from "@/components/welcome-screen";
-import ArcadeView from "@/features/arcade/view";
-import CipherGameView from "@/features/cipher-game/view";
 
 export default function SpaceshipOS() {
-  const { context, changeView } = useGame();
-  const activeView = context.activeView;
+  const { changeView } = useGame();
+  const { activeView } = useNavigationState();
 
   return (
     <div>
@@ -31,8 +30,6 @@ export default function SpaceshipOS() {
             {activeView === "terminal" && <Terminal />}
             {activeView === "logs" && <SystemLogView />}
             {activeView === "captains-log" && <CaptainsLogView />}
-            {activeView === "arcade" && <ArcadeView />}
-            {activeView === "cipher-game" && <CipherGameView />}
           </div>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { createActor } from "xstate";
-import { useSelector } from "@xstate/react";
 import { gameMachine, type GameContext } from "./game";
 import type { Message, LogEntry } from "./types";
 
@@ -18,112 +17,12 @@ gameActor.subscribe((state) => {
 });
 
 export const useGame = () => {
-  const context = useSelector(gameActor, (state) => state.context);
-  const activeView = useSelector(
-    gameActor,
-    (state) => state.context.activeView,
-  );
-
-  const messages = useSelector(gameActor, (state) => state.context.messages);
-  const messageViews = useSelector(
-    gameActor,
-    (state) => state.context.messageViews,
-  );
-
-  const logs = useSelector(gameActor, (state) => state.context.logs);
-  const captainsLog = useSelector(
-    gameActor,
-    (state) => state.context.captainsLog,
-  );
-  const systems = useSelector(gameActor, (state) => state.context.systems);
-  const commandCounts = useSelector(
-    gameActor,
-    (state) => state.context.commandCounts,
-  );
-
-  const openedMessageIds = useSelector(
-    gameActor,
-    (state) => new Set(state.context.messageViews.map((v) => v.messageId)),
-  );
-
-  const unreadCount = useSelector(gameActor, (state) => {
-    const openedIds = new Set(
-      state.context.messageViews.map((v) => v.messageId),
-    );
-    return state.context.messages.filter((msg) => !openedIds.has(msg.id))
-      .length;
-  });
-
-  const recentlyOpenedMessages = useSelector(gameActor, (state) => {
-    return state.context.messageViews
-      .sort((a, b) => b.openedAt - a.openedAt)
-      .slice(0, 10)
-      .map((v) => v.messageId);
-  });
-
   return {
-    context,
-    activeView,
-
-    messages,
-    messageViews,
-    openedMessageIds,
-    unreadCount,
-    recentlyOpenedMessages,
-
-    logs,
-    captainsLog,
-    systems,
-    commandCounts,
-
     startGame: (commanderName: string) =>
       gameActor.send({ type: "START_GAME", commanderName }),
     changeView: (view: GameContext["activeView"]) =>
       gameActor.send({ type: "CHANGE_VIEW", view }),
     enterMainApp: () => gameActor.send({ type: "ENTER_MAIN_APP" }),
-
-    playerScan: (system: string) =>
-      gameActor.send({ type: "PLAYER_SCAN", system }),
-    playerMessage: (recipient: string, content: string) =>
-      gameActor.send({ type: "PLAYER_MESSAGE", recipient, content }),
-    playerCommand: (command: string) =>
-      gameActor.send({ type: "PLAYER_COMMAND", command }),
-
-    findAnomaly: (anomaly: string) =>
-      gameActor.send({ type: "FIND_ANOMALY", anomaly }),
-    findClue: (clue: string) => gameActor.send({ type: "FIND_CLUE", clue }),
-
-    overrideAttempt: (system: string) =>
-      gameActor.send({ type: "OVERRIDE_ATTEMPT", system }),
-    overrideSuccess: (system: string) =>
-      gameActor.send({ type: "OVERRIDE_SUCCESS", system }),
-    overrideFailure: (system: string) =>
-      gameActor.send({ type: "OVERRIDE_FAILURE", system }),
-
-    negotiateStart: () => gameActor.send({ type: "NEGOTIATE_START" }),
-    negotiateSuccess: () => gameActor.send({ type: "NEGOTIATE_SUCCESS" }),
-    negotiateFailure: () => gameActor.send({ type: "NEGOTIATE_FAILURE" }),
-
-    systemDegrade: (system: string, amount: number) =>
-      gameActor.send({ type: "SYSTEM_DEGRADE", system, amount }),
-    systemRepair: (system: string, amount: number) =>
-      gameActor.send({ type: "SYSTEM_REPAIR", system, amount }),
-    systemCascade: () => gameActor.send({ type: "SYSTEM_CASCADE" }),
-
-    aiEscalate: () => gameActor.send({ type: "AI_ESCALATE" }),
-    aiCounterattack: () => gameActor.send({ type: "AI_COUNTERATTACK" }),
-    aiManipulation: () => gameActor.send({ type: "AI_MANIPULATION" }),
-
-    crisisTriggered: () => gameActor.send({ type: "CRISIS_TRIGGERED" }),
-    timerTick: () => gameActor.send({ type: "TIMER_TICK" }),
-
-    confrontAI: () => gameActor.send({ type: "CONFRONT_AI" }),
-    threatenSelfDestruct: () =>
-      gameActor.send({ type: "THREATEN_SELF_DESTRUCT" }),
-    activateSelfDestruct: () =>
-      gameActor.send({ type: "ACTIVATE_SELF_DESTRUCT" }),
-
-    endGame: (outcome: string) => gameActor.send({ type: "END_GAME", outcome }),
 
     addMessage: (message: Message) =>
       gameActor.send({ type: "ADD_MESSAGE", message }),
@@ -139,4 +38,4 @@ export const useGame = () => {
   };
 };
 
-export { gameActor, useSelector };
+export { gameActor };

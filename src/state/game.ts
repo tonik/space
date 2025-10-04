@@ -16,9 +16,7 @@ export type AvailableViewKeys =
   | "messaging"
   | "terminal"
   | "logs"
-  | "captains-log"
-  | "arcade"
-  | "cipher-game";
+  | "captains-log";
 
 export interface GameContext {
   commanderName: string;
@@ -70,30 +68,7 @@ export type GameEvent =
   | { type: "START_GAME"; commanderName: string }
   | { type: "CHANGE_VIEW"; view: GameContext["activeView"] }
   | { type: "ENTER_MAIN_APP" }
-  | { type: "PLAYER_SCAN"; system: string }
-  | { type: "PLAYER_MESSAGE"; recipient: string; content: string }
-  | { type: "PLAYER_COMMAND"; command: string }
   | { type: "COMMAND_EXECUTED"; command: string }
-  | { type: "FIND_ANOMALY"; anomaly: string }
-  | { type: "FIND_CLUE"; clue: string }
-  | { type: "OVERRIDE_ATTEMPT"; system: string }
-  | { type: "OVERRIDE_SUCCESS"; system: string }
-  | { type: "OVERRIDE_FAILURE"; system: string }
-  | { type: "NEGOTIATE_START" }
-  | { type: "NEGOTIATE_SUCCESS" }
-  | { type: "NEGOTIATE_FAILURE" }
-  | { type: "SYSTEM_DEGRADE"; system: string; amount: number }
-  | { type: "SYSTEM_REPAIR"; system: string; amount: number }
-  | { type: "SYSTEM_CASCADE" }
-  | { type: "AI_ESCALATE" }
-  | { type: "AI_COUNTERATTACK" }
-  | { type: "AI_MANIPULATION" }
-  | { type: "CRISIS_TRIGGERED" }
-  | { type: "TIMER_TICK" }
-  | { type: "CONFRONT_AI" }
-  | { type: "THREATEN_SELF_DESTRUCT" }
-  | { type: "ACTIVATE_SELF_DESTRUCT" }
-  | { type: "END_GAME"; outcome: string }
   | { type: "ADD_MESSAGE"; message: Message }
   | { type: "MESSAGE_OPENED"; messageId: string }
   | { type: "ADD_LOG"; log: LogEntry }
@@ -111,8 +86,6 @@ const initialContext: GameContext = {
     terminal: [],
     logs: [],
     "captains-log": [],
-    arcade: [],
-    "cipher-game": [],
   },
 
   systems: {

@@ -1,24 +1,25 @@
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGame } from "@/state/useGame";
+import { useSystemLogState } from "./selectors";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 
 export function SystemLogView() {
-  const game = useGame();
-  const logs = game.logs;
+  const { logs } = useSystemLogState();
+  const { addLog: addLogToState } = useGame();
 
   function formatTimestamp(timestamp: number) {
     return format(timestamp, "MM/dd/yy");
   }
 
-  const addLog = () => {
-    game.addLog({
-      timestamp: new Date().getTime(),
+  const handleAddLog = () => {
+    addLogToState({
+      timestamp: Date.now(),
       level: "INFO",
       message: "Sample log",
-      id: "",
-      system: "",
+      id: Date.now().toString(),
+      system: "SYSTEM",
     });
   };
 
@@ -29,7 +30,7 @@ export function SystemLogView() {
           SHIP SYSTEM LOGS
         </h3>
         <div className="flex gap-2">
-          <Button onClick={addLog} variant="outline" size="sm">
+          <Button onClick={handleAddLog} variant="outline" size="sm">
             Add Log
           </Button>
         </div>

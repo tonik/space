@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getCommands } from "./commands";
 import { useGame } from "../../state/useGame";
+import { useTerminalState } from "./selectors";
 import { displayLinesWithDelay } from "../../lib/utils";
 
 /**
@@ -25,7 +26,8 @@ type TerminalLine = {
 };
 
 export function Terminal({ className = "" }: TerminalProps) {
-  const { context, startGame, trackCommand, commandCounts } = useGame();
+  const { startGame, trackCommand } = useGame();
+  const { commanderName, commandCounts, mission } = useTerminalState();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
     { type: "text", content: 'Type "help" for available commands.' },
@@ -101,7 +103,7 @@ export function Terminal({ className = "" }: TerminalProps) {
       (newName: string) => {
         startGame(newName);
       },
-      context.commanderName,
+      commanderName,
       (
         type: string,
         prompt: string,
@@ -111,7 +113,7 @@ export function Terminal({ className = "" }: TerminalProps) {
         addLine(prompt);
       },
       commandCounts,
-      context,
+      mission,
     );
 
     if (output) {

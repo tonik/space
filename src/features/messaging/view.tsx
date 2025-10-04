@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
+import { useMessagingState } from "./selectors";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
 import { User } from "lucide-react";
@@ -11,8 +12,8 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 
 export function MessagingView() {
-  const game = useGame();
-  const { messages, unreadCount, addMessage, openMessage, systems } = game;
+  const { messages, unreadCount, openedMessageIds, systems } = useMessagingState();
+  const { addMessage, openMessage } = useGame();
   const [newMessage, setNewMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "message">("list");
@@ -47,7 +48,7 @@ export function MessagingView() {
     setSelectedMessage(message);
     setViewMode("message");
     // Also mark as read if it's unread
-    if (!game.openedMessageIds.has(message.id)) {
+    if (!openedMessageIds.has(message.id)) {
       openMessage(message.id);
     }
   };
@@ -88,7 +89,7 @@ export function MessagingView() {
               </div>
             ) : (
               messages.map((msg) => {
-                const isRead = game.openedMessageIds.has(msg.id);
+                const isRead = openedMessageIds.has(msg.id);
 
                 return (
                   <div

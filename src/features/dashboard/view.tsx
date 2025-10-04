@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useGame } from "@/state/useGame";
+import { useDashboardState } from "./selectors";
 import { SystemCard } from "@/components/ui/system-card";
 import {
   Zap,
@@ -17,7 +18,8 @@ import { MissionStatus } from "./components/MissionStatus";
 import { SystemDiagnostics } from "./components/SystemDiagnostics";
 
 export default function DashboardView() {
-  const { logs, systems, context, send } = useGame();
+  const { systems, diagnostics, mission } = useDashboardState();
+  const { send } = useGame();
 
   // Auto-update diagnostics every 2 seconds
   useEffect(() => {
@@ -30,31 +32,31 @@ export default function DashboardView() {
 
   // Calculate time to Earth return (14.2 hours from game description)
   const timeToEarth = "14.2 HOURS";
-  const aiUpdateDue = context.mission.aiUpdateScheduled ? "TOMORROW" : "N/A";
-  const missionTime = `${context.mission.daysInSpace} DAYS`;
-  const uptime = `${context.mission.daysInSpace} DAYS`;
+  const aiUpdateDue = mission.aiUpdateScheduled ? "TOMORROW" : "N/A";
+  const missionTime = `${mission.daysInSpace} DAYS`;
+  const uptime = `${mission.daysInSpace} DAYS`;
 
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <SystemAlerts logs={logs} />
+      <SystemAlerts logs={[]} />
 
       <MissionStatus
-        shiftStatus={context.mission.shiftStatus}
+        shiftStatus={mission.shiftStatus}
         returnToEarth={timeToEarth}
         aiUpdateDue={aiUpdateDue}
         missionTime={missionTime}
-        fleetStatus={context.mission.fleetStatus}
+        fleetStatus={mission.fleetStatus}
       />
 
       <SystemDiagnostics
-        cpuLoad={context.diagnostics.cpuLoad}
-        memoryUsage={context.diagnostics.memoryUsage}
-        networkLatency={context.diagnostics.networkLatency}
+        cpuLoad={diagnostics.cpuLoad}
+        memoryUsage={diagnostics.memoryUsage}
+        networkLatency={diagnostics.networkLatency}
         uptime={uptime}
-        aiResponseTime={context.diagnostics.aiResponseTime}
-        systemIntegrity={context.diagnostics.systemIntegrity}
-        activeProcesses={context.diagnostics.activeProcesses}
-        errorRate={context.diagnostics.errorRate}
+        aiResponseTime={diagnostics.aiResponseTime}
+        systemIntegrity={diagnostics.systemIntegrity}
+        activeProcesses={diagnostics.activeProcesses}
+        errorRate={diagnostics.errorRate}
       />
 
       <SystemCard

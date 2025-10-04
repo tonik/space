@@ -1,4 +1,4 @@
-import { useGame } from "@/state/useGame";
+import { useCaptainsLogState } from "./selectors";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BookOpen } from "lucide-react";
@@ -12,7 +12,7 @@ const moodColors = {
 };
 
 export default function CaptainsLogView() {
-  const { captainsLog } = useGame();
+  const { captainsLog } = useCaptainsLogState();
 
   // Show entries in reverse chronological order (most recent first)
   const sortedEntries = [...captainsLog].reverse();

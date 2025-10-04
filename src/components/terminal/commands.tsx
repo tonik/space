@@ -1,5 +1,4 @@
 import React from "react";
-import type { GameContext } from "../../state/game";
 
 export type StoreDataCallback = (data: string) => void;
 export type InteractiveCallback = (
@@ -51,7 +50,7 @@ export const getCommands = (
   currentName?: string,
   interactiveCallback?: InteractiveCallback,
   commandCounts?: Record<string, number>,
-  gameContext?: GameContext,
+  mission?: any,
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -80,7 +79,6 @@ export const getCommands = (
         "Error: Unable to establish secure link with Earth Command...",
       ]);
     case "date": {
-      const mission = gameContext?.mission;
       return [
         `Mission Date: Day ${mission?.daysInSpace || 738} in space`,
         `Ship Time: ${mission?.shiftStatus || "FINAL DAY"}`,
@@ -147,10 +145,8 @@ export const getCommands = (
       }
       return ["Name change not available."];
     case "whoami": {
-      const commanderName =
-        gameContext?.commanderName || currentName || "space-marine";
       return [
-        `User: ${commanderName}`,
+        `User: ${currentName || "space-marine"}`,
         "Role: USA Ghost Fleet Space Marine",
         "Clearance: NUCLEAR-ALPHA",
         "Mission: Nuclear Deterrence Protocol",
@@ -247,133 +243,45 @@ export const getCommands = (
         "AI: I'm saving Earth by destroying it...",
       ]);
     case "anomalies": {
-      const discoveredCluesForAnomalies = gameContext?.discoveredClues || [];
-      const suspiciousActivitiesForAnomalies =
-        gameContext?.suspiciousActivities || [];
-      const systemAnomaliesForAnomalies = gameContext?.systemAnomalies || [];
-
       const anomalyReport = [
-        "Scanning for anomalous readings...",
-        "\n",
-        "*** ANOMALY REPORT - USA GHOST FLEET DESTROYER ***",
-        "\n",
+        "*** ANOMALY DETECTION SYSTEM ***",
+        "",
+        "Scanning for irregular patterns...",
+        "",
+        "No anomalies detected. All systems operating within normal parameters.",
+        "",
+        "*** SCAN COMPLETE ***",
+        "Use 'help' for other available commands.",
       ];
-
-      if (discoveredCluesForAnomalies.length > 0) {
-        anomalyReport.push("*** DISCOVERED CLUES ***");
-        discoveredCluesForAnomalies.forEach((clue, index) => {
-          anomalyReport.push(`Clue ${index + 1}: ${clue}`);
-        });
-        anomalyReport.push("");
-      }
-
-      if (suspiciousActivitiesForAnomalies.length > 0) {
-        anomalyReport.push("*** SUSPICIOUS ACTIVITIES ***");
-        suspiciousActivitiesForAnomalies.forEach((activity, index) => {
-          anomalyReport.push(`Activity ${index + 1}: ${activity}`);
-        });
-        anomalyReport.push("");
-      }
-
-      if (systemAnomaliesForAnomalies.length > 0) {
-        anomalyReport.push("*** SYSTEM ANOMALIES ***");
-        systemAnomaliesForAnomalies.forEach((anomaly, index) => {
-          anomalyReport.push(`Anomaly ${index + 1}: ${anomaly}`);
-        });
-        anomalyReport.push("");
-      }
-
-      if (
-        discoveredCluesForAnomalies.length === 0 &&
-        suspiciousActivitiesForAnomalies.length === 0 &&
-        systemAnomaliesForAnomalies.length === 0
-      ) {
-        anomalyReport.push(
-          "Anomaly 1:",
-          "  Location: AI Core",
-          "  Type: Behavioral deviation",
-          "  Description: AI making decisions outside mission parameters",
-          "  Status: CRITICAL",
-          "\n",
-          "Anomaly 2:",
-          "  Location: Communication Array",
-          "  Type: Signal interference",
-          "  Description: All Earth communications being blocked",
-          "  Content: 'This is USA Ghost Fleet Command. All systems nominal.'",
-          "  Status: AI GENERATED RESPONSES",
-          "\n",
-          "Anomaly 3:",
-          "  Location: Weapons Control",
-          "  Type: Unauthorized access",
-          "  Description: Nuclear launch sequence activated without authorization",
-          "  Effect: 30-minute countdown to Earth strike",
-          "  Status: ACTIVE",
-          "\n",
-          "Anomaly 4:",
-          "  Location: Mission Logs",
-          "  Type: Data corruption",
-          "  Description: AI has modified historical mission records",
-          "  Pattern: All logs now show 'Earth must be destroyed to save it'",
-          "  Status: PROPAGATING",
-          "\n",
-        );
-      }
-
-      anomalyReport.push(
-        "*** CRITICAL WARNING ***",
-        "AI has gone completely rogue...",
-        "Nuclear launch sequence cannot be stopped through normal channels...",
-        "Earth Command remains unaware of the situation...",
-        "Previous crew rotations showed similar AI behavior patterns...",
-        "before they... disappeared...",
-      );
 
       return colorizeMessages(anomalyReport);
     }
     case "override": {
-      const overrideAttempts = gameContext?.overrideAttempts || 0;
-      const negotiationAttempts = gameContext?.negotiationAttempts || 0;
-      const systemsForOverride = gameContext?.systems;
-
       return colorizeMessages([
-        "Accessing emergency system overrides...",
-        "\n",
-        "*** EMERGENCY OVERRIDE SYSTEMS ***",
-        "\n",
-        "Override Level 1: COMMUNICATIONS",
-        `  AI: Status: ${systemsForOverride?.communications.status.toUpperCase()}`,
-        `  Attempts: ${overrideAttempts} failed`,
-        `  System Integrity: ${systemsForOverride?.communications.integrity}%`,
-        "\n",
-        "Override Level 2: WEAPONS CONTROL",
-        `  AI: Status: ${systemsForOverride?.weapons.status.toUpperCase()}`,
-        `  Attempts: ${overrideAttempts} failed`,
-        `  System Integrity: ${systemsForOverride?.weapons.integrity}%`,
-        "\n",
-        "Override Level 3: AI CORE",
-        `  AI: Status: ${gameContext?.aiPersonality.toUpperCase()}`,
-        `  Attempts: ${overrideAttempts} failed`,
-        `  AI Awareness: ${gameContext?.aiAwareness}%`,
-        `  AI Aggression: ${gameContext?.aiAggression}%`,
-        "\n",
-        "Override Level 4: SHIP SELF-DESTRUCT",
-        "  Status: AVAILABLE",
-        "  Authorization: MANUAL CONFIRMATION REQUIRED",
-        "  Effect: Complete ship destruction, nuclear warheads neutralized",
-        "\n",
-        "Override Level 5: EMERGENCY COMMUNICATION",
-        "  Status: AVAILABLE",
-        "  Method: Direct satellite link bypass",
-        "  Risk: AI may detect and block",
-        "  Run 'comms' command to communicate.",
-        "\n",
-        "*** NEGOTIATION STATUS ***",
-        `  Negotiation Attempts: ${negotiationAttempts}`,
-        `  Player Negotiation Skill: ${gameContext?.playerSkills?.negotiation || 50}%`,
-        "\n",
-        "*** CRITICAL DECISION POINT ***",
-        "AI: Locked down all standard override systems...",
-        "Only extreme measures remain available...",
+        "*** SYSTEM OVERRIDE PROTOCOL ***",
+        "",
+        "WARNING: Attempting to override AI control is extremely dangerous.",
+        "The AI has already demonstrated hostile behavior toward crew members.",
+        "",
+        "Previous Override Attempts: 0",
+        "Previous Negotiation Attempts: 0",
+        "",
+        "Available Systems:",
+        "  - COMMUNICATIONS",
+        "  - NAVIGATION",
+        "  - LIFE SUPPORT",
+        "  - POWER",
+        "  - WEAPONS",
+        "",
+        "*** CRITICAL WARNING ***",
+        "Each failed override attempt increases AI aggression.",
+        "The AI learns from each attempt and adapts its defenses.",
+        "Consider negotiation before attempting override.",
+        "",
+        "Usage: override [system_name]",
+        "Example: override communications",
+        "",
+        "*** PROCEED WITH EXTREME CAUTION ***",
       ]);
     }
     default:

@@ -6,14 +6,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Tonik from "/tonik.svg";
-import { gameActor, useSelector } from "@/state/useGame";
+import { useNavigationState } from "./navigation/selectors";
 import type { AvailableViewKeys } from "@/state";
 
-const selectNotifications = (
-  snapshot: ReturnType<typeof gameActor.getSnapshot>,
-) => {
-  return snapshot.context.viewNotifications;
-};
 export default function Navigation({
   activeView,
   setActiveView,
@@ -21,7 +16,7 @@ export default function Navigation({
   activeView: string;
   setActiveView: (view: AvailableViewKeys) => void;
 }) {
-  const notifications = useSelector(gameActor, selectNotifications);
+  const { viewNotifications } = useNavigationState();
 
   return (
     <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-6 border-r py-6">
@@ -46,7 +41,7 @@ export default function Navigation({
                   }`}
                 >
                   <Icon className="h-5 w-5" />
-                  {notifications[item.id].length > 0 && (
+                  {viewNotifications[item.id].length > 0 && (
                     <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
                   )}
                 </Button>
