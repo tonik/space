@@ -2,7 +2,6 @@ import { useGame } from "@/state/useGame";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { BookOpen } from "lucide-react";
-import type { CaptainsLogEntry } from "@/state/game";
 
 const moodColors = {
   routine: "text-primary",

@@ -18,7 +18,7 @@ export function SystemAlerts({ logs }: SystemAlertsProps) {
         <h3 className="text-primary text-sm font-bold">SYSTEM ALERTS</h3>
         <AlertTriangle className="text-primary h-4 w-4" />
       </div>
-      <ScrollArea className="h-[75px] font-mono text-xs">
+      <ScrollArea className="h-[65px] font-mono text-xs">
         <div className="space-y-1">
           {recentAlerts.length === 0 ? (
             <div className="text-muted-foreground/40 py-8 text-center">

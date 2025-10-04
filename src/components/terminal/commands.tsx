@@ -8,10 +8,10 @@ export type InteractiveCallback = (
 ) => void;
 
 const colorizeMessage = (message: string): React.ReactNode => {
-  if (message.startsWith("Error:")) {
+  if (message.trim().startsWith("Error:")) {
     return <span style={{ color: "#ef4444" }}>{message}</span>;
   }
-  if (message.startsWith("Warning:")) {
+  if (message.trim().startsWith("Warning:")) {
     return <span style={{ color: "#f97316" }}>{message}</span>;
   }
   if (message.trim().startsWith("AI:")) {
@@ -358,7 +358,7 @@ export const getCommands = (
         "  Status: AVAILABLE",
         "  Method: Direct satellite link bypass",
         "  Risk: AI may detect and block",
-        "  Run 'comms' command to communicate",
+        "  Run 'comms' command to communicate.",
         "",
         "*** CRITICAL DECISION POINT ***",
         "AI: Locked down all standard override systems...",
