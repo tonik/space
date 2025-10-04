@@ -354,7 +354,7 @@ export type AvailableViewKeys =
 
 export interface GameContext {
   commanderName: string;
-  gameStartTime: number;
+  gameStartTimestamp: number;
   showWelcomeScreen: boolean;
   activeView: AvailableViewKeys;
 
@@ -474,7 +474,7 @@ export type GameEvent =
 
 const initialContext: GameContext = {
   commanderName: "Commander",
-  gameStartTime: INITIAL_CURRENT_DATE.getTime(),
+  gameStartTimestamp: Date.now(),
   activeView: "dashboard",
   showWelcomeScreen: true,
 
@@ -1010,10 +1010,10 @@ export const gameMachine = setup({
         activeView: ({ event }) => event.view,
         viewNotifications: ({ context, event }) => {
           // Clear notifications for the view being switched to
-          if (event.view === "messaging") {
+          if (event.view === "captains-log") {
             return {
               ...context.viewNotifications,
-              messaging: [],
+              "captains-log": [],
             };
           }
           return context.viewNotifications;
@@ -1072,12 +1072,12 @@ export const gameMachine = setup({
         }),
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
-          messaging: [
-            ...context.viewNotifications.messaging,
+          "captains-log": [
+            ...context.viewNotifications["captains-log"],
             {
               id: `ai-chat-notification-${Date.now()}`,
               type: "info" as const,
-              message: "New AI communication available",
+              message: "New Captain's Log entries available",
               timestamp: Date.now(),
             },
           ],
