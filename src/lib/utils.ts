@@ -32,3 +32,33 @@ export function getCommandUsagePercentage(
   if (total === 0) return 0;
   return Math.round(((commandCounts[command] || 0) / total) * 100);
 }
+
+/**
+ * Utility function for displaying lines with random delays
+ * Useful for creating a typewriter effect in terminal-like interfaces
+ */
+export async function displayLinesWithDelay(
+  lines: string[],
+  addLineCallback: (line: string) => void,
+  setIsPrintingCallback?: (isPrinting: boolean) => void,
+  minDelay: number = 500,
+  maxDelay: number = 700,
+): Promise<void> {
+  if (setIsPrintingCallback) {
+    setIsPrintingCallback(true);
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    addLineCallback(lines[i]);
+    if (i < lines.length - 1) {
+      // Random delay between minDelay and maxDelay
+      const randomDelay =
+        Math.floor(Math.random() * (maxDelay - minDelay + 1)) + minDelay;
+      await new Promise((resolve) => setTimeout(resolve, randomDelay));
+    }
+  }
+
+  if (setIsPrintingCallback) {
+    setIsPrintingCallback(false);
+  }
+}

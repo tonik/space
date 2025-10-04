@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getCommands } from "./commands";
 import { useGame } from "../../state/useGame";
+import { displayLinesWithDelay } from "../../lib/utils";
 
 /**
  * Terminal Component with Command Tracking
@@ -80,19 +81,6 @@ export function Terminal({ className = "" }: TerminalProps) {
     setLines([]);
   };
 
-  const addLinesWithDelay = async (lines: string[]) => {
-    setIsPrinting(true);
-    for (let i = 0; i < lines.length; i++) {
-      addLine(lines[i]);
-      if (i < lines.length - 1) {
-        // Random delay between 500ms and 700ms
-        const randomDelay = Math.floor(Math.random() * 201) + 500;
-        await new Promise((resolve) => setTimeout(resolve, randomDelay));
-      }
-    }
-    setIsPrinting(false);
-  };
-
   const handleInput = (command: string) => {
     if (waitingForInput) {
       const result = waitingForInput.callback(command);
@@ -150,7 +138,7 @@ export function Terminal({ className = "" }: TerminalProps) {
             command.toLowerCase() === "status");
 
         if (shouldDelay) {
-          await addLinesWithDelay(output);
+          await displayLinesWithDelay(output, addLine, setIsPrinting);
         } else {
           output.forEach((line: string) => addLine(line));
         }
