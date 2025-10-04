@@ -1,14 +1,4 @@
-export interface Message {
-  id: string;
-  from: string;
-  time: string;
-  title: string;
-  preview: string;
-  type: "incoming" | "outgoing" | "system" | "ai";
-  priority: "low" | "normal" | "high" | "critical";
-  encrypted?: boolean;
-  corrupted?: boolean;
-}
+import type { Message } from "@/state/types";
 
 export const introMessages: Message[] = [
   {

@@ -1,34 +1,13 @@
 import { setup, assign } from "xstate";
 import { introMessages } from "../data/messages";
 import { introLogs } from "../data/logs";
-import type { Message } from "../data/messages";
-import type { CaptainsLogEntry, LogEntry } from "../data/logs";
-
-export type { Message, LogEntry, CaptainsLogEntry };
-
-export interface SystemMetric {
-  label: string;
-  value: string | number;
-  progress?: number;
-}
-
-export interface System {
-  integrity: number;
-  status:
-    | "online"
-    | "degraded"
-    | "jammed"
-    | "offline"
-    | "compromised"
-    | "critical";
-  critical: boolean;
-  metrics: SystemMetric[];
-}
-
-export interface MessageView {
-  messageId: string;
-  openedAt: number;
-}
+import type {
+  CaptainsLogEntry,
+  LogEntry,
+  Message,
+  MessageView,
+  System,
+} from "./types";
 
 export interface GameContext {
   commanderName: string;

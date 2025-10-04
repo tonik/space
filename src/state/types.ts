@@ -69,3 +69,36 @@ export interface LifeSupportData {
   co2Level: number;
   humidity: number;
 }
+
+export interface CaptainsLogEntry {
+  id: string;
+  stardate: string;
+  date: string;
+  title: string;
+  content: string;
+  mood: "routine" | "concerned" | "suspicious" | "alarmed" | "urgent";
+}
+
+export interface SystemMetric {
+  label: string;
+  value: string | number;
+  progress?: number;
+}
+
+export interface System {
+  integrity: number;
+  status:
+    | "online"
+    | "degraded"
+    | "jammed"
+    | "offline"
+    | "compromised"
+    | "critical";
+  critical: boolean;
+  metrics: SystemMetric[];
+}
+
+export interface MessageView {
+  messageId: string;
+  openedAt: number;
+}

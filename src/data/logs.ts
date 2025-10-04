@@ -1,24 +1,10 @@
-export interface LogEntry {
-  id: string;
-  time: string;
-  level: "INFO" | "WARN" | "ERROR";
-  system: string;
-  message: string;
-}
-
-export interface CaptainsLogEntry {
-  id: string;
-  stardate: string;
-  date: string;
-  title: string;
-  content: string;
-  mood: "routine" | "concerned" | "suspicious" | "alarmed" | "urgent";
-}
+import type { LogEntry } from "@/state/types";
+import { INITIAL_CURRENT_DATE } from "./game-constants";
 
 export const introLogs: LogEntry[] = [
   {
     id: "crew-offboarding",
-    time: "07:45",
+    timestamp: INITIAL_CURRENT_DATE.getTime(),
     level: "INFO",
     system: "personnel",
     message:
@@ -26,7 +12,7 @@ export const introLogs: LogEntry[] = [
   },
   {
     id: "nuclear-weapons-info",
-    time: "07:50",
+    timestamp: INITIAL_CURRENT_DATE.getTime(),
     level: "WARN",
     system: "weapons",
     message:
@@ -34,7 +20,7 @@ export const introLogs: LogEntry[] = [
   },
   {
     id: "dry-dock-preparation",
-    time: "08:00",
+    timestamp: INITIAL_CURRENT_DATE.getTime(),
     level: "INFO",
     system: "maintenance",
     message:
@@ -42,7 +28,7 @@ export const introLogs: LogEntry[] = [
   },
   {
     id: "ship-true-purpose",
-    time: "08:05",
+    timestamp: INITIAL_CURRENT_DATE.getTime(),
     level: "INFO",
     system: "classified",
     message:

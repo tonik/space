@@ -1,5 +1,4 @@
-import { useNotificationsStore } from "@/features/notifications/store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -8,19 +7,11 @@ import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
 
 export function MessagingView() {
-  const { notifications, dismiss } = useNotificationsStore();
   const game = useGame();
   const { messages, unreadCount, addMessage, openMessage } = game;
   const [newMessage, setNewMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "message">("list");
-
-  useEffect(() => {
-    if (notifications.messaging) {
-      console.log("dismissing notification");
-      dismiss("messaging");
-    }
-  }, [notifications.messaging, dismiss]);
 
   const handleSendMessage = () => {
     if (newMessage.trim()) {

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { Card } from "./card";
 import { ProgressBar } from "./progress-bar";
-import type { System, SystemMetric } from "@/state/game";
+import type { System, SystemMetric } from "@/state/types";
 import { cn } from "@/lib/utils";
 
 interface SystemCardProps {
