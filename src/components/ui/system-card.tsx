@@ -66,8 +66,7 @@ export function SystemCard({
             )}
           </div>
         ))}
-        
-        {/* Repair Section */}
+
         {systemName && onRepair && (
           <>
             <Separator className="my-4" />

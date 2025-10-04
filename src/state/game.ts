@@ -437,11 +437,6 @@ export type GameEvent =
       integrity: number;
     }
   | {
-      type: "REPAIR_SYSTEM";
-      systemName: keyof GameContext["systems"];
-      repairAmount: number;
-    }
-  | {
       type: "START_REPAIR";
       systemName: keyof GameContext["systems"];
       repairType: "quick" | "standard" | "thorough";
