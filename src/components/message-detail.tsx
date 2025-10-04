@@ -32,7 +32,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
 
   return (
     <div className="max-w-4xl">
-      <Card className="border-border/30 bg-card mb-4 p-4">
+      <Card className="bg-card mb-4 p-4">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Button
@@ -59,7 +59,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
           </div>
 
           {/* Message Content */}
-          <Card className="border-border/30 p-4">
+          <Card className="p-4">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -82,7 +82,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
 
           {/* Message Metadata */}
           <div className="grid grid-cols-2 gap-4">
-            <Card className="border-border/30 p-3">
+            <Card className="p-3">
               <div className="space-y-2">
                 <h4 className="text-muted-foreground text-sm font-medium">
                   Type
@@ -93,7 +93,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
               </div>
             </Card>
 
-            <Card className="border-border/30 p-3">
+            <Card className="p-3">
               <div className="space-y-2">
                 <h4 className="text-muted-foreground text-sm font-medium">
                   Priority
@@ -110,7 +110,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
 
           {/* Security Flags */}
           {(message.encrypted || message.corrupted) && (
-            <Card className="border-border/30 p-3">
+            <Card className="p-3">
               <h4 className="text-muted-foreground mb-2 text-sm font-medium">
                 Security Status
               </h4>
@@ -132,7 +132,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
           )}
 
           {/* Message ID for debugging */}
-          <Card className="bg-muted/30 border-border/30 p-3">
+          <Card className="bg-muted/30 p-3">
             <div className="space-y-1">
               <h4 className="text-muted-foreground text-xs font-medium">
                 Message ID
