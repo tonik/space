@@ -6,36 +6,40 @@ import {
   BookOpen,
   Gamepad2,
 } from "lucide-react";
-import type { View } from "./components/page";
+import type { AvailableViewKeys } from "./state";
 
-export const navItems = [
+export const navItems: {
+  id: AvailableViewKeys;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
   {
-    id: "dashboard" as View,
+    id: "dashboard",
     label: "Control",
     icon: Gauge,
   },
   {
-    id: "messaging" as View,
+    id: "messaging",
     label: "Comms",
     icon: MessageSquare,
   },
   {
-    id: "terminal" as View,
+    id: "terminal",
     label: "Terminal",
     icon: TerminalIcon,
   },
   {
-    id: "logs" as View,
+    id: "logs",
     label: "Ship Logs",
     icon: FileText,
   },
   {
-    id: "captains-log" as View,
+    id: "captains-log",
     label: "Captain's Log",
     icon: BookOpen,
   },
   {
-    id: "arcade" as View,
+    id: "arcade",
     label: "Arcade",
     icon: Gamepad2,
   },

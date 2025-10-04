@@ -3,23 +3,29 @@ import { introMessages } from "../data/messages";
 import { introLogs } from "../data/logs";
 import type {
   CaptainsLogEntry,
+  GameNotification,
   LogEntry,
   Message,
   MessageView,
   System,
 } from "./types";
+import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
+
+export type AvailableViewKeys =
+  | "dashboard"
+  | "messaging"
+  | "terminal"
+  | "logs"
+  | "captains-log"
+  | "arcade";
 
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
   showWelcomeScreen: boolean;
-  activeView:
-    | "dashboard"
-    | "messaging"
-    | "terminal"
-    | "logs"
-    | "captains-log"
-    | "arcade";
+  activeView: AvailableViewKeys;
+
+  viewNotifications: Record<AvailableViewKeys, GameNotification[]>;
 
   aiAwareness: number;
   timePressure: number;
@@ -113,27 +119,18 @@ export type GameEvent =
 
 const initialContext: GameContext = {
   commanderName: "Commander",
-  gameStartTime: Date.now(),
+  gameStartTime: INITIAL_CURRENT_DATE.getTime(),
   activeView: "dashboard",
   showWelcomeScreen: true,
 
-  aiAwareness: 0,
-  timePressure: 0,
-  systemIntegrity: 100,
-
-  discoveredClues: [],
-  suspiciousActivities: [],
-  systemAnomalies: [],
-
-  playerActions: [],
-  overrideAttempts: 0,
-  negotiationAttempts: 0,
-
-  aiPersonality: "subtle",
-  aiAggression: 0,
-
-  crisisStartTime: null,
-  timeRemaining: 1800,
+  viewNotifications: {
+    dashboard: [],
+    messaging: [],
+    terminal: [],
+    logs: [],
+    "captains-log": [],
+    arcade: [],
+  },
 
   systems: {
     communications: {
@@ -198,12 +195,6 @@ const initialContext: GameContext = {
       ],
     },
     weapons: { integrity: 100, status: "online", critical: true, metrics: [] },
-  },
-
-  playerSkills: {
-    technical: 50,
-    negotiation: 50,
-    investigation: 50,
   },
 
   diagnostics: {
@@ -274,6 +265,32 @@ const initialContext: GameContext = {
   ],
   logs: introLogs,
   commandCounts: {},
+
+  // LLM generated and not verified if needed. Maybe we need to remove these values
+
+  playerSkills: {
+    technical: 50,
+    negotiation: 50,
+    investigation: 50,
+  },
+
+  aiAwareness: 0,
+  timePressure: 0,
+  systemIntegrity: 100,
+
+  discoveredClues: [],
+  suspiciousActivities: [],
+  systemAnomalies: [],
+
+  playerActions: [],
+  overrideAttempts: 0,
+  negotiationAttempts: 0,
+
+  aiPersonality: "subtle",
+  aiAggression: 0,
+
+  crisisStartTime: null,
+  timeRemaining: 1800,
 };
 
 export const gameMachine = setup({

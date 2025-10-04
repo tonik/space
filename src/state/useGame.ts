@@ -3,10 +3,15 @@ import { useSelector } from "@xstate/react";
 import { gameMachine, type GameContext } from "./game";
 import type { Message, LogEntry } from "./types";
 
-const stateString = localStorage.getItem("gameState");
-const gameActor = createActor(gameMachine, {
-  state: stateString ? JSON.parse(stateString) : undefined,
-});
+// commented out because when we are mutating initial state new keys and changes aren't loaded from localStorage
+// const stateString = localStorage.getItem("gameState");
+
+// const gameActor = createActor(gameMachine, {
+//   state: stateString ? JSON.parse(stateString) : undefined,
+// });
+
+const gameActor = createActor(gameMachine);
+
 gameActor.start();
 gameActor.subscribe((state) => {
   localStorage.setItem("gameState", JSON.stringify(state));
@@ -180,4 +185,4 @@ export const useGame = () => {
   };
 };
 
-export { gameActor };
+export { gameActor, useSelector };
