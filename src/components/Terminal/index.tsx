@@ -1,8 +1,5 @@
-import { useEffect, useRef } from "react";
-import { Terminal as XTerm } from "@xterm/xterm";
-import { FitAddon } from "@xterm/addon-fit";
-import "@xterm/xterm/css/xterm.css";
-import { getCommand } from "./commands";
+import { useState, useEffect, useRef } from "react";
+import { getCommand } from "./commands.tsx";
 
 interface TerminalProps {
   className?: string;
@@ -10,142 +7,143 @@ interface TerminalProps {
   currentName?: string;
 }
 
+type TerminalLine = {
+  type: "text" | "component";
+  content: string | React.ReactNode;
+};
+
 export function Terminal({
   className = "",
   onNameChange,
   currentName,
 }: TerminalProps) {
+  const [lines, setLines] = useState<TerminalLine[]>([
+    { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
+    { type: "text", content: 'Type "help" for available commands.' },
+    { type: "text", content: "" },
+  ]);
+  const [currentInput, setCurrentInput] = useState("");
+  const [cursorVisible, setCursorVisible] = useState(true);
   const terminalRef = useRef<HTMLDivElement>(null);
-  const xtermRef = useRef<XTerm | null>(null);
-  const currentNameRef = useRef<string>(currentName || "spaceship-commander");
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  // Cursor blinking effect
   useEffect(() => {
-    if (!terminalRef.current) return;
+    const interval = setInterval(() => {
+      setCursorVisible((prev) => !prev);
+    }, 530);
+    return () => clearInterval(interval);
+  }, []);
 
-    const terminal = new XTerm({
-      theme: {
-        background: "#000000",
-        foreground: "#00ff41",
-        cursor: "#00ff41",
-        black: "#000000",
-        red: "#ff0000",
-        green: "#00ff41",
-        yellow: "#ffff00",
-        blue: "#0000ff",
-        magenta: "#ff00ff",
-        cyan: "#00ffff",
-        white: "#ffffff",
-        brightBlack: "#666666",
-        brightRed: "#ff6666",
-        brightGreen: "#66ff66",
-        brightYellow: "#ffff66",
-        brightBlue: "#6666ff",
-        brightMagenta: "#ff66ff",
-        brightCyan: "#66ffff",
-        brightWhite: "#ffffff",
-      },
-      fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
-      fontSize: 14,
-      lineHeight: 1.2,
-      cursorBlink: true,
-      cursorStyle: "block",
-      scrollback: 1000,
-    });
-
-    const fitAddon = new FitAddon();
-    terminal.loadAddon(fitAddon);
-    terminal.open(terminalRef.current);
-    fitAddon.fit();
-
-    // Initial welcome message
-    terminal.writeln("Welcome to Spaceship Terminal v2.4.1");
-    terminal.writeln('Type "help" for available commands.');
-    terminal.writeln("");
-
-    let currentLine = "";
-    let cursorPosition = 0;
-    let pendingInputHandler: ((input: string) => void) | null = null;
-
-    const writePrompt = () => {
-      terminal.write("\r\n> ");
-      currentLine = "";
-      cursorPosition = 0;
-    };
-
-    const handleInput = (data: string) => {
-      const code = data.charCodeAt(0);
-
-      if (code === 13) {
-        // Enter key
-        terminal.write("\r\n");
-
-        if (currentLine.trim()) {
-          if (pendingInputHandler) {
-            // Input mode
-            pendingInputHandler(currentLine.trim());
-            pendingInputHandler = null;
-          } else {
-            // Normal command mode
-            handleCommand(currentLine.trim());
-          }
-        }
-
-        writePrompt();
-      } else if (code === 127) {
-        // Backspace
-        if (cursorPosition > 0) {
-          terminal.write("\b \b");
-          currentLine = currentLine.slice(0, -1);
-          cursorPosition--;
-        }
-      } else if (code >= 32 && code <= 126) {
-        // Printable characters
-        terminal.write(data);
-        currentLine += data;
-        cursorPosition++;
-      }
-    };
-
-    const handleCommand = (command: string) => {
-      const result = getCommand(
-        terminal,
-        command.toLowerCase(),
-        onNameChange,
-        currentNameRef.current,
-      );
-      if (typeof result === "function") {
-        pendingInputHandler = result;
-      }
-    };
-
-    terminal.onData(handleInput);
-
-    writePrompt();
-
-    xtermRef.current = terminal;
-
-    const handleResize = () => {
-      fitAddon.fit();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      terminal.dispose();
-    };
-  }, [onNameChange]);
-
-  // Update the ref when currentName changes without recreating the terminal
+  // Focus terminal on mount and when clicking
   useEffect(() => {
-    currentNameRef.current = currentName || "spaceship-commander";
-  }, [currentName]);
+    const handleClick = () => {
+      inputRef.current?.focus();
+    };
+
+    const terminal = terminalRef.current;
+    if (terminal) {
+      terminal.addEventListener("click", handleClick);
+      return () => terminal.removeEventListener("click", handleClick);
+    }
+  }, []);
+
+  // Auto-scroll to bottom when lines change
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [lines]);
+
+  const addLine = (
+    content: string | React.ReactNode,
+    type: "text" | "component" = "text",
+  ) => {
+    setLines((prev) => [...prev, { type, content }]);
+  };
+
+  const clearTerminal = () => {
+    setLines([]);
+  };
+
+  const handleCommand = (command: string) => {
+    addLine(`> ${command}`);
+
+    if (command.toLowerCase() === "clear") {
+      clearTerminal();
+      return;
+    }
+
+    const output = getCommand(command.toLowerCase(), onNameChange, currentName);
+    if (output) {
+      if (Array.isArray(output)) {
+        output.forEach((line: string) => addLine(line));
+      } else {
+        addLine(output, "component");
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentInput.trim()) {
+        handleCommand(currentInput.trim());
+      }
+      setCurrentInput("");
+    }
+  };
 
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className}`}
-      style={{ height: "500px", width: "100%" }}
-    />
+      className={`terminal-container ${className} bg-black text-[#00ff41] font-mono text-sm leading-[1.2] overflow-auto h-[500px]`}
+    >
+      <div className="p-4 space-y-1">
+        {lines.map((line, index) => (
+          <div
+            key={index}
+            className={
+              line.type === "text" ? "whitespace-pre-wrap text-[#00ff41]" : ""
+            }
+          >
+            {line.type === "text" ? line.content : line.content}
+          </div>
+        ))}
+
+        {/* Current input line with cursor */}
+        <div className="flex items-center">
+          <span className="text-[#00ff41]">&gt;&nbsp;</span>
+          <div className="flex items-center flex-1 relative">
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="bg-transparent text-[#00ff41] outline-none font-mono caret-transparent"
+              style={{
+                fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
+                fontSize: "14px",
+                caretColor: "transparent",
+              }}
+              autoFocus
+            />
+            {cursorVisible && (
+              <span
+                className="text-[#00ff41] absolute"
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  left: `${currentInput.length * 8.4}px`,
+                }}
+              >
+                ▊
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
