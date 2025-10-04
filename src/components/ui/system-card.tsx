@@ -1,12 +1,12 @@
 import type { ReactNode } from "react";
-import { Card } from "./card";
-import { ProgressBar } from "./progress-bar";
-import { Button } from "./button";
+import { Card } from "@/components/ui/card";
+import { ProgressBar } from "@/components/ui/progress-bar";
+import { Button } from "@/components/ui/button";
 import type { Repair, System, SystemMetric } from "@/state/types";
 import type { GameContext } from "@/state/game";
 import { cn } from "@/lib/utils";
 import { Wrench, Clock } from "lucide-react";
-import { Separator } from "./separator";
+import { Separator } from "@/components/ui/separator";
 
 interface SystemCardProps {
   title: string;
