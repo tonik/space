@@ -24,6 +24,7 @@ export function Terminal({
   ]);
   const [currentInput, setCurrentInput] = useState("");
   const [cursorVisible, setCursorVisible] = useState(true);
+  const [isPrinting, setIsPrinting] = useState(false);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -66,7 +67,18 @@ export function Terminal({
     setLines([]);
   };
 
-  const handleCommand = (command: string) => {
+  const addLinesWithDelay = async (lines: string[], delay: number = 600) => {
+    setIsPrinting(true);
+    for (let i = 0; i < lines.length; i++) {
+      addLine(lines[i]);
+      if (i < lines.length - 1) {
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      }
+    }
+    setIsPrinting(false);
+  };
+
+  const handleCommand = async (command: string) => {
     addLine(`> ${command}`);
 
     if (command.toLowerCase() === "clear") {
@@ -77,7 +89,19 @@ export function Terminal({
     const output = getCommand(command.toLowerCase(), onNameChange, currentName);
     if (output) {
       if (Array.isArray(output)) {
-        output.forEach((line: string) => addLine(line));
+        const shouldDelay =
+          output.length > 3 &&
+          (command.toLowerCase() === "dream" ||
+            command.toLowerCase() === "memory" ||
+            command.toLowerCase() === "diagnose" ||
+            command.toLowerCase() === "anomalies" ||
+            command.toLowerCase() === "comms");
+
+        if (shouldDelay) {
+          await addLinesWithDelay(output, 600);
+        } else {
+          output.forEach((line: string) => addLine(line));
+        }
       } else {
         addLine(output, "component");
       }
@@ -87,10 +111,10 @@ export function Terminal({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      if (currentInput.trim()) {
+      if (currentInput.trim() && !isPrinting) {
         handleCommand(currentInput.trim());
+        setCurrentInput("");
       }
-      setCurrentInput("");
     }
   };
 
@@ -113,7 +137,7 @@ export function Terminal({
 
         {/* Current input line with cursor */}
         <div className="flex items-center">
-          <span className="text-[#00ff41]">&gt;&nbsp;</span>
+          {!isPrinting && <span className="text-[#00ff41]">&gt;&nbsp;</span>}
           <div className="flex items-center flex-1 relative">
             <input
               ref={inputRef}
@@ -121,7 +145,10 @@ export function Terminal({
               value={currentInput}
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="bg-transparent text-[#00ff41] outline-none font-mono caret-transparent"
+              readOnly={isPrinting}
+              className={`bg-transparent text-[#00ff41] outline-none font-mono caret-transparent ${
+                isPrinting ? "opacity-50" : ""
+              }`}
               style={{
                 fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
                 fontSize: "14px",
@@ -129,7 +156,7 @@ export function Terminal({
               }}
               autoFocus
             />
-            {cursorVisible && (
+            {cursorVisible && !isPrinting && (
               <span
                 className="text-[#00ff41] absolute"
                 style={{
