@@ -190,6 +190,7 @@ export function Terminal({ className = "" }: TerminalProps) {
                 fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
                 fontSize: "14px",
                 caretColor: "transparent",
+                textShadow: "0 0 2px var(--primary)",
               }}
               autoFocus
             />
@@ -200,7 +201,7 @@ export function Terminal({ className = "" }: TerminalProps) {
                   fontSize: "16px",
                   fontWeight: "bold",
                   left: `${currentInput.length * 8.4}px`,
-                  textShadow: "0 0 4px var(--primary), 0 0 8px var(--primary)",
+                  textShadow: "0 0 2px var(--primary)",
                 }}
               >
                 ▊

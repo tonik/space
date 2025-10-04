@@ -72,7 +72,13 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
           {/* Terminal content */}
           <div className="relative z-10 space-y-1 text-sm leading-tight">
             {displayedLines.map((line, index) => (
-              <div key={index} className="text-primary font-mono">
+              <div
+                key={index}
+                className="text-primary font-mono"
+                style={{
+                  textShadow: "0 0 2px var(--primary)",
+                }}
+              >
                 {line}
               </div>
             ))}
@@ -80,11 +86,30 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
             {/* Ready prompt */}
             {canEnter && (
               <div className="mt-4 flex items-center">
-                <span className="text-primary mr-2 font-mono">&gt;</span>
-                <span className="text-primary font-mono">
+                <span
+                  className="text-primary mr-2 font-mono"
+                  style={{
+                    textShadow: "0 0 2px var(--primary)",
+                  }}
+                >
+                  &gt;
+                </span>
+                <span
+                  className="text-primary font-mono"
+                  style={{
+                    textShadow: "0 0 2px var(--primary)",
+                  }}
+                >
                   Press ENTER to continue
                 </span>
-                <span className="text-primary ml-1 animate-pulse">█</span>
+                <span
+                  className="text-primary ml-1 animate-pulse"
+                  style={{
+                    textShadow: "0 0 2px var(--primary)",
+                  }}
+                >
+                  █
+                </span>
               </div>
             )}
           </div>
