@@ -23,14 +23,14 @@ export function SystemDiagnostics({
   errorRate,
 }: SystemDiagnosticsProps) {
   return (
-    <Card className="border-border/30 bg-background col-span-full p-6 md:col-span-2">
-      <div className="mb-1 flex items-center justify-between">
+    <Card className="border-border/30 bg-background p-6">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="text-primary text-sm font-bold">
           MAINFRAME DIAGNOSTICS
         </h3>
         <Cpu className="text-primary h-4 w-4" />
       </div>
-      <div className="grid grid-cols-2 gap-4 font-mono text-xs md:grid-cols-4">
+      <div className="grid grid-cols-4 gap-x-4 gap-y-2 font-mono text-xs">
         <div>
           <div className="text-muted-foreground mb-1">CPU Load</div>
           <div className="text-primary">{Math.round(cpuLoad)}%</div>
