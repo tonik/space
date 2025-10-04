@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useResizeObserver } from "@/lib/useResizeObserver";
 
 interface Position {
   x: number;
@@ -15,8 +16,8 @@ interface Bullet extends Position {
   active: boolean;
 }
 
-const CANVAS_WIDTH = 1200;
-const CANVAS_HEIGHT = 800;
+const DEFAULT_CANVAS_WIDTH = 1200;
+const DEFAULT_CANVAS_HEIGHT = 800;
 const PLAYER_WIDTH = 40;
 const PLAYER_HEIGHT = 30;
 const ALIEN_WIDTH = 30;
@@ -31,14 +32,27 @@ const PLAYER_SPEED = 5;
 
 export default function ArcadeView() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { width: containerWidth, height: containerHeight } = useResizeObserver({
+    ref: containerRef,
+  });
+
   const [gameState, setGameState] = useState<"menu" | "playing" | "gameOver">(
     "menu",
   );
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
 
+  // Calculate canvas dimensions - use container size if available, otherwise use defaults
+  const canvasWidth =
+    containerWidth > 0 ? containerWidth : DEFAULT_CANVAS_WIDTH;
+  const canvasHeight = Math.max(
+    containerHeight > 0 ? containerHeight : DEFAULT_CANVAS_HEIGHT,
+    400,
+  );
+
   const gameStateRef = useRef({
-    player: { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT - 60 },
+    player: { x: canvasWidth / 2, y: canvasHeight - 60 },
     aliens: [] as Alien[],
     bullets: [] as Bullet[],
     alienDirection: 1,
@@ -60,7 +74,7 @@ export default function ArcadeView() {
     }
 
     gameStateRef.current = {
-      player: { x: CANVAS_WIDTH / 2, y: CANVAS_HEIGHT - 60 },
+      player: { x: canvasWidth / 2, y: canvasHeight - 60 },
       aliens,
       bullets: [],
       alienDirection: 1,
@@ -85,7 +99,7 @@ export default function ArcadeView() {
     );
   };
 
-  const gameLoop = () => {
+  const gameLoop = useCallback(() => {
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
 
@@ -93,7 +107,7 @@ export default function ArcadeView() {
 
     // Clear canvas
     ctx.fillStyle = "#000000";
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Move player
     if (state.keys["ArrowLeft"] && state.player.x > 0) {
@@ -101,7 +115,7 @@ export default function ArcadeView() {
     }
     if (
       state.keys["ArrowRight"] &&
-      state.player.x < CANVAS_WIDTH - PLAYER_WIDTH
+      state.player.x < canvasWidth - PLAYER_WIDTH
     ) {
       state.player.x += PLAYER_SPEED;
     }
@@ -137,7 +151,7 @@ export default function ArcadeView() {
       if (alien.alive) {
         if (
           (state.alienDirection > 0 &&
-            alien.x > CANVAS_WIDTH - ALIEN_WIDTH - 10) ||
+            alien.x > canvasWidth - ALIEN_WIDTH - 10) ||
           (state.alienDirection < 0 && alien.x < 10)
         ) {
           moveDown = true;
@@ -189,7 +203,7 @@ export default function ArcadeView() {
         ctx.fillRect(alien.x, alien.y, ALIEN_WIDTH, ALIEN_HEIGHT);
 
         // Check game over
-        if (alien.y > CANVAS_HEIGHT - 100) {
+        if (alien.y > canvasHeight - 100) {
           setGameState("gameOver");
           if (gameStateRef.current.animationId) {
             cancelAnimationFrame(gameStateRef.current.animationId);
@@ -213,7 +227,7 @@ export default function ArcadeView() {
     if (gameState === "playing") {
       state.animationId = requestAnimationFrame(gameLoop);
     }
-  };
+  }, [gameState, canvasWidth, canvasHeight, score]);
 
   useEffect(() => {
     if (gameState === "playing") {
@@ -238,13 +252,22 @@ export default function ArcadeView() {
         }
       };
     }
-  }, [gameState]);
+  }, [gameLoop, gameState]);
 
   useEffect(() => {
     if (gameState === "gameOver") {
       setHighScore((prev) => Math.max(prev, score));
     }
   }, [gameState, score]);
+
+  // Reinitialize game when canvas dimensions change
+  useEffect(() => {
+    if (gameState === "playing" && canvasWidth > 0 && canvasHeight > 0) {
+      // Update player position to center of new canvas
+      gameStateRef.current.player.x = canvasWidth / 2;
+      gameStateRef.current.player.y = canvasHeight - 60;
+    }
+  }, [canvasWidth, canvasHeight, gameState]);
 
   return (
     <div className="flex h-full flex-col">
@@ -258,12 +281,15 @@ export default function ArcadeView() {
         </div>
 
         <div className="flex items-center justify-center">
-          <div className="border-primary relative border-2">
+          <div
+            ref={containerRef}
+            className="border-primary relative min-h-64 w-full max-w-4xl border-2"
+          >
             <canvas
               ref={canvasRef}
-              width={CANVAS_WIDTH}
-              height={CANVAS_HEIGHT}
-              className="block"
+              width={canvasWidth}
+              height={canvasHeight}
+              className="block h-full w-full"
             />
 
             {gameState === "menu" && (
