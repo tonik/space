@@ -97,9 +97,6 @@ export function MessagingView() {
                         {msg.time}
                       </span>
                     </div>
-                    <p className="text-card-foreground/80 text-sm">
-                      {msg.preview}
-                    </p>
                   </div>
                 );
               })
