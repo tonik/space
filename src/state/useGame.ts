@@ -59,6 +59,7 @@ export const useGame = () => {
   );
 
   const logs = useSelector(gameActor, (state) => state.context.logs);
+  const systems = useSelector(gameActor, (state) => state.context.systems);
 
   const openedMessageIds = useSelector(
     gameActor,
@@ -102,6 +103,7 @@ export const useGame = () => {
     recentlyOpenedMessages,
 
     logs,
+    systems,
 
     startGame: (commanderName: string) =>
       gameActor.send({ type: "START_GAME", commanderName }),

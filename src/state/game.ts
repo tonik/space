@@ -134,7 +134,7 @@ const initialContext: GameContext = {
   systems: {
     communications: { integrity: 100, status: "online", critical: false },
     navigation: { integrity: 100, status: "online", critical: false },
-    lifeSupport: { integrity: 100, status: "online", critical: true },
+    lifeSupport: { integrity: 100, status: "critical", critical: true },
     power: { integrity: 100, status: "online", critical: true },
     weapons: { integrity: 100, status: "online", critical: true },
   },
