@@ -15,18 +15,45 @@ import {
   Activity,
 } from "lucide-react";
 import { Terminal } from "@/components/Terminal";
+import { SystemLogView } from "@/features/system-log/view";
 
-type View = "messaging" | "dashboard" | "terminal" | "news" | "logs";
+type View =
+  | "messaging"
+  | "dashboard"
+  | "terminal"
+  | "news"
+  | "logs";
 
 export default function SpaceshipOS() {
-  const [activeView, setActiveView] = useState<View>("dashboard");
+  const [activeView, setActiveView] =
+    useState<View>("dashboard");
 
   const navItems = [
-    { id: "dashboard" as View, label: "Control", icon: Gauge },
-    { id: "messaging" as View, label: "Comms", icon: MessageSquare },
-    { id: "terminal" as View, label: "Terminal", icon: TerminalIcon },
-    { id: "news" as View, label: "Earth Feed", icon: Globe },
-    { id: "logs" as View, label: "Ship Logs", icon: FileText },
+    {
+      id: "dashboard" as View,
+      label: "Control",
+      icon: Gauge,
+    },
+    {
+      id: "messaging" as View,
+      label: "Comms",
+      icon: MessageSquare,
+    },
+    {
+      id: "terminal" as View,
+      label: "Terminal",
+      icon: TerminalIcon,
+    },
+    {
+      id: "news" as View,
+      label: "Earth Feed",
+      icon: Globe,
+    },
+    {
+      id: "logs" as View,
+      label: "Ship Logs",
+      icon: FileText,
+    },
   ];
 
   return (
@@ -75,9 +102,13 @@ export default function SpaceshipOS() {
             </Badge>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            <span className="text-[#00ff41]/60">STARDATE: 2425.10.04</span>
+            <span className="text-[#00ff41]/60">
+              STARDATE: 2425.10.04
+            </span>
             <span className="text-[#00ff41]/60">|</span>
-            <span className="text-[#00ff41]/60">SECTOR: ALPHA-7</span>
+            <span className="text-[#00ff41]/60">
+              SECTOR: ALPHA-7
+            </span>
           </div>
         </div>
 
@@ -87,7 +118,7 @@ export default function SpaceshipOS() {
           {activeView === "messaging" && <MessagingView />}
           {activeView === "terminal" && <TerminalView />}
           {activeView === "news" && <NewsView />}
-          {activeView === "logs" && <LogsView />}
+          {activeView === "logs" && <SystemLogView />}
         </div>
       </div>
     </div>
@@ -99,19 +130,25 @@ function DashboardView() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <Card className="bg-black border-[#00ff41]/30 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-[#00ff41]">POWER SYSTEMS</h3>
+          <h3 className="text-sm font-bold text-[#00ff41]">
+            POWER SYSTEMS
+          </h3>
           <Zap className="w-4 h-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Main Reactor</span>
+            <span className="text-[#00ff41]/60">
+              Main Reactor
+            </span>
             <span className="text-[#00ff41]">98%</span>
           </div>
           <div className="h-2 bg-[#00ff41]/10 rounded-full overflow-hidden">
             <div className="h-full bg-[#00ff41] w-[98%]" />
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Auxiliary</span>
+            <span className="text-[#00ff41]/60">
+              Auxiliary
+            </span>
             <span className="text-[#00ff41]">87%</span>
           </div>
           <div className="h-2 bg-[#00ff41]/10 rounded-full overflow-hidden">
@@ -122,55 +159,81 @@ function DashboardView() {
 
       <Card className="bg-black border-[#00ff41]/30 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-[#00ff41]">LIFE SUPPORT</h3>
+          <h3 className="text-sm font-bold text-[#00ff41]">
+            LIFE SUPPORT
+          </h3>
           <Activity className="w-4 h-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Oxygen Level</span>
+            <span className="text-[#00ff41]/60">
+              Oxygen Level
+            </span>
             <span className="text-[#00ff41]">OPTIMAL</span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Temperature</span>
+            <span className="text-[#00ff41]/60">
+              Temperature
+            </span>
             <span className="text-[#00ff41]">21.5°C</span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Pressure</span>
-            <span className="text-[#00ff41]">101.3 kPa</span>
+            <span className="text-[#00ff41]/60">
+              Pressure
+            </span>
+            <span className="text-[#00ff41]">
+              101.3 kPa
+            </span>
           </div>
         </div>
       </Card>
 
       <Card className="bg-black border-[#00ff41]/30 p-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-[#00ff41]">NAVIGATION</h3>
+          <h3 className="text-sm font-bold text-[#00ff41]">
+            NAVIGATION
+          </h3>
           <Globe className="w-4 h-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Velocity</span>
+            <span className="text-[#00ff41]/60">
+              Velocity
+            </span>
             <span className="text-[#00ff41]">0.8c</span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">Heading</span>
-            <span className="text-[#00ff41]">045° MARK 12</span>
+            <span className="text-[#00ff41]/60">
+              Heading
+            </span>
+            <span className="text-[#00ff41]">
+              045° MARK 12
+            </span>
           </div>
           <div className="flex justify-between text-xs">
-            <span className="text-[#00ff41]/60">ETA to Destination</span>
-            <span className="text-[#00ff41]">14.2 HOURS</span>
+            <span className="text-[#00ff41]/60">
+              ETA to Destination
+            </span>
+            <span className="text-[#00ff41]">
+              14.2 HOURS
+            </span>
           </div>
         </div>
       </Card>
 
       <Card className="bg-black border-[#00ff41]/30 p-4 col-span-full">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-sm font-bold text-[#00ff41]">SYSTEM ALERTS</h3>
+          <h3 className="text-sm font-bold text-[#00ff41]">
+            SYSTEM ALERTS
+          </h3>
           <AlertTriangle className="w-4 h-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex items-center gap-2 text-xs p-2 bg-[#00ff41]/5 border border-[#00ff41]/20">
             <span className="text-[#00ff41]">[INFO]</span>
-            <span className="text-[#00ff41]/80">All systems nominal</span>
+            <span className="text-[#00ff41]/80">
+              All systems nominal
+            </span>
           </div>
           <div className="flex items-center gap-2 text-xs p-2 bg-[#00ff41]/5 border border-[#00ff41]/20">
             <span className="text-[#00ff41]">[WARN]</span>
@@ -189,22 +252,26 @@ function MessagingView() {
     {
       from: "EARTH COMMAND",
       time: "14:23",
-      message: "Status report received. Proceed to waypoint Delta.",
+      message:
+        "Status report received. Proceed to waypoint Delta.",
     },
     {
       from: "CARGO VESSEL AURORA",
       time: "13:45",
-      message: "Requesting docking clearance at Station Gamma.",
+      message:
+        "Requesting docking clearance at Station Gamma.",
     },
     {
       from: "EARTH COMMAND",
       time: "12:10",
-      message: "New mission parameters uploaded to your terminal.",
+      message:
+        "New mission parameters uploaded to your terminal.",
     },
     {
       from: "SCIENCE STATION 7",
       time: "11:30",
-      message: "Anomaly detected in sector 7-G. Advise caution.",
+      message:
+        "Anomaly detected in sector 7-G. Advise caution.",
     },
   ];
 
@@ -225,9 +292,13 @@ function MessagingView() {
                   <span className="text-xs font-bold text-[#00ff41]">
                     {msg.from}
                   </span>
-                  <span className="text-xs text-[#00ff41]/60">{msg.time}</span>
+                  <span className="text-xs text-[#00ff41]/60">
+                    {msg.time}
+                  </span>
                 </div>
-                <p className="text-sm text-[#00ff41]/80">{msg.message}</p>
+                <p className="text-sm text-[#00ff41]/80">
+                  {msg.message}
+                </p>
               </div>
             ))}
           </div>
@@ -263,7 +334,8 @@ function NewsView() {
       category: "COLONY",
     },
     {
-      title: "New Warp Drive Technology Tested Successfully",
+      title:
+        "New Warp Drive Technology Tested Successfully",
       time: "5 hours ago",
       category: "TECH",
     },
@@ -304,79 +376,13 @@ function NewsView() {
                   >
                     {item.category}
                   </Badge>
-                  <span className="text-xs text-[#00ff41]/60">{item.time}</span>
+                  <span className="text-xs text-[#00ff41]/60">
+                    {item.time}
+                  </span>
                 </div>
                 <h4 className="text-sm text-[#00ff41] font-medium">
                   {item.title}
                 </h4>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      </Card>
-    </div>
-  );
-}
-
-function LogsView() {
-  const logs = [
-    {
-      time: "14:45:23",
-      level: "INFO",
-      message: "Course correction completed successfully",
-    },
-    {
-      time: "14:30:12",
-      level: "INFO",
-      message: "Routine system diagnostic initiated",
-    },
-    {
-      time: "14:15:45",
-      level: "WARN",
-      message: "Minor fluctuation in auxiliary power detected",
-    },
-    {
-      time: "14:00:00",
-      level: "INFO",
-      message: "Shift change: Alpha crew to Beta crew",
-    },
-    {
-      time: "13:45:33",
-      level: "INFO",
-      message: "Communication received from Earth Command",
-    },
-    { time: "13:30:21", level: "INFO", message: "Navigation update processed" },
-    {
-      time: "13:15:09",
-      level: "WARN",
-      message: "Approaching high radiation zone",
-    },
-    {
-      time: "13:00:00",
-      level: "INFO",
-      message: "Automated maintenance cycle completed",
-    },
-  ];
-
-  return (
-    <div className="max-w-4xl">
-      <Card className="bg-black border-[#00ff41]/30 p-4">
-        <h3 className="text-sm font-bold text-[#00ff41] mb-4">
-          SHIP SYSTEM LOGS
-        </h3>
-        <ScrollArea className="h-[500px] font-mono text-xs">
-          <div className="space-y-1">
-            {logs.map((log, i) => (
-              <div key={i} className="flex gap-3 py-1 hover:bg-[#00ff41]/5">
-                <span className="text-[#00ff41]/60">[{log.time}]</span>
-                <span
-                  className={
-                    log.level === "WARN" ? "text-yellow-500" : "text-[#00ff41]"
-                  }
-                >
-                  {log.level}
-                </span>
-                <span className="text-[#00ff41]/80">{log.message}</span>
               </div>
             ))}
           </div>
