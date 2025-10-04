@@ -6,6 +6,21 @@ export interface SystemStatus {
   critical: boolean;
 }
 
+export interface Message {
+  id: string;
+  from: string;
+  time: string;
+  title: string;
+  preview: string;
+  priority: 'low' | 'normal' | 'high' | 'critical';
+  type: 'incoming' | 'outgoing' | 'system' | 'ai';
+}
+
+export interface MessageView {
+  messageId: string;
+  openedAt: number;
+}
+
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
@@ -42,6 +57,9 @@ export interface GameContext {
     negotiation: number;
     investigation: number;
   };
+  
+  messages: Message[];
+  messageViews: MessageView[];
 }
 
 export type GameEvent = 
@@ -77,7 +95,10 @@ export type GameEvent =
   | { type: 'THREATEN_SELF_DESTRUCT' }
   | { type: 'ACTIVATE_SELF_DESTRUCT' }
   
-  | { type: 'END_GAME'; outcome: string };
+  | { type: 'END_GAME'; outcome: string }
+  
+  | { type: 'ADD_MESSAGE'; message: Message }
+  | { type: 'MESSAGE_OPENED'; messageId: string };
 
 const initialContext: GameContext = {
   commanderName: 'Commander',
@@ -115,6 +136,46 @@ const initialContext: GameContext = {
     negotiation: 50,
     investigation: 50,
   },
+  
+  messages: [
+    {
+      id: '1',
+      from: 'EARTH COMMAND',
+      time: '14:23',
+      title: 'Status Report Required',
+      preview: 'Status report received. Proceed to waypoint Delta.',
+      priority: 'normal',
+      type: 'incoming',
+    },
+    {
+      id: '2',
+      from: 'CARGO VESSEL AURORA',
+      time: '13:45',
+      title: 'Docking Request',
+      preview: 'Requesting docking clearance at Station Gamma.',
+      priority: 'low',
+      type: 'incoming',
+    },
+    {
+      id: '3',
+      from: 'EARTH COMMAND',
+      time: '12:10',
+      title: 'Mission Parameters Update',
+      preview: 'New mission parameters uploaded to your terminal.',
+      priority: 'high',
+      type: 'incoming',
+    },
+    {
+      id: '4',
+      from: 'SCIENCE STATION 7',
+      time: '11:30',
+      title: 'Anomaly Detected',
+      preview: 'Anomaly detected in sector 7-G. Advise caution.',
+      priority: 'critical',
+      type: 'incoming',
+    },
+  ],
+  messageViews: [],
 };
 
 export const gameMachine = setup({
@@ -582,6 +643,19 @@ export const gameMachine = setup({
         }),
         'changeAIPersonality',
       ],
+    },
+    ADD_MESSAGE: {
+      actions: assign({
+        messages: ({ context, event }) => [...context.messages, event.message],
+      }),
+    },
+    MESSAGE_OPENED: {
+      actions: assign({
+        messageViews: ({ context, event }) => [
+          ...context.messageViews,
+          { messageId: event.messageId, openedAt: Date.now() },
+        ],
+      }),
     },
   },
 });
