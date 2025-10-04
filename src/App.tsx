@@ -1,4 +1,4 @@
-import "./App.css";
+import "./index.css";
 import SpaceshipOS from "./components/page";
 
 function App() {
