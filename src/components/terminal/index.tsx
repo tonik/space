@@ -173,17 +173,13 @@ export function Terminal({ className = "" }: TerminalProps) {
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className} border-primary bg-background text-primary h-[500px] overflow-auto border font-mono text-sm leading-[1.2]`}
+      className={`terminal-container ${className} bg-background text-primary relative h-[500px] overflow-auto font-mono text-sm leading-[1.2] font-[500]`}
       style={{
         textShadow: "0 0 2px var(--primary)",
         fontFamily: '"Space Mono", "Courier New", monospace',
-        fontWeight: 500,
-        boxShadow:
-          "0 0 20px oklch(0.832 0.189 142.5 / 0.1), inset 0 0 40px oklch(0.832 0.189 142.5 / 0.05)",
-        position: "relative",
       }}
     >
-      <div className="space-y-1 p-4">
+      <div className="space-y-1">
         {lines.map((line, index) => (
           <div
             key={index}
