@@ -32,7 +32,6 @@ export function Terminal({ className = "" }: TerminalProps) {
     { type: "text", content: "" },
   ]);
   const [currentInput, setCurrentInput] = useState("");
-  const [cursorVisible, setCursorVisible] = useState(true);
   const [isPrinting, setIsPrinting] = useState(false);
   const [waitingForInput, setWaitingForInput] = useState<{
     type: string;
@@ -41,14 +40,6 @@ export function Terminal({ className = "" }: TerminalProps) {
   } | null>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Cursor blinking effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCursorVisible((prev) => !prev);
-    }, 530);
-    return () => clearInterval(interval);
-  }, []);
 
   // Focus terminal on mount and when clicking
   useEffect(() => {
@@ -202,9 +193,9 @@ export function Terminal({ className = "" }: TerminalProps) {
               }}
               autoFocus
             />
-            {cursorVisible && !isPrinting && (
+            {!isPrinting && (
               <span
-                className="text-primary absolute animate-pulse"
+                className="text-primary animate-caret-blink absolute"
                 style={{
                   fontSize: "16px",
                   fontWeight: "bold",
