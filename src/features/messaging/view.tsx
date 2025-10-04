@@ -57,7 +57,7 @@ export function MessagingView() {
 
   // Message list view
   return (
-    <div className="max-w-4xl">
+    <>
       <Card className="border-border/30 bg-card mb-4 p-4">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-card-foreground text-sm font-bold">
@@ -118,6 +118,6 @@ export function MessagingView() {
         />
         <Button onClick={handleSendMessage}>SEND</Button>
       </div>
-    </div>
+    </>
   );
 }

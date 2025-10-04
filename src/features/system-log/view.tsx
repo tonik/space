@@ -18,46 +18,44 @@ export function SystemLogView() {
   };
 
   return (
-    <div className="max-w-4xl">
-      <Card className="border-border/30 bg-card p-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-card-foreground text-sm font-bold">
-            SHIP SYSTEM LOGS
-          </h3>
-          <div className="flex gap-2">
-            <Button onClick={addLog} variant="outline" size="sm">
-              Add Log
-            </Button>
-          </div>
+    <Card className="border-border/30 bg-card p-4">
+      <div className="mb-4 flex items-center justify-between">
+        <h3 className="text-card-foreground text-sm font-bold">
+          SHIP SYSTEM LOGS
+        </h3>
+        <div className="flex gap-2">
+          <Button onClick={addLog} variant="outline" size="sm">
+            Add Log
+          </Button>
         </div>
-        <ScrollArea className="h-[500px] font-mono text-xs">
-          <div className="space-y-1">
-            {logs.length === 0 ? (
-              <div className="text-muted-foreground/60 py-8 text-center">
-                No system logs available
+      </div>
+      <ScrollArea className="h-[500px] font-mono text-xs">
+        <div className="space-y-1">
+          {logs.length === 0 ? (
+            <div className="text-muted-foreground/60 py-8 text-center">
+              No system logs available
+            </div>
+          ) : (
+            logs.map((log, i) => (
+              <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
+                <span className="text-muted-foreground">[{log.time}]</span>
+                <span
+                  className={
+                    log.level === "WARN"
+                      ? "text-yellow-500"
+                      : log.level === "ERROR"
+                        ? "text-red-400"
+                        : "text-card-foreground"
+                  }
+                >
+                  [{log.level}]
+                </span>
+                <span className="text-card-foreground/80">{log.message}</span>
               </div>
-            ) : (
-              logs.map((log, i) => (
-                <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                  <span className="text-muted-foreground">[{log.time}]</span>
-                  <span
-                    className={
-                      log.level === "WARN"
-                        ? "text-yellow-500"
-                        : log.level === "ERROR"
-                          ? "text-red-400"
-                          : "text-card-foreground"
-                    }
-                  >
-                    [{log.level}]
-                  </span>
-                  <span className="text-card-foreground/80">{log.message}</span>
-                </div>
-              ))
-            )}
-          </div>
-        </ScrollArea>
-      </Card>
-    </div>
+            ))
+          )}
+        </div>
+      </ScrollArea>
+    </Card>
   );
 }
