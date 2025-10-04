@@ -14,7 +14,7 @@ interface SystemCardProps {
 
 export function SystemCard({ title, icon, metrics, status, className = "" }: SystemCardProps) {
   return (
-    <Card className={cn(`bg-background p-4 ${className}`)}>
+    <Card className={cn(`bg-background p-6 ${className}`)}>
       <div className="mb-1 flex items-center justify-between relative">
         <h3 className="font-bold">{title}</h3>
         {icon}

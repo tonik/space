@@ -25,7 +25,7 @@ export function SystemLogView() {
   };
 
   return (
-    <Card className="border-border/30 bg-card p-4">
+    <Card className="border-border/30 bg-card p-6">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-card-foreground text-sm font-bold">
           SHIP SYSTEM LOGS

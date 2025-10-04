@@ -19,7 +19,7 @@ export default function Navigation({
   const { viewNotifications } = useNavigationState();
 
   return (
-    <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-6 border-r py-6">
+    <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-3 border-r py-6">
       <div className="mb-4 flex h-10 w-10 items-center justify-center">
         <img src={Tonik} alt="Tonik" className="color-primary" />
       </div>

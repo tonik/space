@@ -16,7 +16,7 @@ export function MissionStatus({
   missionTime,
 }: MissionStatusProps) {
   return (
-    <Card className="border-border/30 bg-background col-span-full p-4 md:col-span-1">
+    <Card className="border-border/30 bg-background col-span-full p-6 md:col-span-1">
       <div className="mb-1 flex items-center justify-between">
         <h3 className="text-primary text-sm font-bold">MISSION STATUS</h3>
         <MessageSquare className="text-primary h-4 w-4" />

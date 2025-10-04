@@ -19,7 +19,7 @@ export function SystemAlerts({ logs }: SystemAlertsProps) {
   );
 
   return (
-    <Card className="border-border/30 bg-background col-span-full p-4">
+    <Card className="border-border/30 bg-background col-span-full p-6">
       <div className="mb-1 flex items-center justify-between">
         <h3 className="text-primary text-sm font-bold">SYSTEM ALERTS</h3>
         <AlertTriangle className="text-primary h-4 w-4" />

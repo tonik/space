@@ -271,7 +271,7 @@ export default function ArcadeView() {
 
   return (
     <div className="flex h-full flex-col">
-      <Card className="border-border/30 bg-background flex-1 p-4">
+      <Card className="border-border/30 bg-background flex-1 p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-primary text-sm font-bold">SPACE INVADERS</h3>
           <div className="text-primary flex gap-4 font-mono text-sm">

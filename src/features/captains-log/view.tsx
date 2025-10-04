@@ -19,13 +19,13 @@ export default function CaptainsLogView() {
 
   return (
     <div className="flex h-full flex-col">
-      <Card className="border-border/30 bg-background flex-1 p-4">
-        <div className="mb-4 flex items-center justify-between">
+      <Card className="border-border/30 bg-background flex-1 p-6">
+        <div className="mb-1 flex items-center justify-between">
           <h3 className="text-primary text-sm font-bold">CAPTAIN'S LOG</h3>
           <BookOpen className="text-primary h-4 w-4" />
         </div>
         <ScrollArea className="h-[calc(100vh-200px)] font-mono text-xs">
-          <div className="space-y-4 pr-4">
+          <div className="space-y-4">
             {sortedEntries.length === 0 ? (
               <div className="text-muted-foreground/40 py-8 text-center">
                 No log entries available
@@ -34,7 +34,7 @@ export default function CaptainsLogView() {
               sortedEntries.map((entry) => (
                 <div
                   key={entry.id}
-                  className="border-border/30 hover:border-primary/30 rounded border p-4 transition-colors"
+                  className="border-border/30 hover:border-primary/30 rounded border p-6 transition-colors"
                 >
                   <div className="mb-2 flex items-start justify-between">
                     <div>

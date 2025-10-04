@@ -23,7 +23,7 @@ export function SystemDiagnostics({
   errorRate,
 }: SystemDiagnosticsProps) {
   return (
-    <Card className="border-border/30 bg-background col-span-full p-4 md:col-span-2">
+    <Card className="border-border/30 bg-background col-span-full p-6 md:col-span-2">
       <div className="mb-1 flex items-center justify-between">
         <h3 className="text-primary text-sm font-bold">
           MAINFRAME DIAGNOSTICS

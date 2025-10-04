@@ -69,10 +69,10 @@ Replace all hardcoded `#00ff41` colors in `src/features/dashboard/view.tsx` with
 
 ```tsx
 // Before:
-<Card className="border-[#00ff41]/30 bg-black p-4">
+<Card className="border-[#00ff41]/30 bg-black p-6">
 
 // After:
-<Card className="border-border/30 bg-background p-4">
+<Card className="border-border/30 bg-background p-6">
 ```
 
 #### 2. Update Text Colors
@@ -142,7 +142,7 @@ Replace hardcoded colors in navigation components with semantic classes and fix 
 
 ```tsx
 // Before:
-<div className="flex w-20 flex-col items-center gap-6 border-r border-[#00ff41]/30 bg-black py-6">
+<div className="flex w-20 flex-col items-center gap-3 border-r border-[#00ff41]/30 bg-black py-6">
 <div className="mb-4 flex h-10 w-10 items-center justify-center border-2 border-[#00ff41]">
 className={`transition-colors hover:bg-[#00ff41]/10 hover:text-[#00ff41] ${
   activeView === item.id
@@ -152,7 +152,7 @@ className={`transition-colors hover:bg-[#00ff41]/10 hover:text-[#00ff41] ${
 <span className="... shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
 
 // After:
-<div className="flex w-20 flex-col items-center gap-6 border-r border-border/30 bg-background py-6">
+<div className="flex w-20 flex-col items-center gap-3 border-r border-border/30 bg-background py-6">
 <div className="mb-4 flex h-10 w-10 items-center justify-center border-2 border-primary">
 className={`transition-colors hover:bg-primary/10 hover:text-primary ${
   activeView === item.id

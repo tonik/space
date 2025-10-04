@@ -370,8 +370,8 @@ Systematically replace all hardcoded colors with semantic CSS variable classes.
 // To: className="flex h-screen overflow-hidden bg-background font-mono text-foreground"
 
 // Line 64: Replace border color
-// From: className="flex w-20 flex-col items-center gap-6 border-r border-[#00ff41]/30 bg-black py-6"
-// To: className="flex w-20 flex-col items-center gap-6 border-r border-border/30 bg-background py-6"
+// From: className="flex w-20 flex-col items-center gap-3 border-r border-[#00ff41]/30 bg-black py-6"
+// To: className="flex w-20 flex-col items-center gap-3 border-r border-border/30 bg-background py-6"
 
 // Line 77: Replace hover colors
 // From: className="... hover:bg-[#00ff41]/10 hover:text-[#00ff41]"
@@ -395,8 +395,8 @@ Systematically replace all hardcoded colors with semantic CSS variable classes.
 
 ```typescript
 // Line 41: Card theming
-// From: className="mb-4 border-[#00ff41]/30 bg-black p-4"
-// To: className="mb-4 border-border/30 bg-card p-4"
+// From: className="mb-4 border-[#00ff41]/30 bg-black p-6"
+// To: className="mb-4 border-border/30 bg-card p-6"
 
 // Line 43: Header text
 // From: className="text-sm font-bold text-[#00ff41]"
@@ -420,8 +420,8 @@ Systematically replace all hardcoded colors with semantic CSS variable classes.
 
 ```typescript
 // Line 38: Card theming
-// From: className="border-[#00ff41]/30 bg-black p-4"
-// To: className="border-border/30 bg-card p-4"
+// From: className="border-[#00ff41]/30 bg-black p-6"
+// To: className="border-border/30 bg-card p-6"
 
 // Line 40: Header text
 // From: className="text-sm font-bold text-[#00ff41]"

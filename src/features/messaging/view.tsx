@@ -70,8 +70,8 @@ export function MessagingView() {
   // Message list view
   return (
     <>
-      <Card className="border-border/30 bg-card mb-6 p-4">
-        <div className="mb-4 flex items-center justify-between">
+      <Card className="border-border/30 bg-card mb-6 p-6">
+        <div className="mb-1 flex items-center justify-between">
           <h3 className="text-card-foreground text-sm font-bold">
             INCOMING TRANSMISSIONS
           </h3>
