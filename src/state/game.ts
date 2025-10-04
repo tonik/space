@@ -27,6 +27,14 @@ export interface MessageView {
   openedAt: number;
 }
 
+export interface LogEntry {
+  id: string;
+  time: string;
+  level: "INFO" | "WARN" | "ERROR";
+  system: string;
+  message: string;
+}
+
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
@@ -66,6 +74,8 @@ export interface GameContext {
 
   messages: Message[];
   messageViews: MessageView[];
+
+  logs: LogEntry[];
 }
 
 export type GameEvent =
@@ -95,7 +105,8 @@ export type GameEvent =
   | { type: "ACTIVATE_SELF_DESTRUCT" }
   | { type: "END_GAME"; outcome: string }
   | { type: "ADD_MESSAGE"; message: Message }
-  | { type: "MESSAGE_OPENED"; messageId: string };
+  | { type: "MESSAGE_OPENED"; messageId: string }
+  | { type: "ADD_LOG"; log: LogEntry };
 
 const initialContext: GameContext = {
   commanderName: "Commander",
@@ -173,6 +184,8 @@ const initialContext: GameContext = {
     },
   ],
   messageViews: [],
+
+  logs: [],
 };
 
 export const gameMachine = setup({
@@ -666,6 +679,11 @@ export const gameMachine = setup({
           ...context.messageViews,
           { messageId: event.messageId, openedAt: Date.now() },
         ],
+      }),
+    },
+    ADD_LOG: {
+      actions: assign({
+        logs: ({ context, event }) => [...context.logs, event.log],
       }),
     },
   },

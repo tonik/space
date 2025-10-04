@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { Terminal } from "@/components/Terminal";
 import { SystemLogView } from "@/features/system-log/view";
-import { useSystemLogStore } from "@/features/system-log/store";
 import { useGame } from "@/state/useGame";
 
 import { useNotificationsStore } from "@/features/notifications/store";
@@ -132,7 +131,7 @@ export default function SpaceshipOS() {
 }
 
 function DashboardView() {
-  const { logs } = useSystemLogStore();
+  const { logs } = useGame();
 
   const recentAlerts = logs.filter(
     (log) => log.level === "WARN" || log.level === "ERROR",
