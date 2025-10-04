@@ -4,8 +4,8 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
-import { MessageModal } from "@/components/MessageModal";
 import type { Message } from "@/state/types";
+import { MessageDetail } from "@/components/message-detail";
 
 export function MessagingView() {
   const { notifications, dismiss } = useNotificationsStore();
@@ -13,7 +13,7 @@ export function MessagingView() {
   const { messages, unreadCount, addMessage, openMessage } = game;
   const [newMessage, setNewMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "message">("list");
 
   useEffect(() => {
     if (notifications.messaging) {
@@ -44,18 +44,26 @@ export function MessagingView() {
 
   const handleMessageClick = (message: Message) => {
     setSelectedMessage(message);
-    setIsModalOpen(true);
+    setViewMode("message");
     // Also mark as read if it's unread
     if (!game.openedMessageIds.has(message.id)) {
       openMessage(message.id);
     }
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleBackToList = () => {
+    setViewMode("list");
     setSelectedMessage(null);
   };
 
+  // Message detail view
+  if (viewMode === "message" && selectedMessage) {
+    return (
+      <MessageDetail message={selectedMessage} onBack={handleBackToList} />
+    );
+  }
+
+  // Message list view
   return (
     <div className="max-w-4xl">
       <Card className="border-border/30 bg-card mb-4 p-4">
@@ -115,12 +123,6 @@ export function MessagingView() {
         />
         <Button onClick={handleSendMessage}>SEND</Button>
       </div>
-
-      <MessageModal
-        message={selectedMessage}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
     </div>
   );
 }
