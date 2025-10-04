@@ -1,7 +1,13 @@
-export default function App() {
+import "./App.css";
+import SpaceshipOS from "./components/page";
+
+function App() {
+
   return (
-    <div className="flex justify-center items-center h-screen">
-      Hello World!
-    </div>
+    <>
+      <SpaceshipOS />
+    </>
   );
 }
+
+export default App;
