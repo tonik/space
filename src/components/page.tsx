@@ -1,4 +1,4 @@
-import { Terminal } from "@/components/terminal";
+import { Terminal } from "@/components/Terminal";
 import { SystemLogView } from "@/features/system-log/view";
 import { useGame } from "@/state/useGame";
 import { MessagingView } from "@/features/messaging/view";
@@ -13,7 +13,7 @@ export default function SpaceshipOS() {
   const activeView = context.activeView;
 
   return (
-    <div className="flex h-screen overflow-hidden bg-black font-mono text-primary">
+    <div className="text-primary flex h-screen overflow-hidden bg-black font-mono">
       <Navigation activeView={activeView} setActiveView={changeView} />
       <div className="flex flex-1 flex-col">
         <TopNav activeView={activeView} />
