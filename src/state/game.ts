@@ -114,14 +114,30 @@ const initialContext: GameContext = {
   systems: {
     communications: {
       integrity: 100,
-      status: "online",
-      critical: false,
-      metrics: [],
+      status: "critical",
+      metrics: [
+        {
+          label: "Earth Uplink",
+          value: "ACTIVE",
+        },
+        {
+          label: "Signal Strength",
+          value: "92%",
+          progress: 92,
+        },
+        {
+          label: "Last Contact",
+          value: "2.3 HOURS",
+        },
+        {
+          label: "Encryption",
+          value: "AES-512",
+        },
+      ],
     },
     navigation: {
       integrity: 100,
       status: "online",
-      critical: false,
       metrics: [
         {
           label: "Velocity",
@@ -140,7 +156,6 @@ const initialContext: GameContext = {
     lifeSupport: {
       integrity: 100,
       status: "critical",
-      critical: true,
       metrics: [
         {
           label: "Oxygen Level",
@@ -159,7 +174,6 @@ const initialContext: GameContext = {
     power: {
       integrity: 100,
       status: "online",
-      critical: true,
       metrics: [
         {
           label: "Main Reactor",
@@ -173,7 +187,11 @@ const initialContext: GameContext = {
         },
       ],
     },
-    weapons: { integrity: 100, status: "online", critical: true, metrics: [] },
+    weapons: {
+      integrity: 100,
+      status: "online",
+      metrics: [],
+    },
   },
 
   diagnostics: {

@@ -89,7 +89,6 @@ export default function DashboardView() {
         status={{
           status: "online",
           integrity: 100,
-          critical: false,
           metrics: [],
         }}
       />
@@ -97,25 +96,7 @@ export default function DashboardView() {
       <SystemCard
         title="COMMUNICATIONS"
         icon={<Radio className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Earth Uplink",
-            value: "ACTIVE",
-          },
-          {
-            label: "Signal Strength",
-            value: "92%",
-            progress: 92,
-          },
-          {
-            label: "Last Contact",
-            value: "2.3 HOURS",
-          },
-          {
-            label: "Encryption",
-            value: "AES-512",
-          },
-        ]}
+        metrics={systems.communications.metrics}
         status={systems.communications || defaultSystemStatus}
       />
 

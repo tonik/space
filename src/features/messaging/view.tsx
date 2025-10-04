@@ -8,15 +8,24 @@ import { MessageDetail } from "@/components/message-detail";
 import { User } from "lucide-react";
 import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 export function MessagingView() {
   const game = useGame();
-  const { messages, unreadCount, addMessage, openMessage } = game;
+  const { messages, unreadCount, addMessage, openMessage, systems } = game;
   const [newMessage, setNewMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "message">("list");
+  const isCommunicationsOnline = systems.communications.status === "online";
 
   const handleSendMessage = () => {
+    if (!isCommunicationsOnline) {
+      toast("Communications are offline", {
+        description: "Please check the communications system",
+      });
+      return;
+    }
+
     if (newMessage.trim()) {
       const messageId = Date.now().toString();
       addMessage({

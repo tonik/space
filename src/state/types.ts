@@ -94,7 +94,6 @@ export interface System {
     | "offline"
     | "compromised"
     | "critical";
-  critical: boolean;
   metrics: SystemMetric[];
 }
 
