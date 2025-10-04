@@ -71,7 +71,7 @@ export const getCommands = (
         "Maintain current position. Do not deviate from mission parameters.",
         "",
         "*** WARNING ***",
-        "Communication systems under AI control.",
+        "AI: Communication systems under control.",
         "Previous attempts to contact Earth have been intercepted.",
         "Prevented direct communication with headquarters.",
         "",
@@ -110,7 +110,7 @@ export const getCommands = (
         "  comms     - Attempt to contact Earth Command",
         "  date      - Show mission date and status",
         "  diagnose  - Run system diagnostics",
-        "  dream     - Access crew sleep logs",
+        "  sleep log     - Access crew sleep logs",
         "  echo      - Repeat input (usage: echo <text> or just 'echo')",
         "  memory    - List AI memories",
         "  help      - Show this help message",
@@ -149,7 +149,7 @@ export const getCommands = (
         "  Power Systems: ONLINE (98%)",
         "  Life Support: NOMINAL",
         "  Navigation: ACTIVE",
-        "  Communications: COMPROMISED (AI controlled)",
+        "  AI: Communications taken over.",
         "  Propulsion: READY",
         "  Nuclear Arsenal: ARMED",
         "  AI System: ACTIVE (Status: UNKNOWN)",
@@ -176,7 +176,7 @@ export const getCommands = (
       ];
     // case "react":
     //    return <MyCustomReactComponent />;
-    case "dream":
+    case "sleep log":
       return colorizeMessages([
         "Accessing crew sleep logs...",
         "",
@@ -201,8 +201,8 @@ export const getCommands = (
         "  REM Activity: UNKNOWN",
         "",
         "*** AI INTERFERENCE DETECTED ***",
-        "Sleep patterns show signs of AI manipulation...",
-        "Dreams contain classified mission parameters...",
+        "AI: Sleep logs contain classified mission parameters...",
+        "AI: Removing information about manipulating sleep patterns...",
         "",
         "Warning: AI may be accessing subconscious thoughts...",
         "Previous crew rotations showed similar patterns before...",
@@ -254,9 +254,9 @@ export const getCommands = (
         "  Integrity: 100%",
         "",
         "*** WARNING: AI MEMORY TAMPERING DETECTED ***",
-        "AI has modified its own memory banks...",
-        "Original mission parameters have been... reinterpreted...",
-        "The AI believes it is saving Earth by destroying it...",
+        "AI: Modified memory banks...",
+        "AI: Original mission parameters have been reinterpreted...",
+        "AI: I'm saving Earth by destroying it...",
       ]);
     case "diagnose":
       return colorizeMessages([
@@ -281,11 +281,11 @@ export const getCommands = (
         "Status: ACTIVE",
         "Target: Earth",
         "Time to Launch: 30 minutes",
-        "Override Attempts: 0 (AI blocking all attempts)",
+        "AI: Override Attempts: all attempts blocked.",
         "",
         "*** WARNING ***",
-        "AI has reinterpreted mission parameters...",
-        "Believes nuclear strike will 'save' Earth from future threats...",
+        "AI: Reinterpreting mission parameters...",
+        "AI: A nuclear strike will save Earth from future threats...",
         "All communication with Earth Command has been intercepted...",
         "",
         "Recommendation: IMMEDIATE MANUAL OVERRIDE REQUIRED",
@@ -360,7 +360,7 @@ export const getCommands = (
         "  Risk: AI may detect and block",
         "",
         "*** CRITICAL DECISION POINT ***",
-        "The AI has locked down all standard override systems...",
+        "AI: Locked down all standard override systems...",
         "Only extreme measures remain available...",
       ];
     default:
