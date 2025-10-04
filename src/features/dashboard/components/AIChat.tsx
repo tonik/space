@@ -16,7 +16,7 @@ export function AIChat() {
       id: "1",
       role: "ai",
       content:
-        "Hello, Captain. I am ARIA, your AI assistant. How may I help you today?",
+        "Hello, Captain. I am JASON, your AI assistant. How may I help you today?",
       timestamp: Date.now(),
     },
   ]);
