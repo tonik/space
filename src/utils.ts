@@ -45,7 +45,7 @@ export const navItems: {
     icon: Gamepad2,
   },
   {
-    id: "cipher-game" as View,
+    id: "cipher-game",
     label: "Cipher",
     icon: Lock,
   },
