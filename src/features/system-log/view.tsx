@@ -23,11 +23,7 @@ const useSystemLogStore = create<SystemLogState>((set) => ({
 }));
 
 export function SystemLogView() {
-  const { logs, addLog } = useSystemLogStore();
-
-  useEffect(() => {
-    addLog(logs[0]);
-  }, [addLog, logs]);
+  const { logs } = useSystemLogStore();
 
   return (
     <div className="max-w-4xl">
