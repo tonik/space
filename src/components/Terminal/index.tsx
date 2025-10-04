@@ -126,9 +126,9 @@ export function Terminal({
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className} bg-black text-[#00ff41] font-mono text-sm leading-[1.2] overflow-auto h-[500px] border border-[#00ff41]`}
+      className={`terminal-container ${className} h-[500px] overflow-auto border border-[#00ff41] bg-black font-mono text-sm leading-[1.2] text-[#00ff41]`}
     >
-      <div className="p-4 space-y-1">
+      <div className="space-y-1 p-4">
         {lines.map((line, index) => (
           <div
             key={index}
@@ -143,7 +143,7 @@ export function Terminal({
         {/* Current input line with cursor */}
         <div className="flex items-center">
           {!isPrinting && <span className="text-[#00ff41]">&gt;&nbsp;</span>}
-          <div className="flex items-center flex-1 relative">
+          <div className="relative flex flex-1 items-center">
             <input
               ref={inputRef}
               type="text"
@@ -151,7 +151,7 @@ export function Terminal({
               onChange={(e) => setCurrentInput(e.target.value)}
               onKeyDown={handleKeyDown}
               readOnly={isPrinting}
-              className={`bg-transparent text-[#00ff41] outline-none font-mono caret-transparent ${
+              className={`bg-transparent font-mono text-[#00ff41] caret-transparent outline-none ${
                 isPrinting ? "opacity-50" : ""
               }`}
               style={{
@@ -163,7 +163,7 @@ export function Terminal({
             />
             {cursorVisible && !isPrinting && (
               <span
-                className="text-[#00ff41] absolute"
+                className="absolute text-[#00ff41]"
                 style={{
                   fontSize: "16px",
                   fontWeight: "bold",

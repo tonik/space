@@ -14,7 +14,6 @@ interface SystemLogState {
 
 export const useSystemLogStore = create<SystemLogState>((set) => ({
   logs: [],
-  addLog: (log) =>
-    set((state) => ({ logs: [...state.logs, log] })),
+  addLog: (log) => set((state) => ({ logs: [...state.logs, log] })),
   clearLogs: () => set({ logs: [] }),
 }));

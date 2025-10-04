@@ -7,7 +7,8 @@ import { useMessagingStore } from "./store";
 
 export function MessagingView() {
   const { notifications, dismiss } = useNotificationsStore();
-  const { messages, addMessage, markAllAsRead, getUnreadCount } = useMessagingStore();
+  const { messages, addMessage, markAllAsRead, getUnreadCount } =
+    useMessagingStore();
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -21,7 +22,10 @@ export function MessagingView() {
     if (newMessage.trim()) {
       addMessage({
         from: "YOU",
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
         message: newMessage.trim(),
       });
       setNewMessage("");
@@ -34,8 +38,8 @@ export function MessagingView() {
 
   return (
     <div className="max-w-4xl">
-      <Card className="bg-black border-[#00ff41]/30 p-4 mb-4">
-        <div className="flex justify-between items-center mb-4">
+      <Card className="mb-4 border-[#00ff41]/30 bg-black p-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-[#00ff41]">
             INCOMING TRANSMISSIONS
           </h3>
@@ -47,7 +51,7 @@ export function MessagingView() {
             )}
             <button
               onClick={handleMarkAllAsRead}
-              className="px-3 py-1 text-xs bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/30 hover:bg-[#00ff41]/30 transition-colors"
+              className="border border-[#00ff41]/30 bg-[#00ff41]/20 px-3 py-1 text-xs text-[#00ff41] transition-colors hover:bg-[#00ff41]/30"
             >
               Mark All Read
             </button>
@@ -56,7 +60,7 @@ export function MessagingView() {
         <ScrollArea className="h-[500px]">
           <div className="space-y-3">
             {messages.length === 0 ? (
-              <div className="text-[#00ff41]/40 text-center py-8">
+              <div className="py-8 text-center text-[#00ff41]/40">
                 No messages available
               </div>
             ) : (
@@ -67,11 +71,13 @@ export function MessagingView() {
                     msg.isRead ? "bg-[#00ff41]/5" : "bg-[#00ff41]/10"
                   }`}
                 >
-                  <div className="flex justify-between mb-2">
+                  <div className="mb-2 flex justify-between">
                     <span className="text-xs font-bold text-[#00ff41]">
                       {msg.from}
                     </span>
-                    <span className="text-xs text-[#00ff41]/60">{msg.time}</span>
+                    <span className="text-xs text-[#00ff41]/60">
+                      {msg.time}
+                    </span>
                   </div>
                   <p className="text-sm text-[#00ff41]/80">{msg.message}</p>
                 </div>
@@ -87,9 +93,9 @@ export function MessagingView() {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-          className="flex-1 bg-black border border-[#00ff41]/30 px-4 py-2 text-sm text-[#00ff41] placeholder:text-[#00ff41]/40 focus:outline-none focus:border-[#00ff41]"
+          className="flex-1 border border-[#00ff41]/30 bg-black px-4 py-2 text-sm text-[#00ff41] placeholder:text-[#00ff41]/40 focus:border-[#00ff41] focus:outline-none"
         />
-        <Button 
+        <Button
           onClick={handleSendMessage}
           className="bg-[#00ff41] text-black hover:bg-[#00ff41]/80"
         >

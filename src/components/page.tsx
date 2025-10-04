@@ -59,11 +59,11 @@ export default function SpaceshipOS() {
   const hasNotification = (id: View) => notifications[id];
 
   return (
-    <div className="h-screen bg-black text-[#00ff41] font-mono flex overflow-hidden">
+    <div className="flex h-screen overflow-hidden bg-black font-mono text-[#00ff41]">
       {/* Left Navigation */}
-      <div className="w-20 bg-black border-r border-[#00ff41]/30 flex flex-col items-center py-6 gap-6">
-        <div className="w-10 h-10 border-2 border-[#00ff41] flex items-center justify-center mb-4">
-          <Radio className="w-5 h-5" />
+      <div className="flex w-20 flex-col items-center gap-6 border-r border-[#00ff41]/30 bg-black py-6">
+        <div className="mb-4 flex h-10 w-10 items-center justify-center border-2 border-[#00ff41]">
+          <Radio className="h-5 w-5" />
         </div>
 
         {navItems.map((item) => {
@@ -74,16 +74,16 @@ export default function SpaceshipOS() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setActiveView(item.id)}
-                className={`w-12 h-12 hover:bg-[#00ff41]/10 hover:text-[#00ff41] transition-colors ${
+                className={`h-12 w-12 transition-colors hover:bg-[#00ff41]/10 hover:text-[#00ff41] ${
                   activeView === item.id
-                    ? "bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]"
-                    : "text-[#00ff41]/60 border border-transparent"
+                    ? "border border-[#00ff41] bg-[#00ff41]/20 text-[#00ff41]"
+                    : "border border-transparent text-[#00ff41]/60"
                 }`}
               >
-                <Icon className="w-5 h-5" />
+                <Icon className="h-5 w-5" />
               </Button>
               {hasNotification(item.id) && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-red-400 shadow-[0_0_6px_rgba(239,68,68,0.6)] animate-pulse" />
+                <span className="absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border border-red-400 bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
               )}
             </div>
           );
@@ -91,9 +91,9 @@ export default function SpaceshipOS() {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
+      <div className="flex flex-1 flex-col">
         {/* Header */}
-        <div className="h-16 border-b border-[#00ff41]/30 flex items-center justify-between px-6 bg-black/50">
+        <div className="flex h-16 items-center justify-between border-b border-[#00ff41]/30 bg-black/50 px-6">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-bold tracking-wider">
               {navItems
@@ -102,7 +102,7 @@ export default function SpaceshipOS() {
             </h1>
             <Badge
               variant="outline"
-              className="border-[#00ff41] text-[#00ff41] bg-[#00ff41]/10"
+              className="border-[#00ff41] bg-[#00ff41]/10 text-[#00ff41]"
             >
               ONLINE
             </Badge>
@@ -115,7 +115,7 @@ export default function SpaceshipOS() {
         </div>
 
         {/* View Content */}
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="flex-1 overflow-auto p-6">
           {activeView === "dashboard" && <DashboardView />}
           {activeView === "messaging" && <MessagingView />}
           {activeView === "terminal" && (
@@ -141,34 +141,34 @@ function DashboardView() {
   const { trigger } = useNotificationsStore();
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <Card className="bg-black border-[#00ff41]/30 p-4">
-        <div className="flex items-center justify-between mb-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <Card className="border-[#00ff41]/30 bg-black p-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-[#00ff41]">POWER SYSTEMS</h3>
-          <Zap className="w-4 h-4 text-[#00ff41]" />
+          <Zap className="h-4 w-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
             <span className="text-[#00ff41]/60">Main Reactor</span>
             <span className="text-[#00ff41]">98%</span>
           </div>
-          <div className="h-2 bg-[#00ff41]/10 rounded-full overflow-hidden">
-            <div className="h-full bg-[#00ff41] w-[98%]" />
+          <div className="h-2 overflow-hidden rounded-full bg-[#00ff41]/10">
+            <div className="h-full w-[98%] bg-[#00ff41]" />
           </div>
           <div className="flex justify-between text-xs">
             <span className="text-[#00ff41]/60">Auxiliary</span>
             <span className="text-[#00ff41]">87%</span>
           </div>
-          <div className="h-2 bg-[#00ff41]/10 rounded-full overflow-hidden">
-            <div className="h-full bg-[#00ff41] w-[87%]" />
+          <div className="h-2 overflow-hidden rounded-full bg-[#00ff41]/10">
+            <div className="h-full w-[87%] bg-[#00ff41]" />
           </div>
         </div>
       </Card>
 
-      <Card className="bg-black border-[#00ff41]/30 p-4">
-        <div className="flex items-center justify-between mb-4">
+      <Card className="border-[#00ff41]/30 bg-black p-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-[#00ff41]">LIFE SUPPORT</h3>
-          <Activity className="w-4 h-4 text-[#00ff41]" />
+          <Activity className="h-4 w-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
@@ -186,10 +186,10 @@ function DashboardView() {
         </div>
       </Card>
 
-      <Card className="bg-black border-[#00ff41]/30 p-4">
-        <div className="flex items-center justify-between mb-4">
+      <Card className="border-[#00ff41]/30 bg-black p-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-[#00ff41]">NAVIGATION</h3>
-          <Globe className="w-4 h-4 text-[#00ff41]" />
+          <Globe className="h-4 w-4 text-[#00ff41]" />
         </div>
         <div className="space-y-2">
           <div className="flex justify-between text-xs">
@@ -207,15 +207,15 @@ function DashboardView() {
         </div>
       </Card>
 
-      <Card className="bg-black border-[#00ff41]/30 p-4 col-span-full">
-        <div className="flex items-center justify-between mb-4">
+      <Card className="col-span-full border-[#00ff41]/30 bg-black p-4">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-sm font-bold text-[#00ff41]">SYSTEM ALERTS</h3>
-          <AlertTriangle className="w-4 h-4 text-[#00ff41]" />
+          <AlertTriangle className="h-4 w-4 text-[#00ff41]" />
         </div>
         <ScrollArea className="h-[200px] font-mono text-xs">
           <div className="space-y-1">
             {recentAlerts.length === 0 ? (
-              <div className="text-[#00ff41]/40 text-center py-8">
+              <div className="py-8 text-center text-[#00ff41]/40">
                 No system logs available
               </div>
             ) : (
@@ -227,8 +227,8 @@ function DashboardView() {
                       log.level === "WARN"
                         ? "text-yellow-500"
                         : log.level === "ERROR"
-                        ? "text-red-400"
-                        : "text-[#00ff41]"
+                          ? "text-red-400"
+                          : "text-[#00ff41]"
                     }
                   >
                     [{log.level}]
@@ -240,7 +240,7 @@ function DashboardView() {
           </div>
         </ScrollArea>
       </Card>
-      <Card className="bg-black border-[#00ff41]/30 p-4 flex flex-col gap-2">
+      <Card className="flex flex-col gap-2 border-[#00ff41]/30 bg-black p-4">
         <Button
           onClick={() =>
             trigger({

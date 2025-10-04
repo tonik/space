@@ -62,7 +62,7 @@ export const useMessagingStore = create<MessagingState>((set, get) => ({
   markAsRead: (id) =>
     set((state) => ({
       messages: state.messages.map((msg) =>
-        msg.id === id ? { ...msg, isRead: true } : msg
+        msg.id === id ? { ...msg, isRead: true } : msg,
       ),
     })),
   markAllAsRead: () =>
