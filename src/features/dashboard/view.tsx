@@ -79,7 +79,12 @@ export default function DashboardView() {
             value: "24H AGO",
           },
         ]}
-        status={systems.ai || "OPERATIONAL"}
+        status={{
+          status: "online",
+          integrity: 100,
+          critical: false,
+          metrics: [],
+        }}
       />
 
       <SystemCard

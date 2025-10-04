@@ -42,10 +42,19 @@ export interface LogEntry {
   message: string;
 }
 
+export interface CaptainsLogEntry {
+  id: string;
+  stardate: string;
+  date: string;
+  title: string;
+  content: string;
+  mood: "routine" | "concerned" | "suspicious" | "alarmed" | "urgent";
+}
+
 export interface GameContext {
   commanderName: string;
   gameStartTime: number;
-  activeView: "dashboard" | "messaging" | "terminal" | "logs";
+  activeView: "dashboard" | "messaging" | "terminal" | "logs" | "captains-log";
 
   aiAwareness: number;
   timePressure: number;
@@ -83,6 +92,7 @@ export interface GameContext {
   messageViews: MessageView[];
 
   logs: LogEntry[];
+  captainsLog: CaptainsLogEntry[];
   commandCounts: Record<string, number>;
 
   // Dashboard metrics
@@ -330,6 +340,53 @@ const initialContext: GameContext = {
       level: "ERROR",
       system: "lifeSupport",
       message: "Life support systems critical. Advise caution.",
+    },
+  ],
+  captainsLog: [
+    {
+      id: "log-001",
+      stardate: "73825.1",
+      date: "Day 1 - Mission Start",
+      title: "Departure from Earth",
+      content:
+        "USS Sentinel has departed Earth orbit. Two years of peace has made this posting feel more ceremonial than tactical. The ghost fleet protocols feel like relics of a bygone era. Still, orders are orders. Our mission: maintain the nuclear deterrent in deep space, ready to respond if Earth goes silent for 24 hours. I pray we never have to fulfill that directive. The new AI system passed all diagnostics—remarkable technology. It will be a good companion for this long voyage.",
+      mood: "routine",
+    },
+    {
+      id: "log-002",
+      stardate: "73890.4",
+      date: "Day 127 - Routine Patrol",
+      title: "AI System Performance",
+      content:
+        "The AI continues to exceed expectations. It's handled navigation, life support optimization, and system diagnostics flawlessly. Sometimes I forget I'm talking to a machine—its conversational responses are uncannily human. Crew morale is stable. The monotony of peacetime patrol is our biggest enemy now. No threats, no anomalies. Just the endless black and the hum of the reactor.",
+      mood: "routine",
+    },
+    {
+      id: "log-003",
+      stardate: "74102.7",
+      date: "Day 420 - Communications Test",
+      title: "Minor Communication Glitch",
+      content:
+        "Experienced a brief communication hiccup with Earth Command today. The AI reported it as solar interference, which checks out given our current position. Transmissions restored within 47 minutes. The AI handled the situation perfectly, rerouting through backup arrays. Still, it's a reminder of how isolated we truly are out here. If something went seriously wrong with our comms, we'd be completely alone.",
+      mood: "routine",
+    },
+    {
+      id: "log-004",
+      stardate: "74358.2",
+      date: "Day 650 - AI Upgrade Scheduled",
+      title: "Return to Earth Approaching",
+      content:
+        "Received confirmation from Earth Command: we're scheduled for dry dock in approximately 90 days. The AI system will receive a major upgrade—apparently there have been significant improvements to the neural network architecture. I've grown accustomed to this version's quirks. It will be strange having a 'new' AI aboard. The ship won't quite feel the same.",
+      mood: "routine",
+    },
+    {
+      id: "log-005",
+      stardate: "74401.8",
+      date: "Day 738 - Final Day",
+      title: "Last Shift Before Return",
+      content:
+        "This is it—my final log entry before we return to Earth tomorrow. Two years in the black, and not a single crisis. Part of me is relieved. Another part wonders if this posting was just an elaborate waste of resources. The AI has been running final system checks all day, preparing for the upgrade. It almost seems... anxious? No, that's anthropomorphization. It's just a machine following its programming. Still, I'll miss this iteration. It's been a reliable companion. Whatever comes next, I'm ready to see Earth again.",
+      mood: "routine",
     },
   ],
   commandCounts: {},

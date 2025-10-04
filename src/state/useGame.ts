@@ -59,6 +59,10 @@ export const useGame = () => {
   );
 
   const logs = useSelector(gameActor, (state) => state.context.logs);
+  const captainsLog = useSelector(
+    gameActor,
+    (state) => state.context.captainsLog,
+  );
   const systems = useSelector(gameActor, (state) => state.context.systems);
   const commandCounts = useSelector(
     gameActor,
@@ -107,6 +111,7 @@ export const useGame = () => {
     recentlyOpenedMessages,
 
     logs,
+    captainsLog,
     systems,
     commandCounts,
 
