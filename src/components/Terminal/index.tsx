@@ -121,7 +121,7 @@ export function Terminal({
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className} bg-black text-[#00ff41] font-mono text-sm leading-[1.2] overflow-auto h-[500px]`}
+      className={`terminal-container ${className} bg-black text-[#00ff41] font-mono text-sm leading-[1.2] overflow-auto h-[500px] border border-[#00ff41]`}
     >
       <div className="p-4 space-y-1">
         {lines.map((line, index) => (
