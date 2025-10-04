@@ -2,9 +2,14 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle } from "lucide-react";
 import type { LogEntry } from "@/state/game";
+import { format } from "date-fns";
 
 interface SystemAlertsProps {
   logs: LogEntry[];
+}
+
+function formatTimestamp(timestamp: number) {
+  return format(timestamp, "MM/dd/yy");
 }
 
 export function SystemAlerts({ logs }: SystemAlertsProps) {
@@ -27,7 +32,9 @@ export function SystemAlerts({ logs }: SystemAlertsProps) {
           ) : (
             recentAlerts.map((log, i) => (
               <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                <span className="text-muted-foreground">[{log.time}]</span>
+                <span className="text-muted-foreground">
+                  [{formatTimestamp(log.timestamp)}]
+                </span>
                 <span
                   className={
                     log.level === "WARN"
