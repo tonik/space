@@ -7,8 +7,14 @@ import {
   type Message,
 } from "./game";
 
-const gameActor = createActor(gameMachine);
+const stateString = localStorage.getItem("gameState");
+const gameActor = createActor(gameMachine, {
+  state: stateString ? JSON.parse(stateString) : undefined,
+});
 gameActor.start();
+gameActor.subscribe((state) => {
+  localStorage.setItem("gameState", JSON.stringify(state));
+});
 
 export const useGame = () => {
   const context = useSelector(gameActor, (state) => state.context);
