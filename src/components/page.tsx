@@ -20,6 +20,9 @@ type View = "messaging" | "dashboard" | "terminal" | "news" | "logs";
 
 export default function SpaceshipOS() {
   const [activeView, setActiveView] = useState<View>("dashboard");
+  const [commanderName, setCommanderName] = useState<string>(
+    "spaceship-commander",
+  );
 
   const navItems = [
     { id: "dashboard" as View, label: "Control", icon: Gauge },
@@ -85,7 +88,12 @@ export default function SpaceshipOS() {
         <div className="flex-1 p-6 overflow-auto">
           {activeView === "dashboard" && <DashboardView />}
           {activeView === "messaging" && <MessagingView />}
-          {activeView === "terminal" && <TerminalView />}
+          {activeView === "terminal" && (
+            <TerminalView
+              onNameChange={setCommanderName}
+              commanderName={commanderName}
+            />
+          )}
           {activeView === "news" && <NewsView />}
           {activeView === "logs" && <LogsView />}
         </div>
@@ -247,10 +255,16 @@ function MessagingView() {
   );
 }
 
-function TerminalView() {
+function TerminalView({
+  onNameChange,
+  commanderName,
+}: {
+  onNameChange: (name: string) => void;
+  commanderName: string;
+}) {
   return (
-    <Card className="bg-black border-[#00ff41]/30 p-4 max-w-4xl">
-      <Terminal />
+    <Card className="bg-black border-[#00ff41]/30 p-4">
+      <Terminal onNameChange={onNameChange} currentName={commanderName} />
     </Card>
   );
 }

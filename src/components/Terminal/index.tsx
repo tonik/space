@@ -6,11 +6,18 @@ import { getCommand } from "./commands";
 
 interface TerminalProps {
   className?: string;
+  onNameChange?: (name: string) => void;
+  currentName?: string;
 }
 
-export function Terminal({ className = "" }: TerminalProps) {
+export function Terminal({
+  className = "",
+  onNameChange,
+  currentName,
+}: TerminalProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const xtermRef = useRef<XTerm | null>(null);
+  const currentNameRef = useRef<string>(currentName || "spaceship-commander");
 
   useEffect(() => {
     if (!terminalRef.current) return;
@@ -57,6 +64,7 @@ export function Terminal({ className = "" }: TerminalProps) {
 
     let currentLine = "";
     let cursorPosition = 0;
+    let pendingInputHandler: ((input: string) => void) | null = null;
 
     const writePrompt = () => {
       terminal.write("\r\n> ");
@@ -72,7 +80,14 @@ export function Terminal({ className = "" }: TerminalProps) {
         terminal.write("\r\n");
 
         if (currentLine.trim()) {
-          handleCommand(currentLine.trim());
+          if (pendingInputHandler) {
+            // Input mode
+            pendingInputHandler(currentLine.trim());
+            pendingInputHandler = null;
+          } else {
+            // Normal command mode
+            handleCommand(currentLine.trim());
+          }
         }
 
         writePrompt();
@@ -92,7 +107,15 @@ export function Terminal({ className = "" }: TerminalProps) {
     };
 
     const handleCommand = (command: string) => {
-      getCommand(terminal, command.toLowerCase());
+      const result = getCommand(
+        terminal,
+        command.toLowerCase(),
+        onNameChange,
+        currentNameRef.current,
+      );
+      if (typeof result === "function") {
+        pendingInputHandler = result;
+      }
     };
 
     terminal.onData(handleInput);
@@ -111,7 +134,12 @@ export function Terminal({ className = "" }: TerminalProps) {
       window.removeEventListener("resize", handleResize);
       terminal.dispose();
     };
-  }, []);
+  }, [onNameChange]);
+
+  // Update the ref when currentName changes without recreating the terminal
+  useEffect(() => {
+    currentNameRef.current = currentName || "spaceship-commander";
+  }, [currentName]);
 
   return (
     <div
