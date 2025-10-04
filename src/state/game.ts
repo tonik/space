@@ -1,4 +1,10 @@
 import { setup, assign } from "xstate";
+import { introMessages } from "../data/messages";
+import { introLogs } from "../data/logs";
+import type { Message } from "../data/messages";
+import type { CaptainsLogEntry, LogEntry } from "../data/logs";
+
+export type { Message, LogEntry, CaptainsLogEntry };
 
 export interface SystemMetric {
   label: string;
@@ -19,36 +25,9 @@ export interface System {
   metrics: SystemMetric[];
 }
 
-export interface Message {
-  id: string;
-  from: string;
-  time: string;
-  title: string;
-  preview: string;
-  priority: "low" | "normal" | "high" | "critical";
-  type: "incoming" | "outgoing" | "system" | "ai";
-}
-
 export interface MessageView {
   messageId: string;
   openedAt: number;
-}
-
-export interface LogEntry {
-  id: string;
-  time: string;
-  level: "INFO" | "WARN" | "ERROR";
-  system: string;
-  message: string;
-}
-
-export interface CaptainsLogEntry {
-  id: string;
-  stardate: string;
-  date: string;
-  title: string;
-  content: string;
-  mood: "routine" | "concerned" | "suspicious" | "alarmed" | "urgent";
 }
 
 export interface GameContext {
@@ -255,93 +234,9 @@ const initialContext: GameContext = {
     fleetStatus: "PEACETIME",
   },
 
-  messages: [
-    {
-      id: "1",
-      from: "EARTH COMMAND",
-      time: "14:23",
-      title: "Status Report Required",
-      preview:
-        "Status report received. Proceed to waypoint Delta. All systems nominal. Maintain current course and speed. Report any anomalies immediately.",
-      priority: "normal",
-      type: "incoming",
-    },
-    {
-      id: "2",
-      from: "CARGO VESSEL AURORA",
-      time: "13:45",
-      title: "Docking Request",
-      preview:
-        "Requesting docking clearance at Station Gamma. Cargo manifest includes medical supplies and food rations. ETA 2 hours.",
-      priority: "low",
-      type: "incoming",
-    },
-    {
-      id: "3",
-      from: "EARTH COMMAND",
-      time: "12:10",
-      title: "Mission Parameters Update",
-      preview:
-        "New mission parameters uploaded to your terminal. Classified information attached. Decrypt using standard protocols.",
-      priority: "high",
-      type: "incoming",
-    },
-    {
-      id: "4",
-      from: "SCIENCE STATION 7",
-      time: "11:30",
-      title: "Anomaly Detected",
-      preview:
-        "Anomaly detected in sector 7-G. Advise caution. Unknown energy signature detected. Recommend immediate investigation.",
-      priority: "critical",
-      type: "incoming",
-    },
-    {
-      id: "5",
-      from: "AI SYSTEM",
-      time: "10:15",
-      title: "System Diagnostic Complete",
-      preview:
-        "All systems functioning within normal parameters. No anomalies detected. Maintenance schedule updated.",
-      priority: "normal",
-      type: "ai",
-    },
-    {
-      id: "6",
-      from: "SHIP COMPUTER",
-      time: "09:45",
-      title: "Navigation Update",
-      preview:
-        "Course correction applied. New heading: 247.3 degrees. Estimated arrival at destination: 18:30 hours.",
-      priority: "normal",
-      type: "system",
-    },
-  ],
+  messages: introMessages,
   messageViews: [],
 
-  logs: [
-    {
-      id: "1",
-      time: "14:23",
-      level: "INFO",
-      system: "communications",
-      message: "Status report received. Proceed to waypoint Delta.",
-    },
-    {
-      id: "2",
-      time: "13:45",
-      level: "WARN",
-      system: "navigation",
-      message: "Navigation systems degraded. Advise caution.",
-    },
-    {
-      id: "3",
-      time: "12:10",
-      level: "ERROR",
-      system: "lifeSupport",
-      message: "Life support systems critical. Advise caution.",
-    },
-  ],
   captainsLog: [
     {
       id: "log-001",
@@ -389,6 +284,7 @@ const initialContext: GameContext = {
       mood: "routine",
     },
   ],
+  logs: introLogs,
   commandCounts: {},
 };
 
