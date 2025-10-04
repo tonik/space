@@ -109,6 +109,9 @@ export function MessagingView() {
                         {format(msg.timestamp, "hh:mm aa")}
                       </span>
                     </div>
+                    <span className="text-card-foreground/80 text-sm">
+                      {msg.preview.slice(0, 80)}...
+                    </span>
                   </div>
                 );
               })
