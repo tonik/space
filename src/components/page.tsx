@@ -13,7 +13,7 @@ export default function SpaceshipOS() {
   const activeView = context.activeView;
 
   return (
-    <div className="text-primary flex h-screen overflow-hidden bg-black font-mono">
+    <div className="text-primary bg-background flex h-screen overflow-hidden font-mono">
       <Navigation activeView={activeView} setActiveView={changeView} />
       <div className="flex flex-1 flex-col">
         <TopNav activeView={activeView} />

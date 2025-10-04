@@ -3,21 +3,22 @@
 
 :root {
   --main-theme-color: oklch(0.6978 0.1233 127.32);
+  --main-theme-bg-color: oklch(0.1402 0.0123 127.32);
 
-  --background: oklch(0 0 0); /* #000000 */
+  --background: var(--main-theme-bg-color);
   --foreground: var(--main-theme-color);
-  --card: oklch(0 0 0); /* #000000 */
+  --card: var(--main-theme-bg-color);
   --card-foreground: var(--main-theme-color);
-  --popover: oklch(0.042 0 0); /* #0a0a0a */
+  --popover: oklch(0.042 0 0);
   --popover-foreground: var(--main-theme-color);
   --primary: var(--main-theme-color);
-  --primary-foreground: oklch(0 0 0); /* #000000 */
-  --secondary: oklch(0.051 0.046 145.4); /* #001a0d */
+  --primary-foreground: var(--main-theme-bg-color);
+  --secondary: oklch(0.051 0.046 145.4);
   --secondary-foreground: var(--main-theme-color);
-  --muted: oklch(0.051 0.046 145.4); /* #001a0d */
+  --muted: oklch(0.051 0.046 145.4);
   --muted-foreground: var(--main-theme-color);
   --accent: var(--main-theme-color);
-  --accent-foreground: oklch(0 0 0); /* #000000 */
+  --accent-foreground: var(--main-theme-bg-color);
   --destructive: oklch(0.627 0.257 29.23); /* #ff0000 */
   --destructive-foreground: var(--main-theme-color);
   --border: var(--main-theme-color);
@@ -28,10 +29,10 @@
   --chart-3: oklch(0.667 0.169 142.5); /* #00aa22 */
   --chart-4: oklch(0.598 0.16 142.5); /* #008811 */
   --chart-5: oklch(0.498 0.14 142.5); /* #006600 */
-  --sidebar: oklch(0 0 0); /* #000000 */
+  --sidebar: var(--main-theme-bg-color); /* #000000 */
   --sidebar-foreground: var(--main-theme-color);
   --sidebar-primary: var(--main-theme-color);
-  --sidebar-primary-foreground: oklch(0 0 0); /* #000000 */
+  --sidebar-primary-foreground: var(--main-theme-bg-color); /* #000000 */
   --sidebar-accent: oklch(0.051 0.046 145.4); /* #001a0d */
   --sidebar-accent-foreground: var(--main-theme-color);
   --sidebar-border: var(--main-theme-color);
