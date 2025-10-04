@@ -358,7 +358,7 @@ export const getCommands = (
         "  Status: AVAILABLE",
         "  Method: Direct satellite link bypass",
         "  Risk: AI may detect and block",
-        "  Run 'comms' command to communicate",
+        "  Run 'comms' command to communicate.",
         "",
         "*** CRITICAL DECISION POINT ***",
         "AI: Locked down all standard override systems...",
