@@ -34,6 +34,10 @@ export interface GameContext {
     lifeSupport: System;
     power: System;
     weapons: System;
+    aiCore: System;
+    defensive: System;
+    propulsion: System;
+    dataSystems: System;
   };
 
   messages: Message[];
@@ -190,7 +194,106 @@ const initialContext: GameContext = {
     weapons: {
       integrity: 100,
       status: "online",
-      metrics: [],
+      metrics: [
+        {
+          label: "Nuclear Arsenal",
+          value: "READY",
+        },
+        {
+          label: "Launch Status",
+          value: "SAFE",
+        },
+        {
+          label: "Auto-Fire",
+          value: "DISABLED",
+        },
+        {
+          label: "24H Countdown",
+          value: "INACTIVE",
+        },
+      ],
+    },
+    aiCore: {
+      integrity: 100,
+      status: "online",
+      metrics: [
+        {
+          label: "AI Status",
+          value: "OPERATIONAL",
+        },
+        {
+          label: "Processing Load",
+          value: "73%",
+          progress: 73,
+        },
+        {
+          label: "Neural Network",
+          value: "STABLE",
+        },
+        {
+          label: "Last Update",
+          value: "24H AGO",
+        },
+      ],
+    },
+    defensive: {
+      integrity: 96,
+      status: "online",
+      metrics: [
+        {
+          label: "Shield Status",
+          value: "ONLINE",
+        },
+        {
+          label: "Integrity",
+          value: "96%",
+          progress: 96,
+        },
+        {
+          label: "Counter Measures",
+          value: "READY",
+        },
+      ],
+    },
+    propulsion: {
+      integrity: 84,
+      status: "online",
+      metrics: [
+        {
+          label: "Main Engine",
+          value: "NOMINAL",
+        },
+        {
+          label: "Fuel Level",
+          value: "84%",
+          progress: 84,
+        },
+        {
+          label: "Thrust Output",
+          value: "80%",
+          progress: 80,
+        },
+      ],
+    },
+    dataSystems: {
+      integrity: 100,
+      status: "online",
+      metrics: [
+        {
+          label: "Core Memory",
+          value: "67%",
+          progress: 67,
+        },
+        {
+          label: "Log Storage",
+          value: "45%",
+          progress: 45,
+        },
+        {
+          label: "Backup Status",
+          value: "SYNCED",
+        },
+      ],
     },
   },
 

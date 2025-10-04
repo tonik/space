@@ -34,13 +34,6 @@ export default function DashboardView() {
   const missionTime = `${context.mission.daysInSpace} DAYS`;
   const uptime = `${context.mission.daysInSpace} DAYS`;
 
-  const defaultSystemStatus = {
-    status: "online" as const,
-    integrity: 100,
-    critical: false,
-    metrics: [],
-  };
-
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       <SystemAlerts logs={logs} />
@@ -67,61 +60,22 @@ export default function DashboardView() {
       <SystemCard
         title="AI CORE SYSTEM"
         icon={<Brain className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "AI Status",
-            value: "OPERATIONAL",
-          },
-          {
-            label: "Processing Load",
-            value: "73%",
-            progress: 73,
-          },
-          {
-            label: "Neural Network",
-            value: "STABLE",
-          },
-          {
-            label: "Last Update",
-            value: "24H AGO",
-          },
-        ]}
-        status={{
-          status: "online",
-          integrity: 100,
-          metrics: [],
-        }}
+        metrics={systems.aiCore.metrics}
+        status={systems.aiCore}
       />
 
       <SystemCard
         title="COMMUNICATIONS"
         icon={<Radio className="h-4 w-4" />}
         metrics={systems.communications.metrics}
-        status={systems.communications || defaultSystemStatus}
+        status={systems.communications}
       />
 
       <SystemCard
         title="WEAPON SYSTEMS"
         icon={<Rocket className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Nuclear Arsenal",
-            value: "READY",
-          },
-          {
-            label: "Launch Status",
-            value: "SAFE",
-          },
-          {
-            label: "Auto-Fire",
-            value: "DISABLED",
-          },
-          {
-            label: "24H Countdown",
-            value: "INACTIVE",
-          },
-        ]}
-        status={systems.weapons || defaultSystemStatus}
+        metrics={systems.weapons.metrics}
+        status={systems.weapons}
       />
 
       <SystemCard
@@ -148,66 +102,22 @@ export default function DashboardView() {
       <SystemCard
         title="DEFENSIVE SYSTEMS"
         icon={<Shield className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Shield Status",
-            value: "ONLINE",
-          },
-          {
-            label: "Integrity",
-            value: "96%",
-            progress: 96,
-          },
-          {
-            label: "Counter Measures",
-            value: "READY",
-          },
-        ]}
-        status={systems.weapons || "OPERATIONAL"}
+        metrics={systems.defensive.metrics}
+        status={systems.defensive}
       />
 
       <SystemCard
         title="PROPULSION"
         icon={<Fuel className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Main Engine",
-            value: "NOMINAL",
-          },
-          {
-            label: "Fuel Level",
-            value: "84%",
-            progress: 84,
-          },
-          {
-            label: "Thrust Output",
-            value: "80%",
-            progress: 80,
-          },
-        ]}
-        status={defaultSystemStatus}
+        metrics={systems.propulsion.metrics}
+        status={systems.propulsion}
       />
 
       <SystemCard
         title="DATA SYSTEMS"
         icon={<Database className="h-4 w-4" />}
-        metrics={[
-          {
-            label: "Core Memory",
-            value: "67%",
-            progress: 67,
-          },
-          {
-            label: "Log Storage",
-            value: "45%",
-            progress: 45,
-          },
-          {
-            label: "Backup Status",
-            value: "SYNCED",
-          },
-        ]}
-        status={defaultSystemStatus}
+        metrics={systems.dataSystems.metrics}
+        status={systems.dataSystems}
       />
     </div>
   );
