@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 interface Log {
   time: string;
@@ -13,19 +12,9 @@ interface SystemLogState {
   clearLogs: () => void;
 }
 
-export const useSystemLogStore = create<SystemLogState>()(
-  persist(
-    (set) => ({
-      logs: [],
-      addLog: (log) =>
-        set((state) => ({ logs: [...state.logs, log] })),
-      clearLogs: () => set({ logs: [] }),
-    }),
-    {
-      name: "system-log-storage",
-      partialize: (state) => ({
-        logs: state.logs.slice(-1000),
-      }),
-    }
-  )
-);
+export const useSystemLogStore = create<SystemLogState>((set) => ({
+  logs: [],
+  addLog: (log) =>
+    set((state) => ({ logs: [...state.logs, log] })),
+  clearLogs: () => set({ logs: [] }),
+}));
