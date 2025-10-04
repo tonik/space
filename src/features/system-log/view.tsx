@@ -4,13 +4,14 @@ import { useGame } from "@/state/useGame";
 import { useSystemLogState } from "./selectors";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
+import { DEFAULT_DATE_FORMAT } from "@/utils";
 
 export function SystemLogView() {
   const { logs } = useSystemLogState();
   const { addLog: addLogToState } = useGame();
 
   function formatTimestamp(timestamp: number) {
-    return format(timestamp, "MM/dd/yy");
+    return format(timestamp, DEFAULT_DATE_FORMAT);
   }
 
   const handleAddLog = () => {

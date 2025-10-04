@@ -10,9 +10,11 @@ import { User } from "lucide-react";
 import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import { DEFAULT_DATETIME_FORMAT } from "@/utils";
 
 export function MessagingView() {
-  const { messages, unreadCount, openedMessageIds, systems } = useMessagingState();
+  const { messages, unreadCount, openedMessageIds, systems } =
+    useMessagingState();
   const { addMessage, openMessage } = useGame();
   const [newMessage, setNewMessage] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
@@ -107,7 +109,7 @@ export function MessagingView() {
                         </span>
                       </div>
                       <span className="text-muted-foreground text-xs">
-                        {format(msg.timestamp, "hh:mm aa")}
+                        {format(msg.timestamp, DEFAULT_DATETIME_FORMAT)}
                       </span>
                     </div>
                     <span className="text-card-foreground/80 text-sm">

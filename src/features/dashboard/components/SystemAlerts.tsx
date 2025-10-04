@@ -3,13 +3,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle } from "lucide-react";
 import type { LogEntry } from "@/state/types";
 import { format } from "date-fns";
+import { DEFAULT_DATE_FORMAT } from "@/utils";
 
 interface SystemAlertsProps {
   logs: LogEntry[];
 }
 
 function formatTimestamp(timestamp: number) {
-  return format(timestamp, "MM/dd/yy");
+  return format(timestamp, DEFAULT_DATE_FORMAT);
 }
 
 export function SystemAlerts({ logs }: SystemAlertsProps) {

@@ -38,3 +38,6 @@ export const navItems: {
     icon: BookOpen,
   },
 ];
+
+export const DEFAULT_DATE_FORMAT = "MM/dd/yy";
+export const DEFAULT_DATETIME_FORMAT = "MM/dd/yy HH:mm aa";
