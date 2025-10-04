@@ -38,7 +38,7 @@ Hint: The missing protocol name is: NAVIGATION_PROTOCOL_EMERGENCY`;
         </div>
 
         <div className="flex flex-1 items-center justify-center">
-          <div className="border-border/30 relative min-h-[600px] w-full max-w-4xl border-2">
+          <div className="relative min-h-[600px] w-full">
             <div className="flex h-full flex-col items-center justify-center overflow-auto p-6">
               {gameState === "menu" && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
@@ -59,7 +59,7 @@ Hint: The missing protocol name is: NAVIGATION_PROTOCOL_EMERGENCY`;
               )}
 
               {gameState === "playing" && (
-                <div className="w-full max-w-4xl space-y-6 overflow-auto text-center">
+                <div className="w-full space-y-6 overflow-auto text-center">
                   <div className="border-primary/30 /40 border p-6">
                     <h3 className="text-primary mb-3 font-mono text-lg">
                       USS Sentinel Navigation Core Corruption
