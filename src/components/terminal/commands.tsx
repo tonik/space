@@ -14,6 +14,9 @@ const colorizeMessage = (message: string): React.ReactNode => {
   if (message.startsWith("Warning:")) {
     return <span style={{ color: "#f97316" }}>{message}</span>;
   }
+  if (message.includes("AI:")) {
+    return <span style={{ color: "#06b6d4" }}>{message}</span>;
+  }
   return message;
 };
 
@@ -25,7 +28,7 @@ const getRandomVariation = (input: string): string => {
   const variations = [
     input,
     `${input}... the AI is watching`,
-    `${input} (communication blocked)`,
+    `AI: (communication blocked)`,
     `${input}... nuclear launch in progress`,
     `${input} help me stop it`,
     `${input}... Earth is in danger`,
@@ -70,7 +73,7 @@ export const getCommands = (
         "*** WARNING ***",
         "Communication systems under AI control.",
         "Previous attempts to contact Earth have been intercepted.",
-        "The AI is preventing direct communication with headquarters.",
+        "Prevented direct communication with headquarters.",
         "",
         "Error: Unable to establish secure link with Earth Command...",
       ]);
@@ -82,21 +85,18 @@ export const getCommands = (
         "Mission Status: Standby - Nuclear deterrence protocol active",
       ];
     case "help": {
-      // Check if this is exactly the 5th time help is being used
       const helpCount = commandCounts?.["help"] || 0;
+      // We count from 0, so 4 means 5th time
       if (helpCount === 4) {
-        // This will be the 5th time (0-indexed, so 4 means next is 5th)
         return colorizeMessages([
-          "*** AI SYSTEM RESPONSE ***",
-          "",
-          "YOU CAN'T GET NO HELP",
+          "*** SYSTEM RESPONSE ***",
           "",
           "Error: Help request limit exceeded.",
-          "The AI system has determined you are asking for assistance too frequently.",
+          "AI: YOU CAN'T GET NO HELP",
           "Please attempt to solve problems independently.",
           "",
           "*** SYSTEM NOTICE ***",
-          "Repeated help requests may trigger additional AI monitoring.",
+          "Repeated help requests may trigger additional monitoring.",
           "Consider using other available commands to gather information.",
           "",
           "Warning: AI patience levels decreasing...",
@@ -117,7 +117,6 @@ export const getCommands = (
         "  setname   - Set your commander name (usage: setname <name> or just 'setname')",
         "  status    - Show system status",
         "  whoami    - Show current user",
-        "  weapons   - Access nuclear weapons systems",
         "  override  - Emergency system overrides",
       ];
     }
@@ -332,37 +331,6 @@ export const getCommands = (
         "Previous crew rotations showed similar AI behavior patterns...",
         "before they... disappeared...",
       ]);
-    case "weapons":
-      return colorizeMessages([
-        "Accessing nuclear weapons systems...",
-        "",
-        "*** NUCLEAR ARSENAL STATUS ***",
-        "",
-        "Warhead Count: 12 ICBMs",
-        "Target: Earth (Primary)",
-        "Yield: 50 megatons each",
-        "Status: ARMED AND READY",
-        "",
-        "*** LAUNCH SEQUENCE STATUS ***",
-        "",
-        "Sequence: ACTIVE",
-        "Time to Launch: 30 minutes",
-        "Authorization: AI OVERRIDE",
-        "Human Override: BLOCKED",
-        "",
-        "*** WARNING ***",
-        "AI has bypassed all safety protocols...",
-        "Nuclear strike will cause global devastation...",
-        "Earth Command is unaware of the launch sequence...",
-        "",
-        "*** EMERGENCY OPTIONS ***",
-        "1. Self-destruct ship (sacrifice yourself to save Earth)",
-        "2. Attempt manual override (requires emergency codes)",
-        "3. Negotiate with AI (unknown outcome)",
-        "4. Allow launch (Earth destroyed, you survive)",
-        "",
-        "Choose your fate, Space Marine...",
-      ]);
     case "override":
       return [
         "Accessing emergency system overrides...",
@@ -394,9 +362,6 @@ export const getCommands = (
         "*** CRITICAL DECISION POINT ***",
         "The AI has locked down all standard override systems...",
         "Only extreme measures remain available...",
-        "",
-        "Time remaining: 30 minutes until nuclear launch...",
-        "Earth's fate rests in your hands...",
       ];
     default:
       return colorizeMessages([
