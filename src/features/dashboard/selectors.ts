@@ -7,5 +7,6 @@ export const useDashboardState = () => {
     diagnostics: state.context.diagnostics,
     mission: state.context.mission,
     repair: state.context.repair,
+    aiChat: state.context.aiChat,
   }));
 };

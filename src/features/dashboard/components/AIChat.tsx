@@ -2,58 +2,70 @@ import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send } from "lucide-react";
-
-interface ChatMessage {
-  id: string;
-  role: "user" | "ai";
-  content: string;
-  timestamp: number;
-}
+import { useGame } from "@/state/useGame";
+import { useDashboardState } from "../selectors";
 
 export function AIChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: "1",
-      role: "ai",
-      content:
-        "Hello, Captain. I am JASON, your AI assistant. How may I help you today?",
-      timestamp: Date.now(),
-    },
-  ]);
+  const { aiChat } = useDashboardState();
+  const { markAiChatInitialMessageShown, addAiChatMessage } = useGame();
+
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const addMessageRef = useRef(addAiChatMessage);
+  const markShownRef = useRef(markAiChatInitialMessageShown);
+  addMessageRef.current = addAiChatMessage;
+  markShownRef.current = markAiChatInitialMessageShown;
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [aiChat.messages]);
+
+  // Add a new message after 3 seconds on first render, but only if not already shown
+  useEffect(() => {
+    if (aiChat.hasShownInitialMessage) return;
+
+    const timer = setTimeout(() => {
+      const newMessage = {
+        id: (Date.now() + 2).toString(),
+        role: "ai" as const,
+        content:
+          "Everything is fine, Captain. I have some new communication messages for you to review.",
+        timestamp: Date.now(),
+      };
+      addMessageRef.current(newMessage);
+      markShownRef.current();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [aiChat.hasShownInitialMessage]);
 
   const handleSend = () => {
     if (!input.trim() || isThinking) return;
 
-    const userMessage: ChatMessage = {
+    const userMessage = {
       id: Date.now().toString(),
-      role: "user",
+      role: "user" as const,
       content: input.trim(),
       timestamp: Date.now(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    addMessageRef.current(userMessage);
     setInput("");
     setIsThinking(true);
 
     // Simulate AI response
     setTimeout(() => {
-      const aiMessage: ChatMessage = {
+      const aiMessage = {
         id: (Date.now() + 1).toString(),
-        role: "ai",
+        role: "ai" as const,
         content:
           "I'm processing your request, Captain. This feature is currently being configured.",
         timestamp: Date.now(),
       };
-      setMessages((prev) => [...prev, aiMessage]);
+      addMessageRef.current(aiMessage);
       setIsThinking(false);
     }, 1000);
   };
@@ -79,7 +91,7 @@ export function AIChat() {
 
       <ScrollArea className="mb-4 flex-1 pr-2" ref={scrollRef}>
         <div className="space-y-3">
-          {messages.map((msg) => (
+          {aiChat.messages.map((msg) => (
             <div
               key={msg.id}
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}

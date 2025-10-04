@@ -79,6 +79,16 @@ export const useGame = () => {
 
     updateDiagnostics: () => gameActor.send({ type: "UPDATE_DIAGNOSTICS" }),
 
+    markAiChatInitialMessageShown: () =>
+      gameActor.send({ type: "AI_CHAT_INITIAL_MESSAGE_SHOWN" }),
+
+    addAiChatMessage: (message: {
+      id: string;
+      role: "user" | "ai";
+      content: string;
+      timestamp: number;
+    }) => gameActor.send({ type: "AI_CHAT_ADD_MESSAGE", message }),
+
     send: gameActor.send,
   };
 };

@@ -397,6 +397,16 @@ export interface GameContext {
     fleetStatus: string;
   };
 
+  aiChat: {
+    hasShownInitialMessage: boolean;
+    messages: Array<{
+      id: string;
+      role: "user" | "ai";
+      content: string;
+      timestamp: number;
+    }>;
+  };
+
   repair: {
     energy: number;
     materials: number;
@@ -448,6 +458,18 @@ export type GameEvent =
   | {
       type: "RECOVER_ENERGY";
       amount?: number;
+    }
+  | {
+      type: "AI_CHAT_INITIAL_MESSAGE_SHOWN";
+    }
+  | {
+      type: "AI_CHAT_ADD_MESSAGE";
+      message: {
+        id: string;
+        role: "user" | "ai";
+        content: string;
+        timestamp: number;
+      };
     };
 
 const initialContext: GameContext = {
@@ -528,6 +550,19 @@ const initialContext: GameContext = {
     daysInSpace: 738,
     aiUpdateScheduled: true,
     fleetStatus: "PEACETIME",
+  },
+
+  aiChat: {
+    hasShownInitialMessage: false,
+    messages: [
+      {
+        id: "1",
+        role: "ai",
+        content:
+          "Hello, Captain. I am JASON, your AI assistant. How may I help you today?",
+        timestamp: Date.now(),
+      },
+    ],
   },
 
   repair: {
@@ -973,6 +1008,16 @@ export const gameMachine = setup({
     CHANGE_VIEW: {
       actions: assign({
         activeView: ({ event }) => event.view,
+        viewNotifications: ({ context, event }) => {
+          // Clear notifications for the view being switched to
+          if (event.view === "messaging") {
+            return {
+              ...context.viewNotifications,
+              messaging: [],
+            };
+          }
+          return context.viewNotifications;
+        },
       }),
     },
     ENTER_MAIN_APP: {
@@ -1018,6 +1063,34 @@ export const gameMachine = setup({
     },
     RECOVER_ENERGY: {
       actions: "recoverEnergy",
+    },
+    AI_CHAT_INITIAL_MESSAGE_SHOWN: {
+      actions: assign({
+        aiChat: ({ context }) => ({
+          ...context.aiChat,
+          hasShownInitialMessage: true,
+        }),
+        viewNotifications: ({ context }) => ({
+          ...context.viewNotifications,
+          messaging: [
+            ...context.viewNotifications.messaging,
+            {
+              id: `ai-chat-notification-${Date.now()}`,
+              type: "info" as const,
+              message: "New AI communication available",
+              timestamp: Date.now(),
+            },
+          ],
+        }),
+      }),
+    },
+    AI_CHAT_ADD_MESSAGE: {
+      actions: assign({
+        aiChat: ({ context, event }) => ({
+          ...context.aiChat,
+          messages: [...context.aiChat.messages, event.message],
+        }),
+      }),
     },
   },
 });
