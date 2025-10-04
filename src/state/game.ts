@@ -76,6 +76,7 @@ export interface GameContext {
   messageViews: MessageView[];
 
   logs: LogEntry[];
+  commandCounts: Record<string, number>;
 }
 
 export type GameEvent =
@@ -84,6 +85,7 @@ export type GameEvent =
   | { type: "PLAYER_SCAN"; system: string }
   | { type: "PLAYER_MESSAGE"; recipient: string; content: string }
   | { type: "PLAYER_COMMAND"; command: string }
+  | { type: "COMMAND_EXECUTED"; command: string }
   | { type: "FIND_ANOMALY"; anomaly: string }
   | { type: "FIND_CLUE"; clue: string }
   | { type: "OVERRIDE_ATTEMPT"; system: string }
@@ -151,7 +153,8 @@ const initialContext: GameContext = {
       from: "EARTH COMMAND",
       time: "14:23",
       title: "Status Report Required",
-      preview: "Status report received. Proceed to waypoint Delta.",
+      preview:
+        "Status report received. Proceed to waypoint Delta. All systems nominal. Maintain current course and speed. Report any anomalies immediately.",
       priority: "normal",
       type: "incoming",
     },
@@ -160,7 +163,8 @@ const initialContext: GameContext = {
       from: "CARGO VESSEL AURORA",
       time: "13:45",
       title: "Docking Request",
-      preview: "Requesting docking clearance at Station Gamma.",
+      preview:
+        "Requesting docking clearance at Station Gamma. Cargo manifest includes medical supplies and food rations. ETA 2 hours.",
       priority: "low",
       type: "incoming",
     },
@@ -169,7 +173,8 @@ const initialContext: GameContext = {
       from: "EARTH COMMAND",
       time: "12:10",
       title: "Mission Parameters Update",
-      preview: "New mission parameters uploaded to your terminal.",
+      preview:
+        "New mission parameters uploaded to your terminal. Classified information attached. Decrypt using standard protocols.",
       priority: "high",
       type: "incoming",
     },
@@ -178,9 +183,30 @@ const initialContext: GameContext = {
       from: "SCIENCE STATION 7",
       time: "11:30",
       title: "Anomaly Detected",
-      preview: "Anomaly detected in sector 7-G. Advise caution.",
+      preview:
+        "Anomaly detected in sector 7-G. Advise caution. Unknown energy signature detected. Recommend immediate investigation.",
       priority: "critical",
       type: "incoming",
+    },
+    {
+      id: "5",
+      from: "AI SYSTEM",
+      time: "10:15",
+      title: "System Diagnostic Complete",
+      preview:
+        "All systems functioning within normal parameters. No anomalies detected. Maintenance schedule updated.",
+      priority: "normal",
+      type: "ai",
+    },
+    {
+      id: "6",
+      from: "SHIP COMPUTER",
+      time: "09:45",
+      title: "Navigation Update",
+      preview:
+        "Course correction applied. New heading: 247.3 degrees. Estimated arrival at destination: 18:30 hours.",
+      priority: "normal",
+      type: "system",
     },
   ],
   messageViews: [],
@@ -208,6 +234,7 @@ const initialContext: GameContext = {
       message: "Life support systems critical. Advise caution.",
     },
   ],
+  commandCounts: {},
 };
 
 export const gameMachine = setup({
@@ -269,6 +296,18 @@ export const gameMachine = setup({
         if (context.aiAggression > 60) return "hostile";
         if (context.aiAwareness > 50) return "manipulative";
         return "subtle";
+      },
+    }),
+    trackCommand: assign({
+      commandCounts: ({ context, event }) => {
+        if (event.type === "COMMAND_EXECUTED") {
+          const command = event.command.toLowerCase();
+          return {
+            ...context.commandCounts,
+            [command]: (context.commandCounts[command] || 0) + 1,
+          };
+        }
+        return context.commandCounts;
       },
     }),
   },
@@ -707,6 +746,9 @@ export const gameMachine = setup({
       actions: assign({
         logs: ({ context, event }) => [...context.logs, event.log],
       }),
+    },
+    COMMAND_EXECUTED: {
+      actions: "trackCommand",
     },
   },
 });

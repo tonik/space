@@ -4,12 +4,16 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
+import { MessageModal } from "@/components/MessageModal";
+import type { Message } from "@/state/types";
 
 export function MessagingView() {
   const { notifications, dismiss } = useNotificationsStore();
   const game = useGame();
   const { messages, unreadCount, addMessage, openMessage } = game;
   const [newMessage, setNewMessage] = useState("");
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (notifications.messaging) {
@@ -36,6 +40,20 @@ export function MessagingView() {
       openMessage(messageId);
       setNewMessage("");
     }
+  };
+
+  const handleMessageClick = (message: Message) => {
+    setSelectedMessage(message);
+    setIsModalOpen(true);
+    // Also mark as read if it's unread
+    if (!game.openedMessageIds.has(message.id)) {
+      openMessage(message.id);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedMessage(null);
   };
 
   return (
@@ -66,10 +84,10 @@ export function MessagingView() {
                 return (
                   <div
                     key={msg.id}
-                    className={`border-border/20 border p-3 ${
+                    className={`border-border/20 hover:bg-primary/15 cursor-pointer border p-3 transition-colors ${
                       isRead ? "bg-primary/5" : "bg-primary/10"
                     }`}
-                    onClick={() => !isRead && openMessage(msg.id)}
+                    onClick={() => handleMessageClick(msg)}
                   >
                     <div className="mb-2 flex justify-between">
                       <span className="text-card-foreground text-xs font-bold">
@@ -79,9 +97,6 @@ export function MessagingView() {
                         {msg.time}
                       </span>
                     </div>
-                    <p className="text-card-foreground/80 text-sm">
-                      {msg.preview}
-                    </p>
                   </div>
                 );
               })
@@ -100,6 +115,12 @@ export function MessagingView() {
         />
         <Button onClick={handleSendMessage}>SEND</Button>
       </div>
+
+      <MessageModal
+        message={selectedMessage}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 }

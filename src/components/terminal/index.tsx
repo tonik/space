@@ -2,6 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { getCommands } from "./commands";
 import { useGame } from "../../state/useGame";
 
+/**
+ * Terminal Component with Command Tracking
+ *
+ * This component tracks all successful command executions in the game state.
+ * Commands are tracked when they return valid output (not null/undefined).
+ *
+ * Usage:
+ * - Access command counts via: const { commandCounts } = useGame()
+ * - View statistics with the 'stats' command in the terminal
+ * - Use utility functions from lib/utils.ts for analysis
+ */
+
 interface TerminalProps {
   className?: string;
 }
@@ -12,7 +24,7 @@ type TerminalLine = {
 };
 
 export function Terminal({ className = "" }: TerminalProps) {
-  const { context, startGame } = useGame();
+  const { context, startGame, trackCommand, commandCounts } = useGame();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
     { type: "text", content: 'Type "help" for available commands.' },
@@ -119,8 +131,12 @@ export function Terminal({ className = "" }: TerminalProps) {
         setWaitingForInput({ type, prompt, callback });
         addLine(prompt);
       },
+      commandCounts,
     );
+
     if (output) {
+      trackCommand(command.toLowerCase());
+
       if (Array.isArray(output)) {
         const shouldDelay =
           output.length > 3 &&
