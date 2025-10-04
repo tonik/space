@@ -38,12 +38,9 @@ function generateSystemMetrics(
         },
         {
           label: "Last Contact",
-          value:
-            status === "critical" || status === "offline"
-              ? "NO SIGNAL"
-              : status === "degraded"
-                ? "4.7 HOURS"
-                : "2.3 HOURS",
+          value: new Date(
+            INITIAL_CURRENT_DATE.getTime() - 15 * 60 * 1000,
+          ).toLocaleString(),
         },
         {
           label: "Encryption",
@@ -214,16 +211,24 @@ function generateSystemMetrics(
     case "defensive": {
       const shieldStatus =
         status === "offline"
-          ? "OFFLINE"
+          ? "DISABLED"
           : status === "degraded"
-            ? "DEGRADED"
-            : "ONLINE";
+            ? "WEAK"
+            : status === "critical"
+              ? "FAILING"
+              : status === "compromised"
+                ? "COMPROMISED"
+                : "NOMINAL";
       const shieldIntegrity =
         status === "offline"
           ? 0
           : status === "degraded"
             ? Math.round(adjustedIntegrity * 0.6)
-            : adjustedIntegrity;
+            : status === "critical"
+              ? Math.round(adjustedIntegrity * 0.3)
+              : status === "compromised"
+                ? Math.round(adjustedIntegrity * 0.4)
+                : adjustedIntegrity;
 
       return [
         {
@@ -432,8 +437,8 @@ const initialContext: GameContext = {
   systems: {
     communications: {
       integrity: 100,
-      status: "critical",
-      metrics: generateSystemMetrics("communications", "critical", 100),
+      status: "online",
+      metrics: generateSystemMetrics("communications", "online", 100),
     },
     navigation: {
       integrity: 100,
