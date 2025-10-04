@@ -6,20 +6,20 @@ import Navigation from "@/components/navigation";
 import TopNav from "@/components/top-nav";
 import DashboardView from "@/features/dashboard/view";
 import CaptainsLogView from "@/features/captains-log/view";
-import { WelcomeScreen } from "@/components/welcome-screen";
+// import { WelcomeScreen } from "@/components/welcome-screen";
 import ArcadeView from "@/features/arcade/view";
 import CipherGameView from "@/features/cipher-game/view";
 
 export default function SpaceshipOS() {
-  const { context, changeView, enterMainApp } = useGame();
+  const { context, changeView } = useGame();
   const activeView = context.activeView;
 
   return (
     <div>
-      <WelcomeScreen
+      {/* <WelcomeScreen
         hidden={!context.showWelcomeScreen}
         onEnter={enterMainApp}
-      />
+      /> */}
       <div className="text-primary bg-background flex h-screen overflow-hidden font-mono">
         <Navigation activeView={activeView} setActiveView={changeView} />
         <div className="flex flex-1 flex-col">
