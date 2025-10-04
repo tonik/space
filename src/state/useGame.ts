@@ -24,41 +24,6 @@ export const useGame = () => {
     (state) => state.context.activeView,
   );
 
-  const aiAwareness = useSelector(
-    gameActor,
-    (state) => state.context.aiAwareness,
-  );
-  const timePressure = useSelector(
-    gameActor,
-    (state) => state.context.timePressure,
-  );
-  const systemIntegrity = useSelector(
-    gameActor,
-    (state) => state.context.systemIntegrity,
-  );
-  const aiPersonality = useSelector(
-    gameActor,
-    (state) => state.context.aiPersonality,
-  );
-
-  const aiAwarenessState = useSelector(
-    gameActor,
-    (state) => state.value.aiAwareness,
-  );
-  const timePressureState = useSelector(
-    gameActor,
-    (state) => state.value.timePressure,
-  );
-  const systemIntegrityState = useSelector(
-    gameActor,
-    (state) => state.value.systemIntegrity,
-  );
-  const playerActionState = useSelector(
-    gameActor,
-    (state) => state.value.playerActions,
-  );
-  const gameFlowState = useSelector(gameActor, (state) => state.value.gameFlow);
-
   const messages = useSelector(gameActor, (state) => state.context.messages);
   const messageViews = useSelector(
     gameActor,
@@ -99,17 +64,6 @@ export const useGame = () => {
   return {
     context,
     activeView,
-
-    aiAwareness,
-    timePressure,
-    systemIntegrity,
-    aiPersonality,
-
-    aiAwarenessState,
-    timePressureState,
-    systemIntegrityState,
-    playerActionState,
-    gameFlowState,
 
     messages,
     messageViews,

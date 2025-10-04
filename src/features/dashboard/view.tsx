@@ -59,7 +59,7 @@ export default function DashboardView() {
         networkLatency={context.diagnostics.networkLatency}
         uptime={uptime}
         aiResponseTime={context.diagnostics.aiResponseTime}
-        systemIntegrity={context.systemIntegrity}
+        systemIntegrity={context.diagnostics.systemIntegrity}
         activeProcesses={context.diagnostics.activeProcesses}
         errorRate={context.diagnostics.errorRate}
       />
