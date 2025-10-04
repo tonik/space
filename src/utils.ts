@@ -14,12 +14,12 @@ export const navItems: {
 }[] = [
   {
     id: "dashboard",
-    label: "Control",
+    label: "Control Dashboard",
     icon: Gauge,
   },
   {
     id: "messaging",
-    label: "Comms",
+    label: "Communication Center",
     icon: MessageSquare,
   },
   {

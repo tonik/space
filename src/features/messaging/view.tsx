@@ -69,8 +69,8 @@ export function MessagingView() {
 
   // Message list view
   return (
-    <>
-      <Card className="border-border/30 bg-card mb-6 p-6">
+    <div className="flex h-full flex-col">
+      <Card className="border-border/30 bg-card mb-6 h-full p-6">
         <div className="mb-1 flex items-center justify-between">
           <h3 className="text-card-foreground text-sm font-bold">
             INCOMING TRANSMISSIONS
@@ -83,7 +83,7 @@ export function MessagingView() {
             )}
           </div>
         </div>
-        <ScrollArea className="h-[500px]">
+        <ScrollArea className="h-full">
           <div className="space-y-3">
             {messages.length === 0 ? (
               <div className="text-muted-foreground/60 py-8 text-center">
@@ -133,6 +133,6 @@ export function MessagingView() {
         />
         <Button onClick={handleSendMessage}>SEND</Button>
       </div>
-    </>
+    </div>
   );
 }

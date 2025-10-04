@@ -1,4 +1,3 @@
-import { Terminal } from "@/components/terminal";
 import { SystemLogView } from "@/features/system-log/view";
 import { useGame } from "@/state/useGame";
 import { useNavigationState } from "@/components/navigation/selectors";
@@ -7,6 +6,7 @@ import Navigation from "@/components/navigation";
 import TopNav from "@/components/top-nav";
 import DashboardView from "@/features/dashboard/view";
 import CaptainsLogView from "@/features/captains-log/view";
+import TerminalView from "@/features/terminal/view";
 // import { WelcomeScreen } from "@/components/welcome-screen";
 
 export default function SpaceshipOS() {
@@ -27,7 +27,7 @@ export default function SpaceshipOS() {
           <div className="flex-1 overflow-auto p-6">
             {activeView === "dashboard" && <DashboardView />}
             {activeView === "messaging" && <MessagingView />}
-            {activeView === "terminal" && <Terminal />}
+            {activeView === "terminal" && <TerminalView />}
             {activeView === "logs" && <SystemLogView />}
             {activeView === "captains-log" && <CaptainsLogView />}
           </div>

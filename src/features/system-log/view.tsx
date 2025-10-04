@@ -25,18 +25,8 @@ export function SystemLogView() {
   };
 
   return (
-    <Card className="border-border/30 bg-card p-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-card-foreground text-sm font-bold">
-          SHIP SYSTEM LOGS
-        </h3>
-        <div className="flex gap-2">
-          <Button onClick={handleAddLog} variant="outline" size="sm">
-            Add Log
-          </Button>
-        </div>
-      </div>
-      <ScrollArea className="h-[500px] font-mono text-xs">
+    <Card className="border-border/30 bg-card h-full p-6">
+      <ScrollArea className="h-full font-mono text-xs">
         <div className="space-y-1">
           {logs.length === 0 ? (
             <div className="text-muted-foreground/60 py-8 text-center">
@@ -65,6 +55,12 @@ export function SystemLogView() {
           )}
         </div>
       </ScrollArea>
+
+      <div className="flex gap-2">
+        <Button onClick={handleAddLog} variant="outline" size="sm">
+          Add Log
+        </Button>
+      </div>
     </Card>
   );
 }

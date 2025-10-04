@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { getCommands } from "./commands";
-import { useGame } from "../../state/useGame";
-import { useTerminalState } from "./selectors";
-import { displayLinesWithDelay } from "../../lib/utils";
+import { useGame } from "@/state/useGame";
+import { useTerminalState } from "@/components/terminal/selectors";
+import { displayLinesWithDelay } from "@/lib/utils";
+import { getCommands } from "@/components/terminal/commands";
 
 /**
  * Terminal Component with Command Tracking
@@ -154,7 +154,7 @@ export function Terminal({ className = "" }: TerminalProps) {
   return (
     <div
       ref={terminalRef}
-      className={`terminal-container ${className} bg-background text-primary relative h-[500px] overflow-auto font-mono text-sm leading-[1.2] font-[500]`}
+      className={`terminal-container ${className} bg-background text-primary relative h-full overflow-auto font-mono text-sm leading-[1.2] font-[500]`}
       style={{
         textShadow: "0 0 2px var(--primary)",
         fontFamily: '"Space Mono", "Courier New", monospace',
