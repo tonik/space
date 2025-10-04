@@ -4,8 +4,17 @@ import { toast } from "sonner";
 
 export interface INotificationStore {
   notifications: Record<View, boolean>;
-  trigger: (msg: string, view?: View) => void;
+  trigger: (msg: IMessage, view?: View) => void;
   dismiss: (view: View) => void;
+}
+
+export interface IMessage {
+  title: string;
+  description?: string;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 export const useNotificationsStore = create<INotificationStore>((set) => ({
@@ -15,7 +24,7 @@ export const useNotificationsStore = create<INotificationStore>((set) => ({
     terminal: false,
     logs: false,
   },
-  trigger: (msg: string, view?: View) => {
+  trigger: (msg: IMessage, view?: View) => {
     if (view) {
       set((state) => ({
         notifications: {
@@ -24,18 +33,15 @@ export const useNotificationsStore = create<INotificationStore>((set) => ({
         },
       }));
     }
-    toast(msg, {
-      description: "Sunday, December 03, 2023 at 9:00 AM",
-      action: {
-        label: "Undo",
-        onClick: () => console.log("Undo"),
-      },
+    toast(msg.title, {
+      ...(msg.description && { description: msg.description }),
+      ...(msg.action && { action: msg.action }),
       style: {
         backgroundColor: "var(--foreground)",
-        color: "var(--background)",
+        color: "#00ff41",
         border: "1px solid #00ff41",
       },
-      duration: 10000,
+      duration: 4000,
     });
   },
   dismiss: (view: View) => {
