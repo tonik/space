@@ -12,7 +12,7 @@ import {
   Activity,
   Globe,
 } from "lucide-react";
-import { Terminal } from "@/components/terminal";
+import { Terminal } from "@/components/kupasiku";
 import { SystemLogView } from "@/features/system-log/view";
 import { useGame } from "@/state/useGame";
 
