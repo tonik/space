@@ -118,12 +118,12 @@ const initialContext: GameContext = {
       metrics: [
         {
           label: "Earth Uplink",
-          value: "ACTIVE",
+          value: "INACTIVE",
         },
         {
           label: "Signal Strength",
-          value: "92%",
-          progress: 92,
+          value: "0%",
+          progress: 0,
         },
         {
           label: "Last Contact",
