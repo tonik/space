@@ -38,9 +38,9 @@ export const useNotificationsStore = create<INotificationStore>((set) => ({
       ...(msg.description && { description: msg.description }),
       ...(msg.action && { action: msg.action }),
       style: {
-        backgroundColor: "var(--foreground)",
-        color: "#00ff41",
-        border: "1px solid #00ff41",
+        backgroundColor: "var(--background)",
+        color: "var(--primary)",
+        border: "1px solid var(--border)",
       },
       duration: 4000,
     });

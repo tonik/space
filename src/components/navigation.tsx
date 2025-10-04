@@ -16,8 +16,8 @@ export default function Navigation({
   const hasNotification = (id: View) => notifications[id];
 
   return (
-    <div className="flex w-20 flex-col items-center gap-6 border-r border-[#00ff41]/30 bg-black py-6">
-      <div className="mb-4 flex h-10 w-10 items-center justify-center border-2 border-[#00ff41]">
+    <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-6 border-r py-6">
+      <div className="border-primary mb-4 flex h-10 w-10 items-center justify-center border-2">
         <Radio className="h-5 w-5" />
       </div>
 
@@ -29,16 +29,16 @@ export default function Navigation({
               variant="ghost"
               size="icon"
               onClick={() => setActiveView(item.id as View)}
-              className={`h-12 w-12 transition-colors hover:bg-[#00ff41]/10 hover:text-[#00ff41] ${
+              className={`hover:bg-primary/10 hover:text-primary h-12 w-12 transition-colors ${
                 activeView === item.id
-                  ? "border border-[#00ff41] bg-[#00ff41]/20 text-[#00ff41]"
-                  : "border border-transparent text-[#00ff41]/60"
+                  ? "border-primary bg-primary/20 text-primary border"
+                  : "text-muted-foreground border border-transparent"
               }`}
             >
               <Icon className="h-5 w-5" />
             </Button>
             {hasNotification(item.id as View) && (
-              <span className="absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border border-red-400 bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
+              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
             )}
           </div>
         );
