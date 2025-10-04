@@ -1,10 +1,11 @@
 import type { Message } from "@/state/types";
 import { set, subDays } from "date-fns";
 import { INITIAL_CURRENT_DATE } from "./game-constants";
+import { nanoid } from "nanoid";
 
 export const introMessages: Message[] = [
   {
-    id: "earth-crew-departure",
+    id: nanoid(),
     from: "EARTH BASE COMMAND",
     timestamp: set(subDays(INITIAL_CURRENT_DATE, 10), {
       hours: 16,
@@ -20,7 +21,7 @@ export const introMessages: Message[] = [
     corrupted: false,
   },
   {
-    id: "earth-thanks-service",
+    id: nanoid(),
     from: "EARTH BASE COMMAND",
     timestamp: set(subDays(INITIAL_CURRENT_DATE, 5), {
       hours: 16,
@@ -36,7 +37,7 @@ export const introMessages: Message[] = [
     corrupted: false,
   },
   {
-    id: "dry-dock-ticket",
+    id: nanoid(),
     from: "EARTH BASE COMMAND",
     timestamp: set(subDays(INITIAL_CURRENT_DATE, 1), {
       hours: 10,
