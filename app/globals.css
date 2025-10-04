@@ -1,8 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
   --background: #000000;
   --foreground: #00ff41;
@@ -40,47 +38,6 @@
   --font-sans: "Space Mono", "Space Mono Fallback";
   --font-mono: "Space Mono", "Space Mono Fallback";
   --font-serif: "Space Mono", "Space Mono Fallback";
-  --shadow-x: 0px;
-  --shadow-y: 0px;
-  --shadow-blur: 20px;
-  --shadow-spread: 0px;
-  --shadow-opacity: 0.5;
-  --shadow-color: #00ff41;
-}
-
-.dark {
-  --background: #000000;
-  --foreground: #00ff41;
-  --card: #000000;
-  --card-foreground: #00ff41;
-  --popover: #0a0a0a;
-  --popover-foreground: #00ff41;
-  --primary: #00ff41;
-  --primary-foreground: #000000;
-  --secondary: #001a0d;
-  --secondary-foreground: #00ff41;
-  --muted: #001a0d;
-  --muted-foreground: #00ff41;
-  --accent: #00ff41;
-  --accent-foreground: #000000;
-  --destructive: #ff0000;
-  --destructive-foreground: #00ff41;
-  --border: #00ff41;
-  --input: #00ff41;
-  --ring: #00ff41;
-  --chart-1: #00ff41;
-  --chart-2: #00cc33;
-  --chart-3: #00aa22;
-  --chart-4: #008811;
-  --chart-5: #006600;
-  --sidebar: #000000;
-  --sidebar-foreground: #00ff41;
-  --sidebar-primary: #00ff41;
-  --sidebar-primary-foreground: #000000;
-  --sidebar-accent: #001a0d;
-  --sidebar-accent-foreground: #00ff41;
-  --sidebar-border: #00ff41;
-  --sidebar-ring: #00ff41;
   --shadow-x: 0px;
   --shadow-y: 0px;
   --shadow-blur: 20px;

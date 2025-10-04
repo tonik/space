@@ -38,14 +38,14 @@ export function MessagingView() {
 
   return (
     <div className="max-w-4xl">
-      <Card className="mb-4 border-[#00ff41]/30 bg-black p-4">
+      <Card className="border-border/30 bg-card mb-4 p-4">
         <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-[#00ff41]">
+          <h3 className="text-card-foreground text-sm font-bold">
             INCOMING TRANSMISSIONS
           </h3>
           <div className="flex gap-2">
             {unreadCount > 0 && (
-              <span className="text-xs text-[#00ff41]/60">
+              <span className="text-muted-foreground text-xs">
                 {unreadCount} unread
               </span>
             )}
@@ -54,30 +54,31 @@ export function MessagingView() {
         <ScrollArea className="h-[500px]">
           <div className="space-y-3">
             {messages.length === 0 ? (
-              <div className="py-8 text-center text-[#00ff41]/40">
+              <div className="text-muted-foreground/60 py-8 text-center">
                 No messages available
               </div>
             ) : (
               messages.map((msg) => {
                 const isRead = game.openedMessageIds.has(msg.id);
-                
+
                 return (
                   <div
                     key={msg.id}
-                    className={`border border-[#00ff41]/20 p-3 ${
-                      isRead ? "bg-[#00ff41]/5" : "bg-[#00ff41]/10"
+                    className={`border-border/20 border p-3 ${
+                      isRead ? "bg-primary/5" : "bg-primary/10"
                     }`}
-                    onClick={() => !isRead && openMessage(msg.id)}
                   >
                     <div className="mb-2 flex justify-between">
-                      <span className="text-xs font-bold text-[#00ff41]">
+                      <span className="text-card-foreground text-xs font-bold">
                         {msg.from}
                       </span>
-                      <span className="text-xs text-[#00ff41]/60">
+                      <span className="text-muted-foreground text-xs">
                         {msg.time}
                       </span>
                     </div>
-                    <p className="text-sm text-[#00ff41]/80">{msg.preview}</p>
+                    <p className="text-card-foreground/80 text-sm">
+                      {msg.preview}
+                    </p>
                   </div>
                 );
               })
@@ -92,14 +93,9 @@ export function MessagingView() {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-          className="flex-1 border border-[#00ff41]/30 bg-black px-4 py-2 text-sm text-[#00ff41] placeholder:text-[#00ff41]/40 focus:border-[#00ff41] focus:outline-none"
+          className="border-border/30 bg-background text-foreground placeholder:text-muted-foreground focus:border-primary flex-1 border px-4 py-2 text-sm focus:outline-none"
         />
-        <Button
-          onClick={handleSendMessage}
-          className="bg-[#00ff41] text-black hover:bg-[#00ff41]/80"
-        >
-          SEND
-        </Button>
+        <Button onClick={handleSendMessage}>SEND</Button>
       </div>
     </div>
   );
