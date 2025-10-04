@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { getCommand } from "./commands.tsx";
+import { getCommands } from "./commands";
 
 interface TerminalProps {
   className?: string;
@@ -88,7 +88,11 @@ export function Terminal({
       return;
     }
 
-    const output = getCommand(command.toLowerCase(), onNameChange, currentName);
+    const output = getCommands(
+      command.toLowerCase(),
+      onNameChange,
+      currentName,
+    );
     if (output) {
       if (Array.isArray(output)) {
         const shouldDelay =
