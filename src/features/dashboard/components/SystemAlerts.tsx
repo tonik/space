@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle } from "lucide-react";
-import type { LogEntry } from "@/state/game";
+import type { LogEntry } from "@/state/types";
 import { format } from "date-fns";
 
 interface SystemAlertsProps {

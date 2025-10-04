@@ -51,7 +51,7 @@ export default function Navigation({
                   )}
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent side="right">
                 <p>{item.label}</p>
               </TooltipContent>
             </Tooltip>
