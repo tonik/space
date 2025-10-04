@@ -12,7 +12,7 @@ export interface SystemStatus {
 export interface Message {
   id: string;
   from: string;
-  time: string;
+  timestamp: number;
   title: string;
   preview: string;
   type: "incoming" | "outgoing" | "system" | "ai";

@@ -6,6 +6,8 @@ import { useGame } from "@/state/useGame";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";
 import { User } from "lucide-react";
+import { INITIAL_CURRENT_DATE } from "@/data/game-constants";
+import { format } from "date-fns";
 
 export function MessagingView() {
   const game = useGame();
@@ -20,10 +22,8 @@ export function MessagingView() {
       addMessage({
         id: messageId,
         from: "YOU",
-        time: new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
+        // update to dynamic time
+        timestamp: INITIAL_CURRENT_DATE.getTime(),
         title: "Outgoing Message",
         preview: newMessage.trim(),
         type: "outgoing",
@@ -97,7 +97,7 @@ export function MessagingView() {
                         </span>
                       </div>
                       <span className="text-muted-foreground text-xs">
-                        {msg.time}
+                        {format(msg.timestamp, "hh:mm aa")}
                       </span>
                     </div>
                   </div>

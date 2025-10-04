@@ -22,6 +22,7 @@ export default function Navigation({
   setActiveView: (view: AvailableViewKeys) => void;
 }) {
   const notifications = useSelector(gameActor, selectNotifications);
+
   return (
     <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-6 border-r py-6">
       <div className="border-primary mb-4 flex h-10 w-10 items-center justify-center border-2">
