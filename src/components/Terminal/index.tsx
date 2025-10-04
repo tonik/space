@@ -67,12 +67,14 @@ export function Terminal({
     setLines([]);
   };
 
-  const addLinesWithDelay = async (lines: string[], delay: number = 600) => {
+  const addLinesWithDelay = async (lines: string[]) => {
     setIsPrinting(true);
     for (let i = 0; i < lines.length; i++) {
       addLine(lines[i]);
       if (i < lines.length - 1) {
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        // Random delay between 500ms and 700ms
+        const randomDelay = Math.floor(Math.random() * 201) + 500;
+        await new Promise((resolve) => setTimeout(resolve, randomDelay));
       }
     }
     setIsPrinting(false);
@@ -101,7 +103,7 @@ export function Terminal({
             command.toLowerCase() === "status");
 
         if (shouldDelay) {
-          await addLinesWithDelay(output, 600);
+          await addLinesWithDelay(output);
         } else {
           output.forEach((line: string) => addLine(line));
         }
