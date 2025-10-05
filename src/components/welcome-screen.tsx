@@ -70,13 +70,7 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
           {/* Terminal content */}
           <div className="relative z-10 h-[250px] space-y-1 text-sm leading-tight">
             {displayedLines.map((line, index) => (
-              <div
-                key={index}
-                className="text-primary font-mono"
-                style={{
-                  textShadow: "0 0 2px var(--primary)",
-                }}
-              >
+              <div key={index} className="text-primary font-mono">
                 {line}
               </div>
             ))}
@@ -84,30 +78,11 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
             {/* Ready prompt */}
             {finishedAnimating && (
               <div className="mt-4 flex items-center">
-                <span
-                  className="text-primary mr-2 font-mono"
-                  style={{
-                    textShadow: "0 0 2px var(--primary)",
-                  }}
-                >
-                  &gt;
-                </span>
-                <span
-                  className="text-primary font-mono"
-                  style={{
-                    textShadow: "0 0 2px var(--primary)",
-                  }}
-                >
+                <span className="text-primary mr-2 font-mono">&gt;</span>
+                <span className="text-primary font-mono">
                   Press ENTER to continue
                 </span>
-                <span
-                  className="text-primary ml-1 animate-pulse"
-                  style={{
-                    textShadow: "0 0 2px var(--primary)",
-                  }}
-                >
-                  █
-                </span>
+                <span className="text-primary ml-1 animate-pulse">█</span>
               </div>
             )}
           </div>
