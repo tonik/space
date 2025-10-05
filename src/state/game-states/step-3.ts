@@ -12,41 +12,33 @@ export const step3 = gameSetup.createStateConfig({
     commandContent: () => step3CommandContent,
   }),
   after: {
-    1000: [
-      {
-        actions: assign({
-          messages: ({ context }) => {
-            return [
-              ...context.messages,
-              {
-                id: `terminal-alert-${Date.now()}`,
-                from: "SYSTEM",
-                timestamp: getGameTimestamp(context.gameStartTimestamp),
-                title: "Terminal Maintenance Required",
-                preview:
-                  "Execute system diagnostic commands and check for anomalies, attempt to contact Earth Command and check AI memories.",
-                type: "system" as const,
-                priority: "normal" as const,
-                encrypted: false,
-                corrupted: false,
-              },
-            ];
+    1000: {
+      actions: assign({
+        messages: ({ context }) => [
+          ...context.messages,
+          {
+            id: `terminal-alert-${Date.now()}`,
+            from: "SYSTEM",
+            timestamp: getGameTimestamp(context.gameStartTimestamp),
+            title: "Terminal Maintenance Required",
+            preview:
+              "Execute system diagnostic commands and check for anomalies, attempt to contact Earth Command and check AI memories.",
+            type: "system" as const,
+            priority: "normal" as const,
+            encrypted: false,
+            corrupted: false,
           },
+        ],
+        viewNotifications: ({ context }) => ({
+          ...context.viewNotifications,
+          terminal: true,
         }),
-      },
-      {
-        guard: ({ context }) => context.activeView !== "terminal",
-        actions: assign({
-          viewNotifications: ({ context }) => ({
-            ...context.viewNotifications,
-            terminal: true,
-          }),
-        }),
-      },
-    ],
+      }),
+    },
   },
   on: {
     CHANGE_VIEW: {
+      guard: ({ event }) => event.view === "terminal",
       actions: assign({
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
