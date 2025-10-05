@@ -47,6 +47,7 @@ export const step2 = gameSetup.createStateConfig({
           communications: false,
         }),
       }),
+      target: "step3",
     },
   },
 });
