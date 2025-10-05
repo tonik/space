@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight } from "lucide-react";
 import type { AvailableViewKeys } from "@/state/types";
+import { useNavigationState } from "@/components/navigation/selectors";
 
 export default function CaptainsLogView({
   activeView,
@@ -44,6 +45,12 @@ export default function CaptainsLogView({
     });
   };
 
+  const { viewNotifications } = useNavigationState();
+
+  const hasNotifications = (id: AvailableViewKeys) => {
+    return viewNotifications[id].length > 0;
+  };
+
   return (
     <div className="flex h-full flex-col">
       <Card className="border-border/30 bg-background flex-1 p-6">
@@ -51,23 +58,29 @@ export default function CaptainsLogView({
         <div className="border-border/30 mb-6 flex gap-1 border-b">
           <button
             onClick={() => setActiveTab("log")}
-            className={`text-primary cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
+            className={`text-primary relative cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
               activeTab === "log"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"
             }`}
           >
             LOG
+            {hasNotifications("captains-log_log") && (
+              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+            )}
           </button>
           <button
             onClick={() => setActiveTab("objectives")}
-            className={`text-primary cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
+            className={`text-primary relative cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
               activeTab === "objectives"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"
             }`}
           >
             OBJECTIVES
+            {hasNotifications("captains-log_objectives") && (
+              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+            )}
           </button>
         </div>
 
