@@ -6,5 +6,11 @@ import { gameSetup } from "../game-setup";
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
 export const intro1 = gameSetup.createStateConfig({
-  on: {},
+  on: {
+    CHANGE_VIEW: {
+      actions: () => {
+        console.log("View changed");
+      },
+    },
+  },
 });

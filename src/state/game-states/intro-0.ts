@@ -17,7 +17,7 @@ export const intro0 = gameSetup.createStateConfig({
     KEYPRESS: {
       guard: ({ event, context }) =>
         context.welcomeScreen.finishedAnimating &&
-        event.message.key === "enter",
+        event.message.key === "Enter",
       actions: "hideWelcomeScreen",
       target: "intro1",
     },
