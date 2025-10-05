@@ -6,15 +6,12 @@ import { ChevronRight } from "lucide-react";
 import type { AvailableViewKeys } from "@/state/types";
 import { useNavigationState } from "@/components/navigation/selectors";
 
-export default function CaptainsLogView({
-  activeView,
-}: {
-  activeView: AvailableViewKeys;
-}) {
+export default function CaptainsLogView() {
+  const { activeView, changeView } = useNavigationState();
+
   const tab =
     (activeView.split("_")[1] as "log" | "objectives") || ("log" as const);
   const { captainsLog } = useCaptainsLogState();
-  const [activeTab, setActiveTab] = useState<"log" | "objectives">(tab);
   const [openDays, setOpenDays] = useState<Set<number>>(new Set([])); // Day 1 open by default
 
   // Group entries by day
@@ -57,9 +54,9 @@ export default function CaptainsLogView({
         {/* Tabs */}
         <div className="border-border/30 mb-6 flex gap-1 border-b">
           <button
-            onClick={() => setActiveTab("log")}
+            onClick={() => changeView("captains-log_log")}
             className={`text-primary relative cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
-              activeTab === "log"
+              tab === "log"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"
             }`}
@@ -70,9 +67,9 @@ export default function CaptainsLogView({
             )}
           </button>
           <button
-            onClick={() => setActiveTab("objectives")}
+            onClick={() => changeView("captains-log_objectives")}
             className={`text-primary relative cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
-              activeTab === "objectives"
+              tab === "objectives"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"
             }`}
@@ -85,7 +82,7 @@ export default function CaptainsLogView({
         </div>
 
         {/* Log Tab */}
-        {activeTab === "log" && (
+        {tab === "log" && (
           <ScrollArea className="h-[calc(100vh-250px)]">
             <div className="space-y-2">
               {sortedDays.length === 0 ? (
@@ -134,7 +131,7 @@ export default function CaptainsLogView({
         )}
 
         {/* Objectives Tab */}
-        {activeTab === "objectives" && (
+        {tab === "objectives" && (
           <ScrollArea className="h-[calc(100vh-250px)]">
             <div className="space-y-3">
               <div className="text-muted-foreground/40 py-8 text-center font-mono text-sm">

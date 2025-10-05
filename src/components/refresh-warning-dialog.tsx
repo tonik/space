@@ -10,7 +10,6 @@ export function RefreshWarningDialog() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Detect refresh shortcuts: Ctrl+R, Cmd+R, F5
       if ((e.key === "r" && (e.ctrlKey || e.metaKey)) || e.key === "F5") {
-        console.log("Preventing reload");
         e.preventDefault();
         setShowWarning(true);
       }

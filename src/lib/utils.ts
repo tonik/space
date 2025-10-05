@@ -97,7 +97,7 @@ export const navItems: {
     icon: FileText,
   },
   {
-    id: "captains-log_objectives",
+    id: "captains-log_log",
     label: "Captain's Log",
     icon: BookOpen,
   },

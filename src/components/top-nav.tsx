@@ -11,11 +11,13 @@ export default function TopNav({
   const { systems } = useDashboardState();
   const communicationsStatus = systems.communications.status;
 
+  const tab = activeView.split("_")[0];
+
   return (
     <div className="border-border/30 bg-background/50 flex h-16 items-center justify-between border-b px-6">
       <div className="flex items-center gap-4">
         <h1 className="text-xl font-bold tracking-wider">
-          {navItems.find((item) => item.id === activeView)?.label.toUpperCase()}
+          {navItems.find((item) => item.id.includes(tab))?.label.toUpperCase()}
         </h1>
         <Badge
           variant="outline"

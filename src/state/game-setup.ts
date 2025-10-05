@@ -368,7 +368,6 @@ export const gameSetup = setup({
     }),
     hideWelcomeScreen: assign({
       welcomeScreen: ({ context }) => {
-        console.log("Hiding welcome screen");
         return {
           ...context.welcomeScreen,
           exiting: true,
