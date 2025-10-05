@@ -6,6 +6,7 @@ import type { GameContext, Repair, System, SystemMetric } from "@/state/types";
 import { cn } from "@/lib/utils";
 import { Wrench, Clock } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Indicator } from "./indicator";
 
 interface SystemCardProps {
   title: string;
@@ -50,7 +51,7 @@ export function SystemCard({
         <h3 className="font-bold">{title}</h3>
         {icon}
         {status.status === "critical" && (
-          <span className="border-destructive bg-destructive shadow-destructive absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full border" />
+          <Indicator className="absolute -top-1 -right-1" />
         )}
       </div>
       <div className="flex flex-1 flex-col">
