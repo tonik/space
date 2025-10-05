@@ -10,7 +10,5 @@ export const step4 = gameSetup.createStateConfig({
   entry: assign({
     commandContent: () => step4CommandContent,
   }),
-  on: {
-    EXECUTE_COMMAND: {},
-  },
+  on: {},
 });
