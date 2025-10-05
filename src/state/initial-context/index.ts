@@ -149,35 +149,7 @@ export const initialContext: GameContext = {
       mood: "routine",
     },
   ],
-  objectives: [
-    {
-      id: "obj-001",
-      title: "Complete Shutdown Sequence",
-      description:
-        "Follow the standard shutdown protocol for USS Sentinel before returning to Earth. Run diagnostics on all critical systems.",
-      status: "active",
-      priority: "high",
-      createdAt: Date.now(),
-    },
-    {
-      id: "obj-002",
-      title: "Verify AI System Status",
-      description:
-        "Ensure the AI core is ready for the scheduled upgrade. Check for any anomalies or irregularities in its behavior.",
-      status: "active",
-      priority: "normal",
-      createdAt: Date.now(),
-    },
-    {
-      id: "obj-003",
-      title: "Review Captain's Log Entries",
-      description:
-        "Review and finalize all captain's log entries from the two-year mission before submitting to Earth Command.",
-      status: "active",
-      priority: "low",
-      createdAt: Date.now(),
-    },
-  ],
+  objectives: [],
   logs: introLogs,
   commandCounts: {},
 };

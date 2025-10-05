@@ -1,5 +1,6 @@
 import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
+import { objectives } from "../objectives";
 
 /**
  * First state where captain gets objective and is onboarded.
@@ -38,6 +39,10 @@ export const step1 = gameSetup.createStateConfig({
             },
           ],
         }),
+        objectives: ({ context }) => [
+          ...context.objectives,
+          objectives["obj-001"],
+        ],
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
           "captains-log_objectives": true,
