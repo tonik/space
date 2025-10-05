@@ -1,3 +1,4 @@
+import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
 
 /**
@@ -5,5 +6,12 @@ import { gameSetup } from "../game-setup";
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
 export const intro0 = gameSetup.createStateConfig({
-  on: {},
+  on: {
+    KEYPRESS: {
+      guard: ({ event }) => event.message === "enter",
+      actions: assign({
+        showWelcomeScreen: () => false,
+      }),
+    },
+  },
 });

@@ -118,6 +118,10 @@ export type GameEvent =
       type: "AI_CHAT_INITIAL_MESSAGE_SHOWN";
     }
   | {
+      type: "KEYPRESS";
+      message: string;
+    }
+  | {
       type: "AI_CHAT_ADD_MESSAGE";
       message: {
         id: string;
