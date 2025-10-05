@@ -31,25 +31,29 @@ export function SystemAlerts({ logs }: SystemAlertsProps) {
               No system logs available
             </div>
           ) : (
-            recentAlerts.map((log, i) => (
-              <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                <span className="text-muted-foreground">
-                  [{formatTimestamp(log.timestamp)}]
-                </span>
-                <span
-                  className={
-                    log.level === "WARN"
-                      ? "text-yellow-500"
-                      : log.level === "ERROR"
-                        ? "text-red-400"
-                        : "text-primary"
-                  }
-                >
-                  [{log.level}]
-                </span>
-                <span className="text-muted-foreground/80">{log.message}</span>
-              </div>
-            ))
+            <div className="grid grid-cols-[auto_auto_1fr] gap-3">
+              {recentAlerts.map((log, i) => (
+                <div key={i} className="hover:bg-primary/5 contents py-1">
+                  <span className="text-muted-foreground">
+                    [{formatTimestamp(log.timestamp)}]
+                  </span>
+                  <span
+                    className={
+                      log.level === "WARN"
+                        ? "text-yellow-500"
+                        : log.level === "ERROR"
+                          ? "text-red-400"
+                          : "text-primary"
+                    }
+                  >
+                    [{log.level}]
+                  </span>
+                  <span className="text-muted-foreground/80">
+                    {log.message}
+                  </span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </ScrollArea>

@@ -142,32 +142,34 @@ export function SystemLogView() {
                 : "No system logs available"}
             </div>
           ) : (
-            filteredLogs.map((log, i) => (
-              <div key={i} className="hover:bg-primary/5 flex gap-3 py-1">
-                <span className="text-muted-foreground">
-                  [{formatTimestamp(log.timestamp)}]
-                </span>
-                <span
-                  className={
-                    log.level === "WARN"
-                      ? "text-yellow-500"
-                      : log.level === "ERROR"
-                        ? "text-red-400"
-                        : log.level === "CRITICAL"
-                          ? "text-red-600"
-                          : log.level === "DEBUG"
-                            ? "text-blue-400"
-                            : "text-card-foreground"
-                  }
-                >
-                  [{log.level}]
-                </span>
-                <span className="text-muted-foreground text-xs">
-                  [{log.system}]
-                </span>
-                <span className="text-card-foreground/80">{log.message}</span>
-              </div>
-            ))
+            <div className="grid grid-cols-[auto_auto_auto_1fr] gap-3">
+              {filteredLogs.map((log, i) => (
+                <div key={i} className="hover:bg-primary/5 contents py-1">
+                  <span className="text-muted-foreground">
+                    [{formatTimestamp(log.timestamp)}]
+                  </span>
+                  <span
+                    className={
+                      log.level === "WARN"
+                        ? "text-yellow-500"
+                        : log.level === "ERROR"
+                          ? "text-red-400"
+                          : log.level === "CRITICAL"
+                            ? "text-red-600"
+                            : log.level === "DEBUG"
+                              ? "text-blue-400"
+                              : "text-card-foreground"
+                    }
+                  >
+                    [{log.level}]
+                  </span>
+                  <span className="text-muted-foreground text-xs">
+                    [{log.system}]
+                  </span>
+                  <span className="text-card-foreground/80">{log.message}</span>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </ScrollArea>
