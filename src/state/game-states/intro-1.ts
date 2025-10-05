@@ -6,6 +6,9 @@ import { gameSetup } from "../game-setup";
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
 export const intro1 = gameSetup.createStateConfig({
+  entry: () => {
+    setTimeout(() => {}, 1000);
+  },
   on: {
     CHANGE_VIEW: {
       guard: ({ event }) => event.view === "captains-log_objectives",
