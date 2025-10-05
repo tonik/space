@@ -114,8 +114,8 @@ export function MessagingView() {
                         {format(msg.timestamp, DEFAULT_DATETIME_FORMAT)}
                       </span>
                     </div>
-                    <span className="text-card-foreground/80 text-sm">
-                      {msg.preview.slice(0, 80)}...
+                    <span className="text-card-foreground/80 line-clamp-1 text-sm">
+                      {msg.preview}
                     </span>
                   </div>
                 );

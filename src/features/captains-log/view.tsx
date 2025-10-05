@@ -3,10 +3,17 @@ import { useCaptainsLogState } from "./selectors";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChevronRight } from "lucide-react";
+import type { AvailableViewKeys } from "@/state/types";
 
-export default function CaptainsLogView() {
+export default function CaptainsLogView({
+  activeView,
+}: {
+  activeView: AvailableViewKeys;
+}) {
+  const tab =
+    (activeView.split("_")[1] as "log" | "objectives") || ("log" as const);
   const { captainsLog } = useCaptainsLogState();
-  const [activeTab, setActiveTab] = useState<"log" | "objectives">("log");
+  const [activeTab, setActiveTab] = useState<"log" | "objectives">(tab);
   const [openDays, setOpenDays] = useState<Set<number>>(new Set([])); // Day 1 open by default
 
   // Group entries by day
