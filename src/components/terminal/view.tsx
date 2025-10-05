@@ -153,13 +153,9 @@ export function Terminal({ className = "" }: TerminalProps) {
   };
 
   return (
-    <ScrollArea
+    <div
       ref={terminalRef}
-      className={`${className} bg-background text-primary relative h-full overflow-auto font-mono text-sm leading-[1.2] font-[500]`}
-      style={{
-        textShadow: "0 0 2px var(--primary)",
-        fontFamily: '"Space Mono", "Courier New", monospace',
-      }}
+      className={`${className} bg-background text-primary relative h-full font-mono text-sm leading-[1.2] font-[500]`}
     >
       <div className="space-y-1">
         {lines.map((line, index) => (
@@ -189,12 +185,6 @@ export function Terminal({ className = "" }: TerminalProps) {
               className={`text-primary w-full bg-transparent font-mono caret-transparent outline-none ${
                 isPrinting ? "opacity-50" : ""
               }`}
-              style={{
-                fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
-                fontSize: "14px",
-                caretColor: "transparent",
-                textShadow: "0 0 2px var(--primary)",
-              }}
               autoFocus
             />
             {!isPrinting && (
@@ -213,6 +203,6 @@ export function Terminal({ className = "" }: TerminalProps) {
           </div>
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 }
