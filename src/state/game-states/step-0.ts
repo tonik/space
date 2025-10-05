@@ -32,5 +32,5 @@ export const step0 = gameSetup.createStateConfig({
       type: "final",
     },
   },
-  onDone: { target: "step4" },
+  onDone: { target: "step1" },
 });
