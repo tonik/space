@@ -36,7 +36,6 @@ export function MessagingView() {
       addMessage({
         id: messageId,
         from: "YOU",
-        // update to dynamic time
         timestamp: gameDateNow.getTime(),
         title: "Outgoing Message",
         preview: newMessage.trim(),
@@ -130,7 +129,7 @@ export function MessagingView() {
           placeholder="Type message..."
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
           className="border-border/30 bg-background text-foreground placeholder:text-muted-foreground focus:border-primary flex-1 border px-4 py-2 text-sm focus:outline-none"
         />
         <Button onClick={handleSendMessage}>SEND</Button>
