@@ -82,7 +82,7 @@ export const navItems: {
     icon: Gauge,
   },
   {
-    id: "messaging",
+    id: "communications",
     label: "Communication Center",
     icon: MessageSquare,
   },

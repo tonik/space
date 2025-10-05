@@ -14,7 +14,7 @@ export const initialContext: GameContext = {
 
   viewNotifications: {
     dashboard: false,
-    messaging: false,
+    communications: false,
     terminal: false,
     logs: false,
     "captains-log_objectives": false,

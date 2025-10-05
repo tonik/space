@@ -41,7 +41,7 @@ export const intro1 = gameSetup.createStateConfig({
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
           "captains-log_objectives": true,
-          messaging: true,
+          communications: true,
         }),
       }),
     },

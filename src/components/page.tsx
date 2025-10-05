@@ -43,7 +43,7 @@ export default function SpaceshipOS() {
           <ScrollArea className="flex-1 overflow-auto">
             <div className="p-6">
               {activeView === "dashboard" && <DashboardView />}
-              {activeView === "messaging" && <MessagingView />}
+              {activeView === "communications" && <MessagingView />}
               {activeView === "terminal" && <TerminalView />}
               {activeView === "logs" && <SystemLogView />}
               {activeView.includes("captains-log") && <CaptainsLogView />}
