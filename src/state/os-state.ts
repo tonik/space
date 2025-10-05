@@ -1,17 +1,7 @@
 import { assign } from "xstate";
-import { intro0 } from "./game-states/intro-0";
-import { initialContext } from "./initial-context";
 import { gameSetup } from "./game-setup";
-import { osState } from "./os-state";
 
-export const gameMachine = gameSetup.createMachine({
-  id: "gameOrchestrator",
-  context: initialContext,
-  type: "parallel",
-  states: {
-    osState,
-    intro0,
-  },
+export const osState = gameSetup.createStateConfig({
   on: {
     START_GAME: {
       actions: assign({
