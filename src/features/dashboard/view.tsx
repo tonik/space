@@ -208,7 +208,7 @@ export default function DashboardView() {
         </div>
 
         {/* AI Chat - Right column */}
-        <div className="col-span-1">
+        <div className="sticky top-0 col-span-1 h-[600px] self-start">
           <AIChat />
         </div>
       </div>
