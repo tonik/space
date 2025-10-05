@@ -36,6 +36,7 @@ export interface GameContext {
 
   logs: LogEntry[];
   captainsLog: CaptainsLogEntry[];
+  objectives: Objective[];
   commandCounts: Record<string, number>;
 
   // Dashboard metrics
@@ -138,6 +139,19 @@ export type GameEvent =
     }
   | {
       type: "FINISHED_INTRO_SEQUENCE";
+    }
+  | {
+      type: "ADD_OBJECTIVE";
+      objective: Objective;
+    }
+  | {
+      type: "UPDATE_OBJECTIVE";
+      objectiveId: string;
+      status: Objective["status"];
+    }
+  | {
+      type: "COMPLETE_OBJECTIVE";
+      objectiveId: string;
     };
 
 export interface SystemStatus {
@@ -217,6 +231,17 @@ export interface CaptainsLogEntry {
   title: string;
   content: string;
   mood: "routine" | "concerned" | "suspicious" | "alarmed" | "urgent";
+}
+
+export interface Objective {
+  id: string;
+  title: string;
+  description: string;
+  status: "active" | "completed" | "failed";
+  priority: "low" | "normal" | "high" | "critical";
+  createdAt: number;
+  completedAt?: number;
+  category?: string;
 }
 
 export interface SystemMetric {

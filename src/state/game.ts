@@ -63,5 +63,14 @@ export const gameMachine = gameSetup.createMachine({
     RECOVER_ENERGY: {
       actions: "recoverEnergy",
     },
+    ADD_OBJECTIVE: {
+      actions: "addObjective",
+    },
+    UPDATE_OBJECTIVE: {
+      actions: "updateObjective",
+    },
+    COMPLETE_OBJECTIVE: {
+      actions: "completeObjective",
+    },
   },
 });
