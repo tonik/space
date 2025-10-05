@@ -75,8 +75,8 @@ export const gameMachine = gameSetup.createMachine({
         }),
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
-          "captains-log": [
-            ...context.viewNotifications["captains-log"],
+          "captains-log_log": [
+            ...context.viewNotifications["captains-log_log"],
             {
               id: `ai-chat-notification-${Date.now()}`,
               type: "info" as const,

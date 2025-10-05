@@ -5,7 +5,6 @@ export type AvailableViewKeys =
   | "messaging"
   | "terminal"
   | "logs"
-  | "captains-log"
   | "captains-log_objectives"
   | "captains-log_log";
 
@@ -15,7 +14,7 @@ export interface GameContext {
   showWelcomeScreen: boolean;
   activeView: AvailableViewKeys;
 
-  viewNotifications: Record<Partial<AvailableViewKeys>, GameNotification[]>;
+  viewNotifications: Record<AvailableViewKeys, GameNotification[]>;
 
   systems: {
     communications: System;

@@ -14,7 +14,8 @@ export const initialContext: GameContext = {
     messaging: [],
     terminal: [],
     logs: [],
-    "captains-log": [],
+    "captains-log_objectives": [],
+    "captains-log_log": [],
   },
 
   // Systems with dynamically generated metrics that are consistent with their status
