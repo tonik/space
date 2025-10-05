@@ -29,9 +29,6 @@ export interface CommandContentMap {
   echo?: {
     variations?: Array<(input: string) => string>;
   };
-  setname?: {
-    confirmationMessage?: (name: string) => string;
-  };
   overwrite?: CommandContent;
 }
 

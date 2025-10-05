@@ -3,7 +3,6 @@ import { useGame } from "@/state/context";
 import { useTerminalState } from "@/components/terminal/selectors";
 import { displayLinesWithDelay } from "@/lib/utils";
 import { getCommands } from "@/components/terminal/commands";
-import { ScrollArea } from "../ui/scroll-area";
 
 /**
  * Terminal Component with Command Tracking
@@ -49,6 +48,7 @@ export function Terminal({ className = "" }: TerminalProps) {
   } | null>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputLineRef = useRef<HTMLDivElement>(null);
 
   // Focus terminal on mount and when clicking
   useEffect(() => {
@@ -65,10 +65,28 @@ export function Terminal({ className = "" }: TerminalProps) {
 
   // Auto-scroll to bottom when lines change
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [lines]);
+
+  // Scroll to bottom function
+  const scrollToBottom = () => {
+    // Use requestAnimationFrame to ensure DOM has updated
+    requestAnimationFrame(() => {
+      // Try to scroll to the input line first
+      if (inputLineRef.current) {
+        inputLineRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      } else {
+        // Fallback to scrolling the terminal container
+        const terminal = terminalRef.current;
+        if (terminal) {
+          terminal.scrollTop = terminal.scrollHeight;
+        }
+      }
+    });
+  };
 
   const addLine = (
     content: string | React.ReactNode,
@@ -143,7 +161,12 @@ export function Terminal({ className = "" }: TerminalProps) {
             command.toLowerCase() === "overwrite");
 
         if (shouldDelay) {
-          await displayLinesWithDelay(output, addLine, setIsPrinting);
+          await displayLinesWithDelay(
+            output,
+            addLine,
+            setIsPrinting,
+            scrollToBottom,
+          );
         } else {
           output.forEach((line: string) => addLine(line));
         }
@@ -164,9 +187,10 @@ export function Terminal({ className = "" }: TerminalProps) {
   };
 
   return (
-    <ScrollArea
+    <div
       ref={terminalRef}
       className={`${className} bg-background text-primary relative h-full overflow-y-auto font-mono text-sm leading-[1.2] font-[500]`}
+      style={{ maxHeight: "100%" }}
     >
       <div className="space-y-1">
         {lines.map((line, index) => (
@@ -181,7 +205,7 @@ export function Terminal({ className = "" }: TerminalProps) {
         ))}
 
         {/* Current input line with cursor */}
-        <div className="flex items-center">
+        <div ref={inputLineRef} className="flex items-center">
           {!isPrinting && !waitingForInput && (
             <span className="text-primary">&gt;&nbsp;</span>
           )}
@@ -214,6 +238,6 @@ export function Terminal({ className = "" }: TerminalProps) {
           </div>
         </div>
       </div>
-    </ScrollArea>
+    </div>
   );
 }

@@ -4,7 +4,6 @@ import { clearCommand } from "./commands/clear";
 import { commsCommand } from "./commands/comms";
 import { dateCommand } from "./commands/date";
 import { whoamiCommand } from "./commands/whoami";
-import { setnameCommand } from "./commands/setname";
 import { sleepLogCommand } from "./commands/sleepLog";
 import { echoCommand } from "./commands/echo";
 import { memoriesCommand } from "./commands/memories";
@@ -21,7 +20,6 @@ export const commandRegistry: CommandRegistry = {
   comms: commsCommand,
   date: dateCommand,
   whoami: whoamiCommand,
-  setname: setnameCommand,
   "sleep log": sleepLogCommand,
   echo: echoCommand,
   memories: memoriesCommand,

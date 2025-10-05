@@ -50,6 +50,7 @@ export async function displayLinesWithDelay(
   lines: string[],
   addLineCallback: (line: string) => void,
   setIsPrintingCallback?: (isPrinting: boolean) => void,
+  scrollToBottomCallback?: () => void,
   minDelay: number = 500,
   maxDelay: number = 700,
 ): Promise<void> {
@@ -59,6 +60,17 @@ export async function displayLinesWithDelay(
 
   for (let i = 0; i < lines.length; i++) {
     addLineCallback(lines[i]);
+
+    // Scroll to bottom after each line is added
+    if (scrollToBottomCallback) {
+      // Use multiple requestAnimationFrame calls for more reliable timing
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(scrollToBottomCallback);
+        });
+      });
+    }
+
     if (i < lines.length - 1 && lines[i] !== "\n") {
       // Random delay between minDelay and maxDelay
       const randomDelay =

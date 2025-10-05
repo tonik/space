@@ -49,6 +49,7 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
       welcomeLines,
       (line) => setDisplayedLines((prev) => [...prev, line]),
       setIsTyping,
+      undefined, // No scroll callback needed for welcome screen
       300,
       600,
     );

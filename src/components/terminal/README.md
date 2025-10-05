@@ -28,7 +28,6 @@ src/components/terminal/
     ├── date.ts
     ├── help.ts
     ├── whoami.ts
-    ├── setname.ts
     ├── sleepLog.ts
     ├── echo.ts
     ├── memories.ts
