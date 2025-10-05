@@ -45,7 +45,7 @@ export default function Navigation({
                   <Icon className="h-5 w-5" />
                   {viewNotifications[
                     notificationKey(item.id) as AvailableViewKeys
-                  ].length > 0 && (
+                  ]?.length > 0 && (
                     <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
                   )}
                 </Button>
