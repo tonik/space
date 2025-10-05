@@ -14,19 +14,39 @@ export const objectives: Record<string, Objective> = {
   },
   "obj-002": {
     id: "obj-002",
-    title: "Read Pending Messages",
+    title: "Run System Diagnostic",
     description:
-      "Unread messages require your attention, read them to understand the current situation and establish baseline.",
+      "Check incoming messages. There may be important updates or instructions from Earth Command regarding your return to dry dock.",
     status: "active",
     priority: "normal",
-    category: "communication",
+    category: "maintenance",
     createdAt: Date.now(),
   },
   "obj-003": {
     id: "obj-003",
-    title: "Execute System Diagnostic",
+    title: "Check for System Anomalies",
     description:
-      "Run the standard diagnostic commands as requested by the maintenance alert. This should be a routine system check. Check for anomalies, attempt to contact Earth Command and check AI memories.",
+      "Investigate any anomalies or irregularities discovered during the system diagnostic. Look for patterns or issues that require attention.",
+    status: "active",
+    priority: "normal",
+    category: "maintenance",
+    createdAt: Date.now(),
+  },
+  "obj-004": {
+    id: "obj-004",
+    title: "Contact Earth Command",
+    description:
+      "Attempt to establish communication with Earth Command for routine check-in and to report system status.",
+    status: "active",
+    priority: "normal",
+    category: "maintenance",
+    createdAt: Date.now(),
+  },
+  "obj-005": {
+    id: "obj-005",
+    title: "Verify AI Memory Systems",
+    description:
+      "Check AI memory systems and data integrity as part of routine maintenance procedures.",
     status: "active",
     priority: "normal",
     category: "maintenance",

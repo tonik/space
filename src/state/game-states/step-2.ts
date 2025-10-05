@@ -40,6 +40,14 @@ export const step2 = gameSetup.createStateConfig({
           ...context.viewNotifications,
           communications: true,
         }),
+        objectives: ({ context }) => [
+          {
+            ...objectives["obj-001"],
+            status:
+              context.activeView === "communications" ? "completed" : "active",
+          },
+          objectives["obj-002"],
+        ],
       }),
     },
   },
@@ -51,13 +59,12 @@ export const step2 = gameSetup.createStateConfig({
           ...context.viewNotifications,
           communications: false,
         }),
-        objectives: ({ context }) => [
-          ...context.objectives.map((obj) =>
-            obj.id === "obj-001"
-              ? { ...obj, status: "completed" as const }
-              : obj,
-          ),
-          objectives["obj-002"],
+        objectives: () => [
+          { ...objectives["obj-001"], status: "completed" },
+          { ...objectives["obj-002"], status: "completed" },
+          objectives["obj-003"],
+          objectives["obj-004"],
+          objectives["obj-005"],
         ],
       }),
       target: "step3",
