@@ -5,7 +5,6 @@ import { useGame } from "@/state/useGame";
 
 interface CipherGameState {
   gameState: "menu" | "playing" | "gameOver" | "victory";
-  score: number;
   level: number;
   timeRemaining: number;
   currentCipher: string;
@@ -28,7 +27,6 @@ export default function CipherGameView() {
   const { changeView } = useGame();
   const [gameState, setGameState] = useState<CipherGameState>({
     gameState: "menu",
-    score: 0,
     level: 1,
     timeRemaining: 0,
     currentCipher: "",
@@ -81,7 +79,6 @@ export default function CipherGameView() {
     setGameState((prev) => ({
       ...prev,
       gameState: "playing",
-      score: 0,
       level: 1,
     }));
 
@@ -107,19 +104,11 @@ export default function CipherGameView() {
   // Check answer
   const checkAnswer = () => {
     if (gameState.userInput.toUpperCase() === gameState.currentPlaintext) {
-      const points = Math.max(
-        10,
-        50 -
-          gameState.hintsUsed * 10 -
-          Math.floor((GAME_SETTINGS.timeLimit - gameState.timeRemaining) / 5),
-      );
-
       setGameState((prev) => {
         const newLevel = prev.level + 1;
 
         return {
           ...prev,
-          score: prev.score + points,
           level: newLevel,
           userInput: "",
         };
@@ -188,7 +177,6 @@ export default function CipherGameView() {
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-primary text-sm font-bold">CIPHER BREAKER</h3>
           <div className="text-primary flex gap-4 font-mono text-sm">
-            <span>SCORE: {gameState.score}</span>
             <span>TIME: {gameState.timeRemaining}</span>
           </div>
         </div>
@@ -274,9 +262,6 @@ export default function CipherGameView() {
                   <h2 className="text-primary mb-2 font-mono text-2xl font-bold">
                     GAME OVER
                   </h2>
-                  <p className="text-primary mb-2 font-mono text-lg">
-                    Final Score: {gameState.score}
-                  </p>
                   <p className="text-primary mb-4 font-mono text-lg">
                     Ciphers Solved: {gameState.level - 1}/2
                   </p>
@@ -298,9 +283,6 @@ export default function CipherGameView() {
                   </h2>
                   <p className="text-primary mb-2 font-mono text-lg">
                     All ciphers decoded successfully!
-                  </p>
-                  <p className="text-primary mb-2 font-mono text-lg">
-                    Final Score: {gameState.score}
                   </p>
                   <p className="text-primary mb-4 font-mono text-lg">
                     Ciphers Solved: 2/2
