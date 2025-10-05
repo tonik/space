@@ -12,7 +12,6 @@ import { RefreshWarningDialog } from "@/components/refresh-warning-dialog";
 import { ScrollArea } from "./ui/scroll-area";
 import { WelcomeScreen } from "./welcome-screen";
 import { useSelector } from "@xstate/react";
-// import { WelcomeScreen } from "@/components/welcome-screen";
 
 export default function SpaceshipOS() {
   const { changeView, send } = useGame();
