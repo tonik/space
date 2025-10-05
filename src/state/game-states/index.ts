@@ -2,6 +2,7 @@ import { gameSetup } from "../game-setup";
 import { intro0 } from "./intro-0";
 import { intro1 } from "./intro-1";
 import { intro2 } from "./intro-2";
+import { intro3 } from "./intro-3";
 
 export const gameProgressState = gameSetup.createStateConfig({
   initial: "intro0",
@@ -9,5 +10,6 @@ export const gameProgressState = gameSetup.createStateConfig({
     intro0,
     intro1,
     intro2,
+    intro3,
   },
 });

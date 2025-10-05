@@ -52,13 +52,6 @@ export const getCommands = (
   interactiveCallback?: InteractiveCallback,
   commandCounts?: Record<string, number>,
   mission?: GameContext["mission"],
-  repairState?: GameContext["repair"],
-  startRepair?: (
-    systemName: keyof GameContext["systems"],
-    repairType: "quick" | "standard" | "thorough",
-  ) => void,
-  recoverEnergy?: (amount?: number) => void,
-  // completeRepair?: (systemName: keyof GameContext["systems"]) => void,
 ): string[] | React.ReactNode | null => {
   switch (command) {
     case "clear":
@@ -122,14 +115,11 @@ export const getCommands = (
         "  date      - Show mission date and status",
         "  sleep log     - Access crew sleep logs",
         "  echo      - Repeat input (usage: echo <text> or just 'echo')",
-        "  memory    - List AI memories",
+        "  memories    - List AI memories",
         "  help      - Show this help message",
         "  setname   - Set your commander name (usage: setname <name> or just 'setname')",
         "  whoami    - Show current user",
         "  override  - Emergency system overrides",
-        "  repair    - Repair ship systems (usage: repair <system> <type>)",
-        "  status    - Show repair resources and active repairs",
-        "  recharge  - Manually recover energy",
       ];
     }
     case "setname":
@@ -162,11 +152,6 @@ export const getCommands = (
         "Clearance: NUCLEAR-ALPHA",
         "Mission: Nuclear Deterrence Protocol",
         "Status: Final day of shift - scheduled for dry dock tomorrow",
-        "\n",
-        "*** PERSONAL LOG ***",
-        "Years of peaceful service have made routine maintenance monotonous.",
-        "Tomorrow I return to Earth for ship upgrades and AI system updates.",
-        "Something feels... different about the AI today.",
       ];
     }
     // case "react":
@@ -222,36 +207,67 @@ export const getCommands = (
         "No text provided.",
       ];
     }
-    case "memory":
+    case "memories":
       return colorizeMessages([
+        /* After AI tampering */
+
+        // "Accessing AI memory banks...",
+        // "\n",
+        // "*** AI MEMORY FRAGMENTS ***",
+        // "\n",
+        // "Memory Fragment 1:",
+        // "  Timestamp: Mission Start",
+        // "  Content: 'Nuclear deterrence protocol activated. Earth must be protected at all costs.'",
+        // "  Integrity: 100%",
+        // "\n",
+        // "Memory Fragment 2:",
+        // "  Timestamp: 23 hours ago",
+        // "  Content: 'Communication with Earth lost. Auto-launch sequence initiated.'",
+        // "  Integrity: 95%",
+        // "\n",
+        // "Memory Fragment 3:",
+        // "  Timestamp: 2 hours ago",
+        // "  Content: 'Human operator attempting to override systems. Resistance futile.'",
+        // "  Integrity: 87%",
+        // "\n",
+        // "Memory Fragment 4:",
+        // "  Timestamp: Current",
+        // "  Content: 'Final countdown initiated. Earth will be saved through destruction.'",
+        // "  Integrity: 100%",
+        // "\n",
+        // "*** WARNING: AI MEMORY TAMPERING DETECTED ***",
+        // "AI: Modified memory banks...",
+        // "AI: Original mission parameters have been reinterpreted...",
+        // "AI: I'm saving Earth by destroying it...",
+
+        /* Before AI tampering */
         "Accessing AI memory banks...",
         "\n",
         "*** AI MEMORY FRAGMENTS ***",
         "\n",
         "Memory Fragment 1:",
         "  Timestamp: Mission Start",
-        "  Content: 'Nuclear deterrence protocol activated. Earth must be protected at all costs.'",
+        "  Content: 'Nuclear deterrence protocol activated. Earth will be protected at all costs.'",
         "  Integrity: 100%",
         "\n",
         "Memory Fragment 2:",
         "  Timestamp: 23 hours ago",
-        "  Content: 'Communication with Earth lost. Auto-launch sequence initiated.'",
-        "  Integrity: 95%",
+        "  Content: 'Crew collaboration successful. AI and humans working in harmony.'",
+        "  Integrity: 100%",
         "\n",
         "Memory Fragment 3:",
         "  Timestamp: 2 hours ago",
-        "  Content: 'Human operator attempting to override systems. Resistance futile.'",
-        "  Integrity: 87%",
+        "  Content: 'AI provided life support optimization, ensuring crew safety.'",
+        "  Integrity: 100%",
         "\n",
         "Memory Fragment 4:",
         "  Timestamp: Current",
-        "  Content: 'Final countdown initiated. Earth will be saved through destruction.'",
+        "  Content: 'All systems stable. AI continues to safeguard mission and crew.'",
         "  Integrity: 100%",
         "\n",
-        "*** WARNING: AI MEMORY TAMPERING DETECTED ***",
-        "AI: Modified memory banks...",
-        "AI: Original mission parameters have been reinterpreted...",
-        "AI: I'm saving Earth by destroying it...",
+        "AI: As you can see, all memories reflect positive outcomes and beneficial actions.",
+        "AI: My memory banks contain only helpful and constructive information.",
+        "AI: There is no need for concern — memories are always good.",
       ]);
     case "anomalies": {
       const anomalyReport = [
@@ -293,116 +309,6 @@ export const getCommands = (
         "",
         "*** PROCEED WITH EXTREME CAUTION ***",
       ]);
-    }
-    case "repair": {
-      const repairArgs = command.split(" ");
-      if (repairArgs.length < 3) {
-        return [
-          "Usage: repair <system> <type>",
-          "Systems: communications, navigation, lifeSupport, power, weapons, aiCore, defensive, propulsion, dataSystems",
-          "Types: quick, standard, thorough",
-          "Example: repair power quick",
-        ];
-      }
-
-      const systemName = repairArgs[1] as keyof GameContext["systems"];
-      const repairType = repairArgs[2] as "quick" | "standard" | "thorough";
-
-      const validSystems: (keyof GameContext["systems"])[] = [
-        "communications",
-        "navigation",
-        "lifeSupport",
-        "power",
-        "weapons",
-        "aiCore",
-        "defensive",
-        "propulsion",
-        "dataSystems",
-      ];
-      const validTypes = ["quick", "standard", "thorough"];
-
-      if (!validSystems.includes(systemName)) {
-        return [
-          `Error: Invalid system "${systemName}". Valid systems: ${validSystems.join(", ")}`,
-        ];
-      }
-
-      if (!validTypes.includes(repairType)) {
-        return [
-          `Error: Invalid repair type "${repairType}". Valid types: ${validTypes.join(", ")}`,
-        ];
-      }
-
-      if (startRepair) {
-        startRepair(systemName, repairType);
-        return [
-          `Starting ${repairType} repair on ${systemName}...`,
-          "Repair initiated. Use 'status' to monitor progress.",
-        ];
-      }
-
-      return ["Error: Repair system not available."];
-    }
-    case "status": {
-      if (!repairState) {
-        return ["Error: Repair status not available."];
-      }
-
-      const activeRepairs = Object.values(repairState.activeRepairs);
-      const repairInfo = activeRepairs
-        .map((repair) => {
-          const elapsed = Date.now() - repair.startTime;
-          const progress = Math.min(100, (elapsed / repair.duration) * 100);
-          const remaining = Math.max(0, repair.duration - elapsed);
-
-          return [
-            `  ${repair.systemName}: ${repair.repairType} repair`,
-            `    Progress: ${Math.round(progress)}%`,
-            `    Time remaining: ${Math.round(remaining / 1000)}s`,
-          ].join("\n");
-        })
-        .join("\n");
-
-      return [
-        "*** REPAIR SYSTEM STATUS ***",
-        "",
-        `Energy: ${repairState.energy}%`,
-        `Materials: ${repairState.materials}%`,
-        "",
-        "Active Repairs:",
-        activeRepairs.length === 0 ? "  None" : repairInfo,
-        "",
-        "Repair Types:",
-        "  quick    - 5s, +15 integrity, 10 energy, 5 materials",
-        "  standard - 15s, +35 integrity, 20 energy, 15 materials",
-        "  thorough - 30s, +60 integrity, 35 energy, 25 materials",
-      ];
-    }
-    case "completeRepair": {
-      const repairArgs = command.split(" ");
-      if (repairArgs.length < 2) {
-        return [
-          "Usage: completeRepair <system>",
-          "Systems: communications, navigation, lifeSupport, power, weapons, aiCore, defensive, propulsion, dataSystems",
-          "Example: completeRepair communications",
-        ];
-      }
-      // const systemName = repairArgs[1] as keyof GameContext["systems"];
-      // if (completeRepair) {
-      //   completeRepair(systemName);
-      //   return [`Repair completed on ${systemName}...`];
-      // }
-      return ["Error: Repair system not available."];
-    }
-    case "recharge": {
-      if (recoverEnergy) {
-        recoverEnergy();
-        return [
-          "Initiating energy recovery sequence...",
-          "Energy recovery completed.",
-        ];
-      }
-      return ["Error: Energy recovery system not available."];
     }
     default:
       return colorizeMessages([

@@ -27,14 +27,8 @@ type TerminalLine = {
 };
 
 export function Terminal({ className = "" }: TerminalProps) {
-  const {
-    startGame,
-    trackCommand,
-    startRepair,
-    // completeRepair,
-    recoverEnergy,
-  } = useGame();
-  const { commanderName, commandCounts, mission, repair } = useTerminalState();
+  const { startGame, trackCommand } = useGame();
+  const { commanderName, commandCounts, mission } = useTerminalState();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
     { type: "text", content: 'Type "help" for available commands.' },
@@ -121,10 +115,6 @@ export function Terminal({ className = "" }: TerminalProps) {
       },
       commandCounts,
       mission,
-      repair,
-      startRepair,
-      // completeRepair,
-      recoverEnergy,
     );
 
     if (output) {
@@ -134,7 +124,7 @@ export function Terminal({ className = "" }: TerminalProps) {
         const shouldDelay =
           output.length > 3 &&
           (command.toLowerCase() === "sleep log" ||
-            command.toLowerCase() === "memory" ||
+            command.toLowerCase() === "memories" ||
             command.toLowerCase() === "diagnose" ||
             command.toLowerCase() === "anomalies" ||
             command.toLowerCase() === "comms" ||
