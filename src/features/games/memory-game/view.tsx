@@ -21,7 +21,7 @@ interface MemoryCard {
   isMatched: boolean;
 }
 
-type GamePhase = "menu" | "playing" | "done";
+type GamePhase = "menu" | "playing" | "gameOver" | "victory";
 
 interface GameState {
   phase: GamePhase;
@@ -128,7 +128,7 @@ export default function MemoryGameView() {
               cards: updatedCards,
               flippedCards: [],
               matches: newMatches,
-              phase: isComplete ? "done" : prev.phase,
+              phase: isComplete ? "victory" : prev.phase,
             };
           });
         }, delay);
@@ -143,7 +143,7 @@ export default function MemoryGameView() {
         setGame((prev) => ({
           ...prev,
           timeLeft: prev.timeLeft - 1,
-          phase: prev.timeLeft <= 1 ? "done" : prev.phase,
+          phase: prev.timeLeft <= 1 ? "gameOver" : prev.phase,
         }));
       }, 1000);
       return () => clearTimeout(timer);
@@ -210,12 +210,10 @@ export default function MemoryGameView() {
     </div>
   );
 
-  const renderDone = () => (
+  const renderGameOver = () => (
     <div className="absolute inset-0 flex flex-col items-center justify-center">
-      <h2 className="text-primary mb-4 font-mono text-xl font-bold">
-        {game.matches === GAME_CONFIG.cardPairs
-          ? "MEMORY RESTORED!"
-          : "TIME'S UP!"}
+      <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+        TIME'S UP!
       </h2>
       <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
         <p>
@@ -243,6 +241,28 @@ export default function MemoryGameView() {
     </div>
   );
 
+  const renderVictory = () => (
+    <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+        MEMORY RESTORED!
+      </h2>
+      <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
+        <p>
+          Matches: {game.matches}/{GAME_CONFIG.cardPairs}
+        </p>
+        <p>Moves: {game.moves}</p>
+      </div>
+      <div className="flex gap-2">
+        <Button
+          onClick={() => changeView("dashboard")}
+          className="bg-primary text-background hover:bg-primary/80"
+        >
+          BACK TO DASHBOARD
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex h-full flex-col">
       <Card className="border-border/30 bg-background flex-1 p-6">
@@ -257,7 +277,8 @@ export default function MemoryGameView() {
         <div className="relative h-[600px] w-full">
           {game.phase === "menu" && renderMenu()}
           {game.phase === "playing" && renderGame()}
-          {game.phase === "done" && renderDone()}
+          {game.phase === "gameOver" && renderGameOver()}
+          {game.phase === "victory" && renderVictory()}
         </div>
 
         <div className="text-muted-foreground mt-4 text-center font-mono text-xs">
