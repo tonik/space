@@ -9,6 +9,7 @@ import DashboardView from "@/features/dashboard/view";
 import CaptainsLogView from "@/features/captains-log/view";
 import TerminalView from "@/features/terminal/view";
 import { RefreshWarningDialog } from "@/components/refresh-warning-dialog";
+import { ScrollArea } from "./ui/scroll-area";
 // import { WelcomeScreen } from "@/components/welcome-screen";
 
 export default function SpaceshipOS() {
@@ -43,15 +44,17 @@ export default function SpaceshipOS() {
         <div className="flex flex-1 flex-col">
           <TopNav activeView={activeView} />
           {/* View Content */}
-          <div className="flex-1 overflow-auto p-6">
-            {activeView === "dashboard" && <DashboardView />}
-            {activeView === "messaging" && <MessagingView />}
-            {activeView === "terminal" && <TerminalView />}
-            {activeView === "logs" && <SystemLogView />}
-            {activeView.includes("captains-log") && (
-              <CaptainsLogView activeView={activeView} />
-            )}
-          </div>
+          <ScrollArea className="flex-1 overflow-auto">
+            <div className="p-6">
+              {activeView === "dashboard" && <DashboardView />}
+              {activeView === "messaging" && <MessagingView />}
+              {activeView === "terminal" && <TerminalView />}
+              {activeView === "logs" && <SystemLogView />}
+              {activeView.includes("captains-log") && (
+                <CaptainsLogView activeView={activeView} />
+              )}
+            </div>
+          </ScrollArea>
         </div>
       </div>
     </div>
