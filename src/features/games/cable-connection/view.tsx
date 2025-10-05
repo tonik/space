@@ -228,9 +228,6 @@ export default function CableConnectionView() {
                 <p>
                   Connections: {game.connectionsMade}/{GAME_CONFIG.nodeCount}
                 </p>
-                <p className="mt-2 text-green-500">
-                  All ship systems operational!
-                </p>
               </div>
               <div className="flex gap-2">
                 <Button

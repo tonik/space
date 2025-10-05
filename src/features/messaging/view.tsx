@@ -61,11 +61,6 @@ export function MessagingView() {
     setSelectedMessage(null);
   };
 
-  console.log({
-    messages,
-    sortedMessages: messages.sort((a, b) => a.timestamp - b.timestamp),
-  });
-
   // Message detail view
   if (viewMode === "message" && selectedMessage) {
     return (
