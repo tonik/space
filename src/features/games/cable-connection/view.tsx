@@ -195,6 +195,15 @@ export default function CableConnectionView() {
                   ? "All systems restored!"
                   : "Try again to restore all systems"}
               </p>
+
+              {!game.nodes.every((n) => n.connected) && (
+                <Button
+                  onClick={startGame}
+                  className="bg-primary text-background hover:bg-primary/80"
+                >
+                  PLAY AGAIN
+                </Button>
+              )}
               <div className="flex gap-2">
                 <Button
                   onClick={() => {
