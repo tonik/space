@@ -7,7 +7,11 @@ export const initialContext: GameContext = {
   commanderName: "Commander",
   gameStartTimestamp: Date.now(),
   activeView: "dashboard",
-  showWelcomeScreen: true,
+
+  welcomeScreen: {
+    exiting: false,
+    finishedAnimating: false,
+  },
 
   viewNotifications: {
     dashboard: [],

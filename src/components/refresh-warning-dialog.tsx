@@ -10,6 +10,7 @@ export function RefreshWarningDialog() {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Detect refresh shortcuts: Ctrl+R, Cmd+R, F5
       if ((e.key === "r" && (e.ctrlKey || e.metaKey)) || e.key === "F5") {
+        console.log("Preventing reload");
         e.preventDefault();
         setShowWarning(true);
       }
@@ -48,7 +49,7 @@ export function RefreshWarningDialog() {
   if (!showWarning) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
       <Card className="border-primary/50 bg-background w-full max-w-md border-2 p-6">
         <div className="mb-4 flex items-center gap-3">
           <AlertTriangle className="text-primary h-6 w-6" />

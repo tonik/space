@@ -11,7 +11,10 @@ export type AvailableViewKeys =
 export interface GameContext {
   commanderName: string;
   gameStartTimestamp: number;
-  showWelcomeScreen: boolean;
+  welcomeScreen: {
+    finishedAnimating: boolean;
+    exiting: boolean;
+  };
   activeView: AvailableViewKeys;
 
   viewNotifications: Record<AvailableViewKeys, GameNotification[]>;
@@ -85,7 +88,6 @@ export interface GameContext {
 export type GameEvent =
   | { type: "START_GAME"; commanderName: string }
   | { type: "CHANGE_VIEW"; view: GameContext["activeView"] }
-  | { type: "ENTER_MAIN_APP" }
   | { type: "COMMAND_EXECUTED"; command: string }
   | { type: "ADD_MESSAGE"; message: Message }
   | { type: "MESSAGE_OPENED"; messageId: string }
@@ -120,7 +122,10 @@ export type GameEvent =
     }
   | {
       type: "KEYPRESS";
-      message: string;
+      message: {
+        key: string;
+        event: KeyboardEvent;
+      };
     }
   | {
       type: "AI_CHAT_ADD_MESSAGE";
@@ -130,6 +135,9 @@ export type GameEvent =
         content: string;
         timestamp: number;
       };
+    }
+  | {
+      type: "FINISHED_INTRO_SEQUENCE";
     };
 
 export interface SystemStatus {

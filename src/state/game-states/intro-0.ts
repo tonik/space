@@ -2,16 +2,24 @@ import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
 
 /**
- * First state where captain gets objective and is onboarded.
- * We are moving to the next state when captain will view the objectives (in captains log)
+ * State where user can close a system load
  */
 export const intro0 = gameSetup.createStateConfig({
   on: {
-    KEYPRESS: {
-      guard: ({ event }) => event.message === "enter",
+    FINISHED_INTRO_SEQUENCE: {
       actions: assign({
-        showWelcomeScreen: () => false,
+        welcomeScreen: ({ context }) => ({
+          ...context.welcomeScreen,
+          finishedAnimating: true,
+        }),
       }),
+    },
+    KEYPRESS: {
+      guard: ({ event, context }) =>
+        context.welcomeScreen.finishedAnimating &&
+        event.message.key === "enter",
+      actions: "hideWelcomeScreen",
+      target: "intro1",
     },
   },
 });

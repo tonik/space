@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { displayLinesWithDelay } from "@/lib/utils";
+import { gameActor, useGame } from "@/state/useGame";
+import { useSelector } from "@xstate/react";
 
 interface WelcomeScreenProps {
-  onEnter: () => void;
   hidden: boolean;
 }
 
@@ -25,11 +26,18 @@ const welcomeLines = [
   "Type 'enter' to access the main dashboard.",
 ];
 
-export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
+export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(true);
-  const [canEnter, setCanEnter] = useState(false);
-  const [isExiting, setIsExiting] = useState(false);
+  const { send } = useGame();
+  const isExiting = useSelector(
+    gameActor,
+    (snapshot) => snapshot.context.welcomeScreen.exiting,
+  );
+  const finishedAnimating = useSelector(
+    gameActor,
+    (snapshot) => snapshot.context.welcomeScreen.finishedAnimating,
+  );
 
   const startAnimation = async () => {
     await displayLinesWithDelay(
@@ -39,27 +47,12 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
       300,
       600,
     );
-    setCanEnter(true);
+    send({ type: "FINISHED_INTRO_SEQUENCE" });
   };
 
   if (displayedLines.length === 0 && isTyping) {
     startAnimation();
   }
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Enter" && canEnter && !isExiting) {
-        e.preventDefault();
-        setIsExiting(true);
-        setTimeout(() => {
-          onEnter();
-        }, 500);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [canEnter, isExiting, onEnter]);
 
   return (
     <div
@@ -84,7 +77,7 @@ export function WelcomeScreen({ hidden, onEnter }: WelcomeScreenProps) {
             ))}
 
             {/* Ready prompt */}
-            {canEnter && (
+            {finishedAnimating && (
               <div className="mt-4 flex items-center">
                 <span
                   className="text-primary mr-2 font-mono"

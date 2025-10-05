@@ -1,8 +1,8 @@
 import { assign } from "xstate";
-import { intro0 } from "./game-states/intro-0";
 import { initialContext } from "./initial-context";
 import { gameSetup } from "./game-setup";
 import { osState } from "./os-state";
+import { gameProgressState } from "./game-states";
 
 export const gameMachine = gameSetup.createMachine({
   id: "gameOrchestrator",
@@ -10,9 +10,10 @@ export const gameMachine = gameSetup.createMachine({
   type: "parallel",
   states: {
     osState,
-    intro0,
+    gameProgressState,
   },
   on: {
+    KEYPRESS: {},
     START_GAME: {
       actions: assign({
         commanderName: ({ event }) => event.commanderName,
@@ -21,11 +22,6 @@ export const gameMachine = gameSetup.createMachine({
     CHANGE_VIEW: {
       actions: assign({
         activeView: ({ event }) => event.view,
-      }),
-    },
-    ENTER_MAIN_APP: {
-      actions: assign({
-        showWelcomeScreen: () => false,
       }),
     },
     ADD_MESSAGE: {
