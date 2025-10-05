@@ -48,7 +48,9 @@ export default function SpaceshipOS() {
             {activeView === "messaging" && <MessagingView />}
             {activeView === "terminal" && <TerminalView />}
             {activeView === "logs" && <SystemLogView />}
-            {activeView === "captains-log" && <CaptainsLogView />}
+            {activeView.includes("captains-log") && (
+              <CaptainsLogView activeView={activeView} />
+            )}
           </div>
         </div>
       </div>

@@ -5,7 +5,9 @@ export type AvailableViewKeys =
   | "messaging"
   | "terminal"
   | "logs"
-  | "captains-log";
+  | "captains-log"
+  | "captains-log_objectives"
+  | "captains-log_log";
 
 export interface GameContext {
   commanderName: string;

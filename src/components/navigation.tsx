@@ -18,6 +18,8 @@ export default function Navigation({
 }) {
   const { viewNotifications } = useNavigationState();
 
+  const notificationKey = activeView.split("_")[0];
+
   return (
     <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-3 border-r py-6">
       <div className="mb-4 flex h-10 w-10 items-center justify-center">
@@ -41,7 +43,8 @@ export default function Navigation({
                   }`}
                 >
                   <Icon className="h-5 w-5" />
-                  {viewNotifications[item.id].length > 0 && (
+                  {viewNotifications[notificationKey as AvailableViewKeys]
+                    .length > 0 && (
                     <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
                   )}
                 </Button>
