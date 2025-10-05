@@ -28,6 +28,13 @@ export default function Navigation({
     return viewNotifications[id];
   };
 
+  const isActiveView = (id: AvailableViewKeys) => {
+    if (id.includes("_")) {
+      return activeView.split("_")[0] === id.split("_")[0];
+    }
+    return activeView === id;
+  };
+
   return (
     <div className="border-border/30 bg-background flex w-20 flex-col items-center gap-3 border-r py-6">
       <div className="mb-4 flex h-10 w-10 items-center justify-center">
@@ -45,7 +52,7 @@ export default function Navigation({
                   size="icon"
                   onClick={() => setActiveView(item.id)}
                   className={`hover:bg-primary/10 hover:text-primary h-12 w-12 transition-colors ${
-                    activeView === item.id
+                    isActiveView(item.id)
                       ? "border-primary bg-primary/20 text-primary border"
                       : "text-muted-foreground border border-transparent"
                   }`}
