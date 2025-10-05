@@ -59,7 +59,7 @@ export default function DashboardView() {
   const uptime = `${mission.daysInSpace} DAYS`;
 
   return (
-    <div className="flex h-full flex-col gap-6">
+    <div className="flex h-[calc(100vh-110px)] flex-col gap-6 overflow-y-auto">
       <div className="grid grid-cols-3 gap-6">
         <div className="flex">
           <SystemDiagnostics

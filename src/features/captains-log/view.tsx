@@ -52,7 +52,7 @@ export default function CaptainsLogView() {
 
   return (
     <div className="flex h-full flex-col">
-      <Card className="border-border/30 bg-background flex-1 p-6">
+      <Card className="border-border/30 bg-background flex h-[calc(100vh-110px)] min-h-0 flex-col overflow-hidden p-6">
         {/* Tabs */}
         <div className="border-border/30 mb-6 flex gap-1 border-b">
           <button
@@ -85,7 +85,7 @@ export default function CaptainsLogView() {
 
         {/* Log Tab */}
         {tab === "log" && (
-          <ScrollArea className="h-[calc(100vh-250px)]">
+          <ScrollArea className="min-h-0 flex-1">
             <div className="space-y-2">
               {sortedDays.length === 0 ? (
                 <div className="text-muted-foreground/40 py-8 text-center font-mono text-sm">
@@ -134,7 +134,7 @@ export default function CaptainsLogView() {
 
         {/* Objectives Tab */}
         {tab === "objectives" && (
-          <ScrollArea className="h-[calc(100vh-250px)]">
+          <ScrollArea className="min-h-0 flex-1">
             <div className="space-y-1">
               {objectives.length === 0 ? (
                 <div className="text-muted-foreground/40 py-8 text-center font-mono text-sm">

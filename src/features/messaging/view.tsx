@@ -72,8 +72,8 @@ export function MessagingView() {
 
   // Message list view
   return (
-    <div className="flex h-full flex-col">
-      <Card className="border-border/30 bg-card mb-6 h-full p-6">
+    <div className="flex h-[calc(100vh-110px)] flex-col gap-6">
+      <Card className="border-border/30 bg-background flex min-h-0 flex-1 flex-col overflow-hidden p-6">
         <div className="mb-1 flex items-center justify-between">
           <h3 className="text-card-foreground text-sm font-bold">
             INCOMING TRANSMISSIONS
@@ -86,7 +86,7 @@ export function MessagingView() {
             )}
           </div>
         </div>
-        <ScrollArea className="h-full">
+        <ScrollArea className="min-h-0 flex-1">
           <div className="space-y-3">
             {messages.length === 0 ? (
               <div className="text-muted-foreground/60 py-8 text-center">

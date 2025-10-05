@@ -154,7 +154,7 @@ export function Terminal({ className = "" }: TerminalProps) {
   return (
     <div
       ref={terminalRef}
-      className={`${className} bg-background text-primary relative h-full font-mono text-sm leading-[1.2] font-[500]`}
+      className={`${className} bg-background text-primary relative h-full overflow-y-auto font-mono text-sm leading-[1.2] font-[500]`}
     >
       <div className="space-y-1">
         {lines.map((line, index) => (
