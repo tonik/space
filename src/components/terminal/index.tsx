@@ -30,7 +30,7 @@ export function Terminal({ className = "" }: TerminalProps) {
     startGame,
     trackCommand,
     startRepair,
-    // completeRepair,
+    completeRepair,
     recoverEnergy,
   } = useGame();
   const { commanderName, commandCounts, mission, repair } = useTerminalState();
@@ -122,7 +122,7 @@ export function Terminal({ className = "" }: TerminalProps) {
       mission,
       repair,
       startRepair,
-      // completeRepair,
+      completeRepair,
       recoverEnergy,
     );
 
