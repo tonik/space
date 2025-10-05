@@ -3,7 +3,6 @@ import { useGame } from "@/state/context";
 import { useTerminalState } from "@/components/terminal/selectors";
 import { displayLinesWithDelay } from "@/lib/utils";
 import { getCommands } from "@/components/terminal/commands";
-import { ScrollArea } from "../ui/scroll-area";
 
 /**
  * Terminal Component with Command Tracking
