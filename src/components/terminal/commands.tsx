@@ -57,7 +57,6 @@ export const getCommands = (
     systemName: keyof GameContext["systems"],
     repairType: "quick" | "standard" | "thorough",
   ) => void,
-  // completeRepair?: (systemName: keyof GameContext["systems"]) => void,
   recoverEnergy?: (amount?: number) => void,
 ): string[] | React.ReactNode | null => {
   switch (command) {
@@ -377,6 +376,22 @@ export const getCommands = (
         "  standard - 15s, +35 integrity, 20 energy, 15 materials",
         "  thorough - 30s, +60 integrity, 35 energy, 25 materials",
       ];
+    }
+    case "completeRepair": {
+      const repairArgs = command.split(" ");
+      if (repairArgs.length < 2) {
+        return [
+          "Usage: completeRepair <system>",
+          "Systems: communications, navigation, lifeSupport, power, weapons, aiCore, defensive, propulsion, dataSystems",
+          "Example: completeRepair communications",
+        ];
+      }
+      const systemName = repairArgs[1] as keyof GameContext["systems"];
+      if (completeRepair) {
+        completeRepair(systemName);
+        return [`Repair completed on ${systemName}...`];
+      }
+      return ["Error: Repair system not available."];
     }
     case "recharge": {
       if (recoverEnergy) {
