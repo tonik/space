@@ -3,6 +3,7 @@ import { useGame } from "@/state/context";
 import { useTerminalState } from "@/components/terminal/selectors";
 import { displayLinesWithDelay } from "@/lib/utils";
 import { getCommands } from "@/components/terminal/commands";
+import { ScrollArea } from "../ui/scroll-area";
 
 /**
  * Terminal Component with Command Tracking
@@ -160,7 +161,7 @@ export function Terminal({ className = "" }: TerminalProps) {
   };
 
   return (
-    <div
+    <ScrollArea
       ref={terminalRef}
       className={`${className} bg-background text-primary relative h-full overflow-y-auto font-mono text-sm leading-[1.2] font-[500]`}
     >
@@ -210,6 +211,6 @@ export function Terminal({ className = "" }: TerminalProps) {
           </div>
         </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }
