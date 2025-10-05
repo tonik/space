@@ -3,6 +3,7 @@ import { step0 } from "./step-0";
 import { step1 } from "./step-1";
 import { step2 } from "./step-2";
 import { step3 } from "./step-3";
+import { step4 } from "./step-4";
 
 export const gameProgressState = gameSetup.createStateConfig({
   initial: "step0",
@@ -11,5 +12,6 @@ export const gameProgressState = gameSetup.createStateConfig({
     step1,
     step2,
     step3,
+    step4,
   },
 });

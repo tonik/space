@@ -8,9 +8,9 @@ import { getGameTimestamp } from "@/lib/utils";
  */
 export const step3 = gameSetup.createStateConfig({
   after: {
-    1000: {
-      actions: [
-        assign({
+    1000: [
+      {
+        actions: assign({
           messages: ({ context }) => {
             return [
               ...context.messages,
@@ -29,24 +29,27 @@ export const step3 = gameSetup.createStateConfig({
             ];
           },
         }),
-        assign({
+      },
+      {
+        guard: ({ context }) => context.activeView !== "terminal",
+        actions: assign({
           viewNotifications: ({ context }) => ({
             ...context.viewNotifications,
             terminal: true,
           }),
         }),
-      ],
-    },
+      },
+    ],
   },
   on: {
     CHANGE_VIEW: {
       actions: assign({
-        viewNotifications: ({ event, context }) => ({
+        viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
-          [event.view]: false,
+          terminal: false,
         }),
       }),
-      // target: "step4",
+      target: "step4",
     },
   },
 });
