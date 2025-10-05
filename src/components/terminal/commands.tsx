@@ -1,4 +1,4 @@
-import type { GameContext } from "@/state/types";
+import type { GameContext, GameEvent } from "@/state/types";
 import { colorizeMessages } from "./utils";
 import type {
   CommandContext,
@@ -20,6 +20,7 @@ export const getCommands = (
   interactiveCallback?: InteractiveCallback,
   commandCounts?: Record<string, number>,
   mission?: GameContext["mission"],
+  dispatch?: (event: GameEvent) => void,
 ): CommandResult => {
   const context: CommandContext = {
     storeData,
@@ -28,6 +29,7 @@ export const getCommands = (
     commandCounts,
     mission,
     commandContent,
+    dispatch,
   };
 
   // Find and execute command

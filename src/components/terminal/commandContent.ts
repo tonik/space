@@ -32,6 +32,7 @@ export interface CommandContentMap {
   setname?: {
     confirmationMessage?: (name: string) => string;
   };
+  overwrite?: CommandContent;
 }
 
 /**

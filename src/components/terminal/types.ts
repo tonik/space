@@ -1,4 +1,4 @@
-import type { GameContext } from "@/state/types";
+import type { GameContext, GameEvent } from "@/state/types";
 import type { CommandContentMap } from "./commandContent";
 import React from "react";
 
@@ -16,6 +16,7 @@ export interface CommandContext {
   commandCounts?: Record<string, number>;
   mission?: GameContext["mission"];
   commandContent?: CommandContentMap;
+  dispatch?: (event: GameEvent) => void;
 }
 
 export type CommandResult = string[] | React.ReactNode | null;

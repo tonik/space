@@ -402,5 +402,8 @@ export const gameSetup = setup({
         return context.objectives;
       },
     }),
+    showTrueIssues: assign({
+      showTrueIssues: () => true,
+    }),
   },
 });

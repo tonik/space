@@ -155,4 +155,5 @@ export const initialContext: GameContext = {
   objectives: [],
   logs: introLogs,
   commandCounts: {},
+  showTrueIssues: false,
 };

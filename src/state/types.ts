@@ -83,6 +83,8 @@ export interface GameContext {
       }
     >;
   };
+
+  showTrueIssues: boolean;
 }
 
 export type GameEvent =
@@ -153,6 +155,9 @@ export type GameEvent =
   | {
       type: "COMPLETE_OBJECTIVE";
       objectiveId: string;
+    }
+  | {
+      type: "SHOW_TRUE_ISSUES";
     };
 
 export interface SystemStatus {

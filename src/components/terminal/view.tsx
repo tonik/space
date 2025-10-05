@@ -26,7 +26,7 @@ type TerminalLine = {
 };
 
 export function Terminal({ className = "" }: TerminalProps) {
-  const { startGame, trackCommand } = useGame();
+  const { startGame, trackCommand, send } = useGame();
   const {
     commanderName,
     commandCounts,
@@ -122,6 +122,7 @@ export function Terminal({ className = "" }: TerminalProps) {
       },
       commandCounts,
       mission,
+      send,
     );
 
     if (output) {
@@ -137,7 +138,8 @@ export function Terminal({ className = "" }: TerminalProps) {
             command.toLowerCase() === "comms" ||
             command.toLowerCase() === "weapons" ||
             command.toLowerCase() === "status" ||
-            command.toLowerCase() === "override");
+            command.toLowerCase() === "override" ||
+            command.toLowerCase() === "overwrite");
 
         if (shouldDelay) {
           await displayLinesWithDelay(output, addLine, setIsPrinting);

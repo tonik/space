@@ -82,5 +82,8 @@ export const gameMachine = gameSetup.createMachine({
     COMPLETE_OBJECTIVE: {
       actions: "completeObjective",
     },
+    SHOW_TRUE_ISSUES: {
+      actions: "showTrueIssues",
+    },
   },
 });
