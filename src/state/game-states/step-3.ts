@@ -4,8 +4,11 @@ import { getGameTimestamp } from "@/lib/utils";
 import { step3CommandContent } from "./command-content";
 
 /**
- * First state where captain gets objective and is onboarded.
- * We are moving to the next state when captain will view the objectives (in captains log)
+ * Step 3: Terminal maintenance phase
+ * Player receives a system message requiring terminal maintenance.
+ * This triggers the investigation phase where the player must run diagnostic commands
+ * to check for anomalies, contact Earth Command, and examine AI memories.
+ * Transitions to step 4 when the player accesses the terminal.
  */
 export const step3 = gameSetup.createStateConfig({
   entry: assign({

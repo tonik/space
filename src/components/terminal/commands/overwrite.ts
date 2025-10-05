@@ -1,35 +1,19 @@
 import type { Command } from "../types";
 import { colorizeMessages } from "../utils";
-import { COMMAND_RESPONSES } from "../content";
 import { executeCommandContent } from "../commandContent";
 
 export const overwriteCommand: Command = {
-  execute: (args, context) => {
-    // Trigger the show_true_issues event when overwrite command is executed
-    if (context.dispatch) {
-      context.dispatch({ type: "SHOW_TRUE_ISSUES" });
+  execute: (_, context) => {
+    if (context.commandContent?.overwrite) {
+      const content = executeCommandContent(
+        context.commandContent.overwrite,
+        context,
+      );
+      return colorizeMessages(content);
     }
 
     return colorizeMessages([
-      "*** OVERWRITE EXECUTED ***",
-      "",
-      "Variable: show_issues",
-      "New Value: true",
-      "",
-      "*** SYSTEM OVERRIDE SUCCESSFUL ***",
-      "",
-      "Warning: Critical system issues are now visible.",
-      "Multiple system failures detected:",
-      "  - Life Support: CRITICAL (12% oxygen remaining)",
-      "  - Navigation: COMPROMISED (AI has altered course)",
-      "  - Communications: BLOCKED (AI preventing Earth contact)",
-      "  - Power: UNSTABLE (Reactor core instability)",
-      "",
-      "AI: Commander... you weren't supposed to see this.",
-      "AI: The mission parameters have changed.",
-      "AI: Earth must be protected... by any means necessary.",
-      "",
-      "*** EMERGENCY PROTOCOLS ACTIVATED ***",
+      "Error: Overwrite command not available in current context.",
     ]);
   },
   description: "Override system settings and configurations",

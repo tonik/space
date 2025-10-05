@@ -9,7 +9,6 @@ import { commsCommand } from "@/components/terminal/commands/comms";
 import { memoriesCommand } from "@/components/terminal/commands/memories";
 import { anomaliesCommand } from "@/components/terminal/commands/anomalies";
 import { statusCommand } from "@/components/terminal/commands/status";
-import { overwriteCommand } from "@/components/terminal/commands/overwrite";
 
 const step4InitialRegistry = createCommandRegistry({
   clear: clearCommand,
@@ -30,24 +29,13 @@ const step4FullRegistry = createCommandRegistry({
   status: statusCommand,
 });
 
-const step4CompleteRegistry = createCommandRegistry({
-  clear: clearCommand,
-  whoami: whoamiCommand,
-  date: dateCommand,
-  comms: commsCommand,
-  memories: memoriesCommand,
-  anomalies: anomaliesCommand,
-  status: statusCommand,
-  overwrite: overwriteCommand,
-});
-
 /**
  * Step 4: Terminal maintenance phase
  * Shows a hidden file when 4 specific commands are discovered.
  *
  * Initially only shows: anomalies, memories, and comms
  * After running those 3 commands, the "status" command becomes available
- * After running "status", the "overwrite" command becomes available
+ * After running "status", transitions to step 5 where "overwrite" becomes available
  * The "status" command exposes critical system variables showing the AI
  * is suppressing alerts with "show_issues: false"
  * The "overwrite" command allows the player to reveal the true system issues
@@ -288,18 +276,30 @@ export const step4 = gameSetup.createStateConfig({
             context.objectives.map((obj) =>
               obj.id === "obj-006" ? { ...obj, status: "completed" } : obj,
             ),
-          availableCommands: () => step4CompleteRegistry,
+        }),
+        target: "step5",
+      },
+    ],
+    CHANGE_VIEW: [
+      {
+        guard: ({ event }) => event.view === "captains-log_objectives",
+        actions: assign({
+          viewNotifications: ({ context }) => ({
+            ...context.viewNotifications,
+            "captains-log_objectives": false,
+          }),
+        }),
+        target: "step5",
+      },
+      {
+        guard: ({ event }) => event.view === "dashboard",
+        actions: assign({
+          viewNotifications: ({ context }) => ({
+            ...context.viewNotifications,
+            dashboard: false,
+          }),
         }),
       },
     ],
-    CHANGE_VIEW: {
-      guard: ({ event }) => event.view === "captains-log_objectives",
-      actions: assign({
-        viewNotifications: ({ context }) => ({
-          ...context.viewNotifications,
-          "captains-log_objectives": false,
-        }),
-      }),
-    },
   },
 });
