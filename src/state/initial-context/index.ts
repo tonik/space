@@ -14,7 +14,7 @@ export const initialContext: GameContext = {
 
   viewNotifications: {
     dashboard: false,
-    messaging: false,
+    communications: false,
     terminal: false,
     logs: false,
     "captains-log_objectives": false,
@@ -102,7 +102,7 @@ export const initialContext: GameContext = {
 
   messages: introMessages,
   messageViews: [
-    // Mark first two messages as initially read
+    // Mark first 2 messages as initially read
     { messageId: introMessages[0].id, openedAt: Date.now() - 86400000 }, // 1 day ago
     { messageId: introMessages[1].id, openedAt: Date.now() - 43200000 }, // 12 hours ago
   ],

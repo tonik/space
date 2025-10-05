@@ -12,7 +12,6 @@ import { RefreshWarningDialog } from "@/components/refresh-warning-dialog";
 import { ScrollArea } from "./ui/scroll-area";
 import { WelcomeScreen } from "./welcome-screen";
 import { useSelector } from "@xstate/react";
-// import { WelcomeScreen } from "@/components/welcome-screen";
 
 export default function SpaceshipOS() {
   const { changeView, send } = useGame();
@@ -43,7 +42,7 @@ export default function SpaceshipOS() {
           <ScrollArea className="flex-1 overflow-auto">
             <div className="p-6">
               {activeView === "dashboard" && <DashboardView />}
-              {activeView === "messaging" && <MessagingView />}
+              {activeView === "communications" && <MessagingView />}
               {activeView === "terminal" && <TerminalView />}
               {activeView === "logs" && <SystemLogView />}
               {activeView.includes("captains-log") && <CaptainsLogView />}

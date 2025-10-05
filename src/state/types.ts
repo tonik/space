@@ -2,7 +2,7 @@
 
 export type AvailableViewKeys =
   | "dashboard"
-  | "messaging"
+  | "communications"
   | "terminal"
   | "logs"
   | "captains-log_objectives"
