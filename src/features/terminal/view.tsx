@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { Terminal } from "@/components/terminal";
+import { Terminal } from "@/components/terminal/view";
 
 export default function TerminalView() {
   return (
