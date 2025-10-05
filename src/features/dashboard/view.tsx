@@ -124,7 +124,7 @@ export default function DashboardView() {
       </div>
 
       {/* Bottom section - System cards and AI Chat */}
-      <div className="grid flex-1 grid-cols-3 gap-6 pb-6">
+      <div className="grid flex-1 grid-cols-3 gap-6">
         <div className="col-span-2 grid grid-cols-2 gap-6">
           <SystemCard
             title="AI CORE SYSTEM"
