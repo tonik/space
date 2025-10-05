@@ -57,7 +57,6 @@ export const getCommands = (
     systemName: keyof GameContext["systems"],
     repairType: "quick" | "standard" | "thorough",
   ) => void,
-  completeRepair?: (systemName: keyof GameContext["systems"]) => void,
   recoverEnergy?: (amount?: number) => void,
 ): string[] | React.ReactNode | null => {
   switch (command) {
