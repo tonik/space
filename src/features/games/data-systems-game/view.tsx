@@ -8,6 +8,7 @@ export default function DataSystemsGameView() {
     "menu",
   );
   const [userInput, setUserInput] = useState("");
+  const [error, setError] = useState("");
 
   const puzzleData = `
 Corrupted navigation segments:
@@ -21,7 +22,12 @@ Hint: The missing protocol name is: NAVIGATION_PROTOCOL_EMERGENCY`;
   const startGame = () => setGameState("playing");
   const checkAnswer = () => {
     if (userInput.toUpperCase() === correctAnswer) {
+      setError("");
       setTimeout(() => setGameState("victory"), 1000);
+    } else {
+      setError(
+        "ERROR: Navigation protocol mismatch. System integrity compromised.",
+      );
     }
   };
 
@@ -87,15 +93,23 @@ Hint: The missing protocol name is: NAVIGATION_PROTOCOL_EMERGENCY`;
                       <input
                         type="text"
                         value={userInput}
-                        onChange={(e) =>
-                          setUserInput(e.target.value.toUpperCase())
-                        }
+                        onChange={(e) => {
+                          setUserInput(e.target.value.toUpperCase());
+                          setError("");
+                        }}
                         onKeyPress={(e) => e.key === "Enter" && checkAnswer()}
                         className="border-primary/30 text-primary focus:ring-primary/50 /40 w-full border p-3 text-center font-mono text-xl tracking-wider focus:ring-2 focus:outline-none"
                         placeholder="Enter your solution..."
                         autoFocus
                       />
                     </div>
+                    {error && (
+                      <div className="border-primary/30 bg-primary/10 border p-4">
+                        <p className="text-primary font-mono text-sm">
+                          {error}
+                        </p>
+                      </div>
+                    )}
                     <Button
                       onClick={checkAnswer}
                       className="bg-primary text-background hover:bg-primary/80"
