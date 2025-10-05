@@ -23,25 +23,6 @@ export function AIChat() {
     }
   }, [aiChat.messages]);
 
-  // Add a new message after 3 seconds on first render, but only if not already shown
-  useEffect(() => {
-    if (aiChat.hasShownInitialMessage) return;
-
-    const timer = setTimeout(() => {
-      const newMessage = {
-        id: (Date.now() + 2).toString(),
-        role: "ai" as const,
-        content:
-          "Everything is fine, Captain. I have some new entries for your Captain's Log to review.",
-        timestamp: Date.now(),
-      };
-      addMessageRef.current(newMessage);
-      markShownRef.current();
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [aiChat.hasShownInitialMessage]);
-
   const handleSend = () => {
     if (!input.trim() || isThinking) return;
 

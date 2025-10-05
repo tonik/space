@@ -58,7 +58,6 @@ export interface GameContext {
   };
 
   aiChat: {
-    hasShownInitialMessage: boolean;
     messages: Array<{
       id: string;
       role: "user" | "ai";

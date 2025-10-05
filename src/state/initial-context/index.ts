@@ -88,7 +88,6 @@ export const initialContext: GameContext = {
   },
 
   aiChat: {
-    hasShownInitialMessage: false,
     messages: [],
   },
 
