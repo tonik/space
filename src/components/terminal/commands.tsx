@@ -378,6 +378,22 @@ export const getCommands = (
         "  thorough - 30s, +60 integrity, 35 energy, 25 materials",
       ];
     }
+    case "completeRepair": {
+      const repairArgs = command.split(" ");
+      if (repairArgs.length < 2) {
+        return [
+          "Usage: completeRepair <system>",
+          "Systems: communications, navigation, lifeSupport, power, weapons, aiCore, defensive, propulsion, dataSystems",
+          "Example: completeRepair communications",
+        ];
+      }
+      const systemName = repairArgs[1] as keyof GameContext["systems"];
+      if (completeRepair) {
+        completeRepair(systemName);
+        return [`Repair completed on ${systemName}...`];
+      }
+      return ["Error: Repair system not available."];
+    }
     case "recharge": {
       if (recoverEnergy) {
         recoverEnergy();
