@@ -102,7 +102,11 @@ export const initialContext: GameContext = {
   },
 
   messages: introMessages,
-  messageViews: [],
+  messageViews: [
+    // Mark first two messages as initially read
+    { messageId: introMessages[0].id, openedAt: Date.now() - 86400000 }, // 1 day ago
+    { messageId: introMessages[1].id, openedAt: Date.now() - 43200000 }, // 12 hours ago
+  ],
 
   captainsLog: [
     {
