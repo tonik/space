@@ -17,7 +17,7 @@ export function useMessagingState() {
     const openedIds = new Set(
       state.context.messageViews.map((v) => v.messageId),
     );
-    const unreadCount = state.context.messages.filter(
+    const unreadCount = state.context?.messages?.filter?.(
       (msg) => !openedIds.has(msg.id),
     ).length;
 

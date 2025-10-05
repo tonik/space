@@ -36,20 +36,4 @@ export const introMessages: Message[] = [
     encrypted: false,
     corrupted: false,
   },
-  {
-    id: nanoid(),
-    from: "EARTH BASE COMMAND",
-    timestamp: set(subDays(INITIAL_CURRENT_DATE, 1), {
-      hours: 10,
-      minutes: 13,
-      seconds: 0,
-    }).getTime(),
-    title: "Dry Dock Authorization",
-    preview:
-      "Dry dock ticket minted for USS Ghost Fleet destroyer. Scheduled maintenance includes AI system upgrade, memory cleaning, hull repairs, and weapons system calibration. Dock at Earth Base by 1200 hours.",
-    type: "incoming",
-    priority: "high",
-    encrypted: false,
-    corrupted: false,
-  },
 ];

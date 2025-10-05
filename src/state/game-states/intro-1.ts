@@ -47,12 +47,14 @@ export const intro1 = gameSetup.createStateConfig({
   },
   on: {
     CHANGE_VIEW: {
+      guard: ({ event }) => event.view === "captains-log_objectives",
       actions: assign({
         viewNotifications: ({ event, context }) => ({
           ...context.viewNotifications,
           [event.view]: false,
         }),
       }),
+      target: "intro2",
     },
   },
 });
