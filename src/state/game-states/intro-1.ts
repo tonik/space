@@ -8,9 +8,13 @@ import { gameSetup } from "../game-setup";
 export const intro1 = gameSetup.createStateConfig({
   on: {
     CHANGE_VIEW: {
-      actions: () => {
-        console.log("View changed");
-      },
+      guard: ({ event }) => event.view === "captains-log_objectives",
+      actions: assign({
+        viewNotifications: ({ context }) => ({
+          ...context.viewNotifications,
+          "captains-log_objectives": [],
+        }),
+      }),
     },
   },
 });

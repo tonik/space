@@ -7,7 +7,6 @@ export const initialContext: GameContext = {
   commanderName: "Commander",
   gameStartTimestamp: Date.now(),
   activeView: "dashboard",
-
   welcomeScreen: {
     exiting: false,
     finishedAnimating: false,

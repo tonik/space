@@ -13,11 +13,6 @@ export const osState = gameSetup.createStateConfig({
         activeView: ({ event }) => event.view,
       }),
     },
-    ENTER_MAIN_APP: {
-      actions: assign({
-        showWelcomeScreen: () => false,
-      }),
-    },
     ADD_MESSAGE: {
       actions: assign({
         messages: ({ context, event }) => [...context.messages, event.message],
