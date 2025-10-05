@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/context";
 import { useMessagingState } from "@/state/selectors";
@@ -11,6 +10,7 @@ import { format } from "date-fns";
 import { toast } from "sonner";
 import { DEFAULT_DATETIME_FORMAT } from "@/lib/utils";
 import { useGameDateNow } from "@/state/selectors";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function MessagingView() {
   const { messages, unreadCount, openedMessageIds, systems } =
@@ -84,44 +84,46 @@ export function MessagingView() {
             )}
           </div>
         </div>
-        <ScrollArea className="min-h-0 flex-1">
-          <div className="space-y-3">
-            {messages.length === 0 ? (
-              <div className="text-muted-foreground/60 py-8 text-center">
-                No messages available
-              </div>
-            ) : (
-              messages
-                .sort((a, b) => b.timestamp - a.timestamp)
-                .map((msg) => {
-                  const isRead = openedMessageIds.has(msg.id);
+        <ScrollArea className="flex-1 overflow-auto">
+          <div className="flex min-h-full flex-col-reverse">
+            <div className="space-y-3">
+              {messages.length === 0 ? (
+                <div className="text-muted-foreground/60 py-8 text-center">
+                  No messages available
+                </div>
+              ) : (
+                messages
+                  .sort((a, b) => b.timestamp - a.timestamp)
+                  .map((msg) => {
+                    const isRead = openedMessageIds.has(msg.id);
 
-                  return (
-                    <div
-                      key={msg.id}
-                      className={`border-border/20 hover:bg-primary/15 cursor-pointer border p-3 transition-colors ${
-                        isRead ? "bg-primary/5" : "bg-primary/10"
-                      }`}
-                      onClick={() => handleMessageClick(msg)}
-                    >
-                      <div className="mb-2 flex justify-between">
-                        <div className="flex items-center gap-1">
-                          <User className="text-muted-foreground h-3 w-3" />
-                          <span className="text-card-foreground text-xs font-bold">
-                            {msg.from}
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`border-border/20 hover:bg-primary/15 cursor-pointer border p-3 transition-colors ${
+                          isRead ? "bg-primary/5" : "bg-primary/10"
+                        }`}
+                        onClick={() => handleMessageClick(msg)}
+                      >
+                        <div className="mb-2 flex justify-between">
+                          <div className="flex items-center gap-1">
+                            <User className="text-muted-foreground h-3 w-3" />
+                            <span className="text-card-foreground text-xs font-bold">
+                              {msg.from}
+                            </span>
+                          </div>
+                          <span className="text-muted-foreground text-xs">
+                            {format(msg.timestamp, DEFAULT_DATETIME_FORMAT)}
                           </span>
                         </div>
-                        <span className="text-muted-foreground text-xs">
-                          {format(msg.timestamp, DEFAULT_DATETIME_FORMAT)}
+                        <span className="text-card-foreground/80 line-clamp-1 text-sm">
+                          {msg.preview}
                         </span>
                       </div>
-                      <span className="text-card-foreground/80 line-clamp-1 text-sm">
-                        {msg.preview}
-                      </span>
-                    </div>
-                  );
-                })
-            )}
+                    );
+                  })
+              )}
+            </div>
           </div>
         </ScrollArea>
       </Card>

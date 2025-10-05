@@ -167,7 +167,7 @@ export default function MemoryGameView() {
     const baseClasses =
       "bg-primary/20 border cursor-pointer transition-all duration-300 w-16 h-16 rounded-lg flex items-center justify-center";
     const stateClasses = card.isMatched
-      ? "border-green-500 bg-green-500/20"
+      ? "border-primary bg-primary/20"
       : card.isFlipped
         ? "border-primary bg-primary/40"
         : "border-border hover:border-primary/50";
