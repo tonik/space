@@ -18,7 +18,9 @@ export default function SpaceshipOS() {
   const { activeView } = useNavigationState();
   const showWelcomeState = useSelector(
     gameActor,
-    (s) => s.value.gameProgressState === "intro0",
+    (s) =>
+      typeof s.value.gameProgressState !== "string" &&
+      s.value.gameProgressState.intro0 !== "closed",
   );
 
   useEffect(() => {

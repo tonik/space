@@ -11,10 +11,6 @@ export type AvailableViewKeys =
 export interface GameContext {
   commanderName: string;
   gameStartTimestamp: number;
-  welcomeScreen: {
-    finishedAnimating: boolean;
-    exiting: boolean;
-  };
   activeView: AvailableViewKeys;
 
   viewNotifications: Record<AvailableViewKeys, boolean>;

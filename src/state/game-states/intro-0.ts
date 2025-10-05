@@ -1,25 +1,37 @@
-import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
 
 /**
  * State where user can close a system load
  */
 export const intro0 = gameSetup.createStateConfig({
-  on: {
-    FINISHED_INTRO_SEQUENCE: {
-      actions: assign({
-        welcomeScreen: ({ context }) => ({
-          ...context.welcomeScreen,
-          finishedAnimating: true,
-        }),
-      }),
+  initial: "initial",
+  states: {
+    initial: {
+      on: {
+        FINISHED_INTRO_SEQUENCE: {
+          target: "finishedAnimating",
+        },
+      },
     },
-    KEYPRESS: {
-      guard: ({ event, context }) =>
-        context.welcomeScreen.finishedAnimating &&
-        event.message.key === "Enter",
-      actions: "hideWelcomeScreen",
-      target: "intro1",
+    finishedAnimating: {
+      on: {
+        KEYPRESS: {
+          guard: ({ event }) => event.message.key === "Enter",
+          actions: "hideWelcomeScreen",
+          target: "hidingWelcomeScreen",
+        },
+      },
+    },
+    hidingWelcomeScreen: {
+      after: {
+        1000: {
+          target: "closed",
+        },
+      },
+    },
+    closed: {
+      type: "final",
     },
   },
+  onDone: { target: "intro1" },
 });

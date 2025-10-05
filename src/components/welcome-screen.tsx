@@ -32,11 +32,15 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
   const { send } = useGame();
   const isExiting = useSelector(
     gameActor,
-    (snapshot) => snapshot.context.welcomeScreen.exiting,
+    (s) =>
+      typeof s.value.gameProgressState !== "string" &&
+      s.value.gameProgressState.intro0 === "hidingWelcomeScreen",
   );
   const finishedAnimating = useSelector(
     gameActor,
-    (snapshot) => snapshot.context.welcomeScreen.finishedAnimating,
+    (s) =>
+      typeof s.value.gameProgressState !== "string" &&
+      s.value.gameProgressState.intro0 === "finishedAnimating",
   );
 
   const startAnimation = async () => {
