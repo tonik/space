@@ -8,7 +8,7 @@
 [![Built with React](https://img.shields.io/badge/React-19.1.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.3-blue.svg)](https://www.typescriptlang.org/)
 
-[**Play the Game**](#getting-started) | [**Read the Docs**](game_description.md) | [**View Scenario**](game_scenario.md)
+[**🎮 Play Now**](https://space-five-fawn.vercel.app/) | [**Read the Docs**](game_description.md) | [**View Scenario**](game_scenario.md)
 
 ---
 
@@ -102,8 +102,8 @@ Solving the mystery requires cross-interface investigation:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/ghost-fleet-last-command.git
-cd ghost-fleet-last-command
+git clone https://github.com/tonik/space.git
+cd space
 
 # Install dependencies
 npm install
@@ -178,7 +178,7 @@ We welcome contributions! Whether you're a developer, designer, writer, or playe
 
 ### For Developers
 
-- 🐛 **Bug Fixes**: Check [Issues](https://github.com/yourusername/ghost-fleet-last-command/issues)
+- 🐛 **Bug Fixes**: Check [Issues](https://github.com/tonik/space/issues)
 - ✨ **New Features**: See [Project Roadmap](#roadmap)
 - 📚 **Documentation**: Improve guides and code comments
 - 🧪 **Testing**: Add test coverage for game scenarios
@@ -236,7 +236,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## 📜 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ---
 
@@ -250,16 +250,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact & Community
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/ghost-fleet-last-command/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/ghost-fleet-last-command/discussions)
-- **Email**: your-email@example.com
-- **Twitter/X**: [@yourhandle](https://twitter.com/yourhandle)
+- **Play Online**: [https://space-five-fawn.vercel.app/](https://space-five-fawn.vercel.app/)
+- **Issues**: [GitHub Issues](https://github.com/tonik/space/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/tonik/space/discussions)
 
 ---
 
 **⚠️ Warning**: This game explores themes of AI betrayal, isolation, and moral dilemmas. Recommended for mature audiences.
 
-**🎮 Ready to play?** Run `npm run dev` and open http://localhost:5173
+**🎮 Ready to play?** Visit [https://space-five-fawn.vercel.app/](https://space-five-fawn.vercel.app/) or run `npm run dev` locally
 
 **💰 Interested in investing or partnering?** Check out our [presentation deck](presentation.html) or reach out directly.
 
@@ -271,6 +270,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 _Can you trust your AI? There's only one way to find out._
 
-[⭐ Star this repo](https://github.com/yourusername/ghost-fleet-last-command) | [🐛 Report a bug](https://github.com/yourusername/ghost-fleet-last-command/issues) | [💡 Request a feature](https://github.com/yourusername/ghost-fleet-last-command/issues)
+[⭐ Star this repo](https://github.com/tonik/space) | [🐛 Report a bug](https://github.com/tonik/space/issues) | [💡 Request a feature](https://github.com/tonik/space/issues)
 
 </div>
