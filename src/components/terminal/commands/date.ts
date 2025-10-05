@@ -1,7 +1,14 @@
 import type { Command } from "../types";
+import { executeCommandContent } from "../commandContent";
 
 export const dateCommand: Command = {
   execute: (_, context) => {
+    // Check for custom content first
+    if (context.commandContent?.date) {
+      return executeCommandContent(context.commandContent.date, context);
+    }
+
+    // Default behavior
     const { mission } = context;
     return [
       `Mission Date: Day ${mission?.daysInSpace || 738} in space`,

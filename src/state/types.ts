@@ -1,4 +1,6 @@
 // Shared types across the state management system
+import type { CommandRegistry } from "@/components/terminal/types";
+import type { CommandContentMap } from "@/components/terminal/commandContent";
 
 export type AvailableViewKeys =
   | "dashboard"
@@ -12,6 +14,8 @@ export interface GameContext {
   commanderName: string;
   gameStartTimestamp: number;
   activeView: AvailableViewKeys;
+  availableCommands: CommandRegistry;
+  commandContent: CommandContentMap;
 
   viewNotifications: Record<AvailableViewKeys, boolean>;
 
@@ -84,6 +88,8 @@ export interface GameContext {
 export type GameEvent =
   | { type: "START_GAME"; commanderName: string }
   | { type: "CHANGE_VIEW"; view: GameContext["activeView"] }
+  | { type: "SET_AVAILABLE_COMMANDS"; commands: CommandRegistry }
+  | { type: "SET_COMMAND_CONTENT"; content: CommandContentMap }
   | { type: "COMMAND_EXECUTED"; command: string }
   | { type: "ADD_MESSAGE"; message: Message }
   | { type: "MESSAGE_OPENED"; messageId: string }

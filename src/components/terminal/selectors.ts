@@ -8,5 +8,7 @@ export const useTerminalState = () => {
     commandCounts: state.context.commandCounts,
     mission: state.context.mission,
     repair: state.context.repair,
+    availableCommands: state.context.availableCommands,
+    commandContent: state.context.commandContent,
   }));
 };

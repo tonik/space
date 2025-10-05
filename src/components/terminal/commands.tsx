@@ -1,17 +1,20 @@
 import type { GameContext } from "@/state/types";
-import { commandRegistry } from "./registry";
 import { colorizeMessages } from "./utils";
 import type {
   CommandContext,
   CommandResult,
   StoreDataCallback,
   InteractiveCallback,
+  CommandRegistry,
 } from "./types";
+import type { CommandContentMap } from "./commandContent";
 
 export type { StoreDataCallback, InteractiveCallback };
 
 export const getCommands = (
   command: string,
+  commandRegistry: CommandRegistry,
+  commandContent: CommandContentMap,
   storeData?: StoreDataCallback,
   currentName?: string,
   interactiveCallback?: InteractiveCallback,
@@ -24,6 +27,7 @@ export const getCommands = (
     interactiveCallback,
     commandCounts,
     mission,
+    commandContent,
   };
 
   // Find and execute command

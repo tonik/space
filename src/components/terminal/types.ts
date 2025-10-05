@@ -1,4 +1,5 @@
 import type { GameContext } from "@/state/types";
+import type { CommandContentMap } from "./commandContent";
 import React from "react";
 
 export type StoreDataCallback = (data: string) => void;
@@ -14,6 +15,7 @@ export interface CommandContext {
   interactiveCallback?: InteractiveCallback;
   commandCounts?: Record<string, number>;
   mission?: GameContext["mission"];
+  commandContent?: CommandContentMap;
 }
 
 export type CommandResult = string[] | React.ReactNode | null;

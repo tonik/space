@@ -2,11 +2,14 @@ import { introLogs } from "@/data/logs";
 import { generateSystemMetrics } from "../helpers";
 import type { GameContext } from "../types";
 import { introMessages } from "@/data/messages";
+import { commandRegistry } from "@/components/terminal/registries";
 
 export const initialContext: GameContext = {
   commanderName: "Commander",
   gameStartTimestamp: Date.now(),
   activeView: "dashboard",
+  availableCommands: commandRegistry,
+  commandContent: {},
   viewNotifications: {
     dashboard: false,
     communications: false,

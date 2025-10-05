@@ -9,6 +9,8 @@ import type {
   Objective,
 } from "./types";
 import { useContext } from "react";
+import type { CommandRegistry } from "@/components/terminal/types";
+import type { CommandContentMap } from "@/components/terminal/commandContent";
 
 export const createState = () => createActor(gameMachine);
 
@@ -32,6 +34,10 @@ export const useGame = () => {
       actor.send({ type: "START_GAME", commanderName }),
     changeView: (view: GameContext["activeView"]) =>
       actor.send({ type: "CHANGE_VIEW", view }),
+    setAvailableCommands: (commands: CommandRegistry) =>
+      actor.send({ type: "SET_AVAILABLE_COMMANDS", commands }),
+    setCommandContent: (content: CommandContentMap) =>
+      actor.send({ type: "SET_COMMAND_CONTENT", content }),
 
     addMessage: (message: Message) =>
       actor.send({ type: "ADD_MESSAGE", message }),

@@ -27,7 +27,13 @@ type TerminalLine = {
 
 export function Terminal({ className = "" }: TerminalProps) {
   const { startGame, trackCommand } = useGame();
-  const { commanderName, commandCounts, mission } = useTerminalState();
+  const {
+    commanderName,
+    commandCounts,
+    mission,
+    availableCommands,
+    commandContent,
+  } = useTerminalState();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
     { type: "text", content: 'Type "help" for available commands.' },
@@ -100,6 +106,8 @@ export function Terminal({ className = "" }: TerminalProps) {
 
     const output = getCommands(
       command.toLowerCase(),
+      availableCommands,
+      commandContent,
       (newName: string) => {
         startGame(newName);
       },
