@@ -3,8 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, ArrowLeft } from "lucide-react";
-import { format } from "date-fns";
-import { DEFAULT_DATETIME_FORMAT } from "@/lib/utils";
+import { formatToDatetimeFormat } from "@/lib/utils";
 
 interface MessageDetailProps {
   message: Message;
@@ -12,10 +11,6 @@ interface MessageDetailProps {
 }
 
 export function MessageDetail({ message, onBack }: MessageDetailProps) {
-  function formatTime(timestamp: number) {
-    return format(timestamp, DEFAULT_DATETIME_FORMAT);
-  }
-
   return (
     <div className="mb-4">
       {/* Main message container */}
@@ -42,7 +37,7 @@ export function MessageDetail({ message, onBack }: MessageDetailProps) {
           <div className="flex items-center gap-2">
             <span className="font-medium">Time:</span>
             <span className="text-foreground">
-              {formatTime(message.timestamp)}
+              {formatToDatetimeFormat(message.timestamp)}
             </span>
           </div>
           <div className="flex items-center gap-2">

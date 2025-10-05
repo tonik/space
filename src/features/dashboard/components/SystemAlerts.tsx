@@ -2,15 +2,10 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle } from "lucide-react";
 import type { LogEntry } from "@/state/types";
-import { format } from "date-fns";
-import { DEFAULT_DATE_FORMAT } from "@/lib/utils";
+import { formatToDateFormat } from "@/lib/utils";
 
 interface SystemAlertsProps {
   logs: LogEntry[];
-}
-
-function formatTimestamp(timestamp: number) {
-  return format(timestamp, DEFAULT_DATE_FORMAT);
 }
 
 export function SystemAlerts({ logs }: SystemAlertsProps) {
@@ -35,7 +30,7 @@ export function SystemAlerts({ logs }: SystemAlertsProps) {
               {recentAlerts.map((log, i) => (
                 <div key={i} className="hover:bg-primary/5 contents py-1">
                   <span className="text-muted-foreground">
-                    [{formatTimestamp(log.timestamp)}]
+                    [{formatToDateFormat(log.timestamp)}]
                   </span>
                   <span
                     className={

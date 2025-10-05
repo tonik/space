@@ -2,8 +2,7 @@ import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSystemLogState } from "./selectors";
 import { Button } from "@/components/ui/button";
-import { format } from "date-fns";
-import { DEFAULT_DATE_FORMAT } from "@/lib/utils";
+import { formatToDateFormat } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import type { LogEntry } from "@/state/types";
 import { Input } from "@/components/ui/input";
@@ -30,10 +29,6 @@ export function SystemLogView() {
     system: "ALL",
     search: "",
   });
-
-  function formatTimestamp(timestamp: number) {
-    return format(timestamp, DEFAULT_DATE_FORMAT);
-  }
 
   const handleFilterChange = (key: keyof typeof filters, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -146,7 +141,7 @@ export function SystemLogView() {
               {filteredLogs.map((log, i) => (
                 <div key={i} className="hover:bg-primary/5 contents py-1">
                   <span className="text-muted-foreground">
-                    [{formatTimestamp(log.timestamp)}]
+                    [{formatToDateFormat(log.timestamp)}]
                   </span>
                   <span
                     className={

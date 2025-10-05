@@ -8,6 +8,7 @@ import {
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { AvailableViewKeys } from "@/state/types";
+import { format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -107,3 +108,11 @@ export const DEFAULT_DATE_FORMAT = "MM/dd/yy";
 export const DEFAULT_DATETIME_FORMAT = "MM/dd/yy HH:mm aa";
 
 export const INITIAL_CURRENT_DATE = new Date("2425-10-14T08:03:00Z");
+
+export function formatToDateFormat(timestamp: number) {
+  return format(timestamp, DEFAULT_DATE_FORMAT);
+}
+
+export function formatToDatetimeFormat(timestamp: number) {
+  return format(timestamp, DEFAULT_DATETIME_FORMAT);
+}
