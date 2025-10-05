@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useGame } from "@/state/useGame";
 
 interface CipherGameState {
   gameState: "menu" | "playing" | "gameOver" | "victory";
@@ -24,6 +25,7 @@ const GAME_SETTINGS = {
 };
 
 export default function CipherGameView() {
+  const { changeView } = useGame();
   const [gameState, setGameState] = useState<CipherGameState>({
     gameState: "menu",
     score: 0,
@@ -304,12 +306,10 @@ export default function CipherGameView() {
                     Ciphers Solved: 2/2
                   </p>
                   <Button
-                    onClick={() =>
-                      setGameState((prev) => ({ ...prev, gameState: "menu" }))
-                    }
+                    onClick={() => changeView("dashboard")}
                     className="bg-primary text-background hover:bg-primary/80"
                   >
-                    PLAY AGAIN
+                    BACK TO DASHBOARD
                   </Button>
                 </div>
               )}

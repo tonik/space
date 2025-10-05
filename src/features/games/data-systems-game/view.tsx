@@ -123,7 +123,7 @@ Hint: The missing protocol name is: NAVIGATION_PROTOCOL_EMERGENCY`;
                     }}
                     className="bg-primary text-background hover:bg-primary/80"
                   >
-                    Back to Dashboard
+                    BACK TO DASHBOARD
                   </Button>
                 </div>
               )}
