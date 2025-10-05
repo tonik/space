@@ -60,8 +60,8 @@ export default function DashboardView() {
 
   return (
     <div className="flex h-full flex-col gap-6">
-      <div className="grid grid-cols-4 gap-6">
-        <div className="col-span-2">
+      <div className="grid grid-cols-3 gap-6">
+        <div className="flex">
           <SystemDiagnostics
             cpuLoad={diagnostics.cpuLoad}
             memoryUsage={diagnostics.memoryUsage}
@@ -73,7 +73,7 @@ export default function DashboardView() {
             errorRate={diagnostics.errorRate}
           />
         </div>
-        <div className="col-span-1">
+        <div className="flex">
           <MissionStatus
             shiftStatus={mission.shiftStatus}
             returnToEarth={timeToEarth}
@@ -82,8 +82,8 @@ export default function DashboardView() {
             fleetStatus={mission.fleetStatus}
           />
         </div>
-        <div className="col-span-1">
-          <Card className="border-border/30 bg-background p-6">
+        <div className="flex">
+          <Card className="border-border/30 bg-background flex w-full flex-col p-6">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-primary text-sm font-bold">
                 REPAIR RESOURCES

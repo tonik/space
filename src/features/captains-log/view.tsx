@@ -44,7 +44,7 @@ export default function CaptainsLogView() {
         <div className="border-border/30 mb-6 flex gap-1 border-b">
           <button
             onClick={() => setActiveTab("log")}
-            className={`text-primary px-4 py-2 font-mono text-sm transition-colors ${
+            className={`text-primary cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
               activeTab === "log"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"
@@ -54,7 +54,7 @@ export default function CaptainsLogView() {
           </button>
           <button
             onClick={() => setActiveTab("objectives")}
-            className={`text-primary px-4 py-2 font-mono text-sm transition-colors ${
+            className={`text-primary cursor-pointer px-4 py-2 font-mono text-sm transition-colors ${
               activeTab === "objectives"
                 ? "border-primary border-b-2 font-bold"
                 : "text-muted-foreground hover:text-primary"

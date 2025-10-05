@@ -46,7 +46,7 @@ export function SystemCard({
   };
 
   return (
-    <Card className={cn(`bg-background p-6 ${className}`)}>
+    <Card className={cn(`bg-background flex flex-col p-6 ${className}`)}>
       <div className="mb-1 flex items-center justify-between relative">
         <h3 className="font-bold">{title}</h3>
         {icon}
@@ -54,48 +54,48 @@ export function SystemCard({
           <span className="border-destructive bg-destructive shadow-destructive absolute -top-1 -right-1 h-2 w-2 animate-pulse rounded-full border" />
         )}
       </div>
-      <div className="space-y-2">
-        {metrics.map((metric, index) => (
-          <div key={index}>
-            <div className="flex justify-between text-xs">
-              <span>{metric.label}</span>
-              <span>{metric.value}</span>
+      <div className="flex flex-1 flex-col">
+        <div className="min-h-[90px] space-y-2">
+          {metrics.map((metric, index) => (
+            <div key={index}>
+              <div className="flex justify-between text-xs">
+                <span>{metric.label}</span>
+                <span>{metric.value}</span>
+              </div>
+              {metric.progress !== undefined && (
+                <ProgressBar value={metric.progress} className="mt-1" />
+              )}
             </div>
-            {metric.progress !== undefined && (
-              <ProgressBar value={metric.progress} className="mt-1" />
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
 
-        {systemName && onRepair && (
-          <>
-            <Separator className="my-4" />
-            {isRepairing ? (
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3 animate-spin" />
-                <span>Repair in progress...</span>
-              </div>
-            ) : needsRepair && canRepair ? (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleQuickRepair}
-                className="w-full text-xs h-6"
-              >
-                <Wrench className="h-3 w-3 mr-1" />
-                Quick Repair
-              </Button>
-            ) : !canRepair ? (
-              <div className="text-xs text-muted-foreground text-center">
-                Insufficient resources
-              </div>
-            ) : (
-              <div className="text-xs text-center">
-                System optimal
-              </div>
-            )}
-          </>
-        )}
+        <Separator className="my-4 h-1" />
+        <div className="h-8 flex items-center justify-center">
+          {systemName && onRepair && isRepairing ? (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock className="h-3 w-3 animate-spin" />
+              <span>Repair in progress...</span>
+            </div>
+          ) : systemName && onRepair && needsRepair && canRepair ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={handleQuickRepair}
+              className="w-full text-xs p-1 h-8"
+            >
+              <Wrench className="h-3 w-3 mr-1" />
+              Quick Repair
+            </Button>
+          ) : systemName && onRepair && !canRepair ? (
+            <div className="text-xs text-muted-foreground text-center">
+              Insufficient resources.
+            </div>
+          ) : (
+            <div className="text-xs text-center">
+              Optimal.
+            </div>
+          )}
+        </div>
       </div>
     </Card>
   );
