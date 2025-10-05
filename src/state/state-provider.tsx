@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Context, createState } from "./context";
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
-  const [actor, setActor] = useState(createState);
+  const [actor, setActor] = useState(() => createState());
 
   useEffect(() => {
     actor.start();

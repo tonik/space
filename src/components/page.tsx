@@ -17,12 +17,12 @@ export default function SpaceshipOS() {
   const { changeView, send } = useGame();
   const { activeView } = useNavigationState();
   const { actor } = useGameActor();
-  const showWelcomeState = useSelector(
-    actor,
-    (s) =>
+  const showWelcomeState = useSelector(actor, (s) => {
+    return (
       typeof s.value.gameProgressState !== "string" &&
-      s.value.gameProgressState.step0 !== "closed",
-  );
+      s.value.gameProgressState.step0 !== "closed"
+    );
+  });
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
