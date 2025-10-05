@@ -1,12 +1,13 @@
 import { useSelector } from "@xstate/react";
-import { gameActor } from "@/state/useGame";
 import type { AvailableViewKeys } from "@/state/types";
+import { useGameActor } from "@/state/context";
 
 export const useNavigationState = () => {
-  return useSelector(gameActor, (state) => ({
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => ({
     viewNotifications: state.context.viewNotifications,
     activeView: state.context.activeView,
     changeView: (view: AvailableViewKeys) =>
-      gameActor.send({ type: "CHANGE_VIEW", view }),
+      actor.send({ type: "CHANGE_VIEW", view }),
   }));
 };

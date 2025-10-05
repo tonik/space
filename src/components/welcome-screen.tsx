@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { displayLinesWithDelay } from "@/lib/utils";
-import { gameActor, useGame } from "@/state/useGame";
+import { useGame, useGameActor } from "@/state/context";
 import { useSelector } from "@xstate/react";
 
 interface WelcomeScreenProps {
@@ -30,6 +30,7 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(true);
   const { send } = useGame();
+  const { actor: gameActor } = useGameActor();
   const isExiting = useSelector(
     gameActor,
     (s) =>

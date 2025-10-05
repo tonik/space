@@ -17,7 +17,6 @@ export const step0 = gameSetup.createStateConfig({
       on: {
         KEYPRESS: {
           guard: ({ event }) => event.message.key === "Enter",
-          actions: "hideWelcomeScreen",
           target: "hidingWelcomeScreen",
         },
       },

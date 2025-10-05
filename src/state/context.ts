@@ -1,5 +1,6 @@
 import { createActor } from "xstate";
 import { gameMachine } from "./game";
+import { createContext } from "react";
 import type {
   Message,
   LogEntry,
@@ -7,44 +8,47 @@ import type {
   GameContext,
   Objective,
 } from "./types";
+import { useContext } from "react";
 
-// commented out because when we are mutating initial state new keys and changes aren't loaded from localStorage
-// const stateString = localStorage.getItem("gameState");
+export const createState = () => createActor(gameMachine);
 
-// const gameActor = createActor(gameMachine, {
-//   state: stateString ? JSON.parse(stateString) : undefined,
-// });
+export const Context = createContext<{
+  actor: ReturnType<typeof createState>;
+  saveGameState: () => void;
+  loadGameState: (index?: number) => void;
+} | null>(null);
 
-const gameActor = createActor(gameMachine);
-
-gameActor.start();
-gameActor.subscribe((state) => {
-  localStorage.setItem("gameState", JSON.stringify(state));
-});
+export const useGameActor = () => {
+  const actor = useContext(Context);
+  if (!actor)
+    throw new Error("Cannot use useGameActor outside of StateProvider");
+  return actor;
+};
 
 export const useGame = () => {
+  const { actor } = useGameActor();
   return {
     startGame: (commanderName: string) =>
-      gameActor.send({ type: "START_GAME", commanderName }),
+      actor.send({ type: "START_GAME", commanderName }),
     changeView: (view: GameContext["activeView"]) =>
-      gameActor.send({ type: "CHANGE_VIEW", view }),
+      actor.send({ type: "CHANGE_VIEW", view }),
 
     addMessage: (message: Message) =>
-      gameActor.send({ type: "ADD_MESSAGE", message }),
+      actor.send({ type: "ADD_MESSAGE", message }),
     openMessage: (messageId: string) =>
-      gameActor.send({ type: "MESSAGE_OPENED", messageId }),
+      actor.send({ type: "MESSAGE_OPENED", messageId }),
 
-    addLog: (log: LogEntry) => gameActor.send({ type: "ADD_LOG", log }),
+    addLog: (log: LogEntry) => actor.send({ type: "ADD_LOG", log }),
 
     trackCommand: (command: string) =>
-      gameActor.send({ type: "COMMAND_EXECUTED", command }),
+      actor.send({ type: "COMMAND_EXECUTED", command }),
 
     updateSystemStatus: (
       systemName: keyof GameContext["systems"],
       status: System["status"],
       integrity?: number,
     ) =>
-      gameActor.send({
+      actor.send({
         type: "UPDATE_SYSTEM_STATUS",
         systemName,
         status,
@@ -54,7 +58,7 @@ export const useGame = () => {
       systemName: keyof GameContext["systems"],
       integrity: number,
     ) =>
-      gameActor.send({
+      actor.send({
         type: "UPDATE_SYSTEM_INTEGRITY",
         systemName,
         integrity,
@@ -64,47 +68,49 @@ export const useGame = () => {
       systemName: keyof GameContext["systems"],
       repairType: "quick" | "standard" | "thorough",
     ) =>
-      gameActor.send({
+      actor.send({
         type: "START_REPAIR",
         systemName,
         repairType,
       }),
 
     completeRepair: (systemName: keyof GameContext["systems"]) =>
-      gameActor.send({
+      actor.send({
         type: "COMPLETE_REPAIR",
         systemName,
       }),
 
     recoverEnergy: (amount?: number) =>
-      gameActor.send({
+      actor.send({
         type: "RECOVER_ENERGY",
         amount,
       }),
 
-    updateDiagnostics: () => gameActor.send({ type: "UPDATE_DIAGNOSTICS" }),
+    updateDiagnostics: () => actor.send({ type: "UPDATE_DIAGNOSTICS" }),
 
     markAiChatInitialMessageShown: () =>
-      gameActor.send({ type: "AI_CHAT_INITIAL_MESSAGE_SHOWN" }),
+      actor.send({ type: "AI_CHAT_INITIAL_MESSAGE_SHOWN" }),
 
     addAiChatMessage: (message: {
       id: string;
       role: "user" | "ai";
       content: string;
       timestamp: number;
-    }) => gameActor.send({ type: "AI_CHAT_ADD_MESSAGE", message }),
+    }) => actor.send({ type: "AI_CHAT_ADD_MESSAGE", message }),
 
     addObjective: (objective: Objective) =>
-      gameActor.send({ type: "ADD_OBJECTIVE", objective }),
+      actor.send({ type: "ADD_OBJECTIVE", objective }),
 
     updateObjective: (objectiveId: string, status: Objective["status"]) =>
-      gameActor.send({ type: "UPDATE_OBJECTIVE", objectiveId, status }),
+      actor.send({
+        type: "UPDATE_OBJECTIVE",
+        objectiveId,
+        status,
+      }),
 
     completeObjective: (objectiveId: string) =>
-      gameActor.send({ type: "COMPLETE_OBJECTIVE", objectiveId }),
+      actor.send({ type: "COMPLETE_OBJECTIVE", objectiveId }),
 
-    send: gameActor.send,
+    send: actor.send,
   };
 };
-
-export { gameActor };

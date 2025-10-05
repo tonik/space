@@ -1,8 +1,9 @@
+import { useGameActor } from "@/state/context";
 import { useSelector } from "@xstate/react";
-import { gameActor } from "@/state/useGame";
 
 export const useDashboardState = () => {
-  return useSelector(gameActor, (state) => ({
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => ({
     systems: state.context.systems,
     diagnostics: state.context.diagnostics,
     mission: state.context.mission,

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Bot, Send } from "lucide-react";
-import { useGame } from "@/state/useGame";
+import { useGame } from "@/state/context";
 import { useDashboardState } from "../selectors";
 
 export function AIChat() {

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useGame } from "@/state/useGame";
+import { useGame } from "@/state/context";
 import { useDashboardState } from "./selectors";
 import { SystemCard } from "@/components/ui/system-card";
 import {

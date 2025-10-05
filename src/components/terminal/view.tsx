@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useGame } from "@/state/useGame";
+import { useGame } from "@/state/context";
 import { useTerminalState } from "@/components/terminal/selectors";
 import { displayLinesWithDelay } from "@/lib/utils";
 import { getCommands } from "@/components/terminal/commands";

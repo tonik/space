@@ -366,14 +366,6 @@ export const gameSetup = setup({
         return context.logs;
       },
     }),
-    hideWelcomeScreen: assign({
-      welcomeScreen: ({ context }) => {
-        return {
-          ...context.welcomeScreen,
-          exiting: true,
-        };
-      },
-    }),
     addObjective: assign({
       objectives: ({ context, event }) => {
         if (event.type === "ADD_OBJECTIVE") {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { useGame } from "@/state/useGame";
+import { useGame } from "@/state/context";
 import { useMessagingState } from "@/state/selectors";
 import type { Message } from "@/state/types";
 import { MessageDetail } from "@/components/message-detail";

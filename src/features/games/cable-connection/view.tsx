@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useGame } from "@/state/useGame";
+import { useGame } from "@/state/context";
 
 interface Node {
   id: string;

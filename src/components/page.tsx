@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { SystemLogView } from "@/features/system-log/view";
-import { gameActor, useGame } from "@/state/useGame";
+import { useGame, useGameActor } from "@/state/context";
 import { useNavigationState } from "@/components/navigation/selectors";
 import { MessagingView } from "@/features/messaging/view";
 import Navigation from "@/components/navigation";
@@ -16,8 +16,9 @@ import { useSelector } from "@xstate/react";
 export default function SpaceshipOS() {
   const { changeView, send } = useGame();
   const { activeView } = useNavigationState();
+  const { actor } = useGameActor();
   const showWelcomeState = useSelector(
-    gameActor,
+    actor,
     (s) =>
       typeof s.value.gameProgressState !== "string" &&
       s.value.gameProgressState.step0 !== "closed",

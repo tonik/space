@@ -1,8 +1,9 @@
 import { useSelector } from "@xstate/react";
-import { gameActor } from "@/state/useGame";
+import { useGameActor } from "@/state/context";
 
 export const useTerminalState = () => {
-  return useSelector(gameActor, (state) => ({
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => ({
     commanderName: state.context.commanderName,
     commandCounts: state.context.commandCounts,
     mission: state.context.mission,

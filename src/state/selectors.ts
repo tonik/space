@@ -1,9 +1,10 @@
 import { useSelector } from "@xstate/react";
-import { gameActor } from "./useGame";
 import { INITIAL_CURRENT_DATE } from "@/lib/utils";
+import { useGameActor } from "./context";
 
 export function useGameDateNow(): Date {
-  return useSelector(gameActor, (state) => {
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => {
     const stateTimestamp = state.context.gameStartTimestamp;
     const nowTimestamp = Date.now();
     const diff = nowTimestamp - stateTimestamp;
@@ -13,7 +14,8 @@ export function useGameDateNow(): Date {
 }
 
 export function useMessagingState() {
-  return useSelector(gameActor, (state) => {
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => {
     const openedIds = new Set(
       state.context.messageViews.map((v) => v.messageId),
     );
