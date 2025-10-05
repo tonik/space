@@ -61,8 +61,6 @@ export function MessagingView() {
     setSelectedMessage(null);
   };
 
-  console.log({ messages });
-
   // Message detail view
   if (viewMode === "message" && selectedMessage) {
     return (

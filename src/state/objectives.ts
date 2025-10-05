@@ -52,6 +52,17 @@ export const objectives: Record<string, Objective> = {
     category: "maintenance",
     createdAt: Date.now(),
   },
+  // obj-006 will be added dynamically when the first 3 commands are run
+  // "obj-006": {
+  //   id: "obj-006",
+  //   title: "Investigate AI Behavior Anomalies",
+  //   description:
+  //     "Something seems off with the AI's responses. Run a system status check to examine internal variables and look for any discrepancies. Perhaps the 'status' command will help?",
+  //   status: "active",
+  //   priority: "high",
+  //   category: "investigation",
+  //   createdAt: Date.now(),
+  // },
 
   // // Phase 2: First Anomaly
   // "obj-004": {

@@ -20,6 +20,7 @@ export interface CommandContentMap {
   "sleep log"?: CommandContent;
   memories?: CommandContent;
   anomalies?: CommandContent;
+  status?: CommandContent;
 
   // Action commands
   override?: CommandContent;
