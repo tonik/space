@@ -1,0 +1,11 @@
+export { clearCommand } from "./clear";
+export { commsCommand } from "./comms";
+export { dateCommand } from "./date";
+export { createHelpCommand } from "./help";
+export { whoamiCommand } from "./whoami";
+export { setnameCommand } from "./setname";
+export { sleepLogCommand } from "./sleepLog";
+export { echoCommand } from "./echo";
+export { memoriesCommand } from "./memories";
+export { anomaliesCommand } from "./anomalies";
+export { overrideCommand } from "./override";
