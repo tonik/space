@@ -1,10 +1,23 @@
 import { createActor } from "xstate";
 import { gameMachine } from "./game";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Context, createState } from "./context";
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
   const [actor, setActor] = useState(createState);
+
+  useEffect(() => {
+    actor.start();
+
+    actor.start();
+    actor.subscribe((state) => {
+      localStorage.setItem("gameState", JSON.stringify(state));
+    });
+    return () => {
+      actor.stop();
+    };
+  }, [actor]);
+
   const state = useMemo(() => {
     return {
       actor,
@@ -24,14 +37,8 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
         const snapshot = existingSaves[index ?? existingSaves.length - 1];
 
         if (snapshot) {
-          actor.stop();
           const newActor = createActor(gameMachine, { snapshot });
-          newActor.start();
-          newActor.subscribe((state) => {
-            localStorage.setItem("gameState", JSON.stringify(state));
-          });
-
-          setActor(actor);
+          setActor(newActor);
         }
       },
     };
