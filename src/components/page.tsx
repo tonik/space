@@ -20,7 +20,7 @@ export default function SpaceshipOS() {
     gameActor,
     (s) =>
       typeof s.value.gameProgressState !== "string" &&
-      s.value.gameProgressState.intro0 !== "closed",
+      s.value.gameProgressState.step0 !== "closed",
   );
 
   useEffect(() => {

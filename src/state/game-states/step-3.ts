@@ -5,7 +5,7 @@ import { gameSetup } from "../game-setup";
  * First state where captain gets objective and is onboarded.
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
-export const intro3 = gameSetup.createStateConfig({
+export const step3 = gameSetup.createStateConfig({
   after: {
     1000: {
       actions: [
@@ -43,7 +43,7 @@ export const intro3 = gameSetup.createStateConfig({
           [event.view]: false,
         }),
       }),
-      // target: "intro4",
+      // target: "step4",
     },
   },
 });

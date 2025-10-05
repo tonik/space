@@ -3,7 +3,7 @@ import { gameSetup } from "../game-setup";
 /**
  * State where user can close a system load
  */
-export const intro0 = gameSetup.createStateConfig({
+export const step0 = gameSetup.createStateConfig({
   initial: "initial",
   states: {
     initial: {
@@ -33,5 +33,5 @@ export const intro0 = gameSetup.createStateConfig({
       type: "final",
     },
   },
-  onDone: { target: "intro1" },
+  onDone: { target: "step1" },
 });

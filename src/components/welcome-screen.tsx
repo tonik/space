@@ -34,13 +34,13 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
     gameActor,
     (s) =>
       typeof s.value.gameProgressState !== "string" &&
-      s.value.gameProgressState.intro0 === "hidingWelcomeScreen",
+      s.value.gameProgressState.step0 === "hidingWelcomeScreen",
   );
   const finishedAnimating = useSelector(
     gameActor,
     (s) =>
       typeof s.value.gameProgressState !== "string" &&
-      s.value.gameProgressState.intro0 === "finishedAnimating",
+      s.value.gameProgressState.step0 === "finishedAnimating",
   );
 
   const startAnimation = async () => {
