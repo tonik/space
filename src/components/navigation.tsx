@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/tooltip";
 import Tonik from "/tonik.svg";
 import { useNavigationState } from "./navigation/selectors";
-import type { AvailableViewKeys } from "@/state";
+import type { AvailableViewKeys } from "@/state/types";
 
 export default function Navigation({
   activeView,

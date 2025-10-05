@@ -1,4 +1,4 @@
-import type { GameEvent } from "@/state/game";
+import type { GameEvent } from "@/state/types";
 import { gameActor } from "@/state/useGame";
 import React from "react";
 
