@@ -374,5 +374,41 @@ export const gameSetup = setup({
         };
       },
     }),
+    addObjective: assign({
+      objectives: ({ context, event }) => {
+        if (event.type === "ADD_OBJECTIVE") {
+          return [...context.objectives, event.objective];
+        }
+        return context.objectives;
+      },
+    }),
+    updateObjective: assign({
+      objectives: ({ context, event }) => {
+        if (event.type === "UPDATE_OBJECTIVE") {
+          return context.objectives.map((obj) =>
+            obj.id === event.objectiveId
+              ? { ...obj, status: event.status }
+              : obj,
+          );
+        }
+        return context.objectives;
+      },
+    }),
+    completeObjective: assign({
+      objectives: ({ context, event }) => {
+        if (event.type === "COMPLETE_OBJECTIVE") {
+          return context.objectives.map((obj) =>
+            obj.id === event.objectiveId
+              ? {
+                  ...obj,
+                  status: "completed" as const,
+                  completedAt: Date.now(),
+                }
+              : obj,
+          );
+        }
+        return context.objectives;
+      },
+    }),
   },
 });

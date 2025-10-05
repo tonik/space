@@ -1,6 +1,12 @@
 import { createActor } from "xstate";
 import { gameMachine } from "./game";
-import type { Message, LogEntry, System, GameContext } from "./types";
+import type {
+  Message,
+  LogEntry,
+  System,
+  GameContext,
+  Objective,
+} from "./types";
 
 // commented out because when we are mutating initial state new keys and changes aren't loaded from localStorage
 // const stateString = localStorage.getItem("gameState");
@@ -87,6 +93,15 @@ export const useGame = () => {
       content: string;
       timestamp: number;
     }) => gameActor.send({ type: "AI_CHAT_ADD_MESSAGE", message }),
+
+    addObjective: (objective: Objective) =>
+      gameActor.send({ type: "ADD_OBJECTIVE", objective }),
+
+    updateObjective: (objectiveId: string, status: Objective["status"]) =>
+      gameActor.send({ type: "UPDATE_OBJECTIVE", objectiveId, status }),
+
+    completeObjective: (objectiveId: string) =>
+      gameActor.send({ type: "COMPLETE_OBJECTIVE", objectiveId }),
 
     send: gameActor.send,
   };

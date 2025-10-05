@@ -4,5 +4,6 @@ import { gameActor } from "@/state/useGame";
 export const useCaptainsLogState = () => {
   return useSelector(gameActor, (state) => ({
     captainsLog: state.context.captainsLog,
+    objectives: state.context.objectives,
   }));
 };
