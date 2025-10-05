@@ -15,7 +15,7 @@ export interface GameContext {
   showWelcomeScreen: boolean;
   activeView: AvailableViewKeys;
 
-  viewNotifications: Record<AvailableViewKeys, GameNotification[]>;
+  viewNotifications: Record<Partial<AvailableViewKeys>, GameNotification[]>;
 
   systems: {
     communications: System;

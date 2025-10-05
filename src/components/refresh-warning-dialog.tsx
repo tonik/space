@@ -22,6 +22,21 @@ export function RefreshWarningDialog() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setShowWarning(false);
+      }
+      if (e.key === "Enter") {
+        handleConfirmRefresh();
+      }
+    };
+    if (showWarning) {
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      window.removeEventListener("keydown", handleKeyDown);
+    }
+  }, [showWarning]);
   const handleConfirmRefresh = () => {
     window.location.reload();
   };
