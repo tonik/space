@@ -2,10 +2,21 @@ import { useState, useCallback, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useGame } from "@/state/useGame";
+import {
+  Rocket,
+  Satellite,
+  Star,
+  Zap,
+  Shield,
+  Target,
+  Cpu,
+  Wifi,
+} from "lucide-react";
 
 interface MemoryCard {
   id: string;
-  symbol: string;
+  symbol: React.ComponentType<{ className?: string }>;
+  symbolId: number;
   isFlipped: boolean;
   isMatched: boolean;
 }
@@ -21,22 +32,34 @@ interface GameState {
   matches: number;
 }
 
-const SYMBOLS = ["◊", "◈", "◉", "◎", "◐", "◑", "◒", "◓"];
+const SYMBOLS = [Rocket, Satellite, Star, Zap, Shield, Target, Cpu, Wifi];
 const GAME_CONFIG = { time: 60, cardPairs: 8 };
 
 const createCards = (): MemoryCard[] => {
-  const symbols = [
-    ...SYMBOLS.slice(0, GAME_CONFIG.cardPairs),
-    ...SYMBOLS.slice(0, GAME_CONFIG.cardPairs),
-  ];
-  return symbols
-    .sort(() => Math.random() - 0.5)
-    .map((symbol, index) => ({
-      id: `card-${index}`,
+  const cards: MemoryCard[] = [];
+
+  // Create pairs of cards with the same symbol
+  for (let i = 0; i < GAME_CONFIG.cardPairs; i++) {
+    const symbol = SYMBOLS[i];
+    // Add two cards with the same symbol
+    cards.push({
+      id: `card-${i}-1`,
       symbol,
+      symbolId: i,
       isFlipped: false,
       isMatched: false,
-    }));
+    });
+    cards.push({
+      id: `card-${i}-2`,
+      symbol,
+      symbolId: i,
+      isFlipped: false,
+      isMatched: false,
+    });
+  }
+
+  // Shuffle the cards
+  return cards.sort(() => Math.random() - 0.5);
 };
 
 const initialGameState: GameState = {
@@ -86,7 +109,7 @@ export default function MemoryGameView() {
           newCards.find((c) => c.id === firstId),
           newCards.find((c) => c.id === secondId),
         ];
-        const isMatch = firstCard?.symbol === secondCard?.symbol;
+        const isMatch = firstCard?.symbolId === secondCard?.symbolId;
         const delay = isMatch ? 500 : 1000;
 
         setTimeout(() => {
@@ -127,13 +150,18 @@ export default function MemoryGameView() {
     }
   }, [game.phase, game.timeLeft]);
 
-  const getCardDisplay = (card: MemoryCard) => (
-    <div className="flex h-full items-center justify-center">
-      <span className="text-2xl">
-        {card.isMatched || card.isFlipped ? card.symbol : "?"}
-      </span>
-    </div>
-  );
+  const getCardDisplay = (card: MemoryCard) => {
+    const IconComponent = card.symbol;
+    return (
+      <div className="flex h-full items-center justify-center">
+        {card.isMatched || card.isFlipped ? (
+          <IconComponent className="text-primary h-6 w-6" />
+        ) : (
+          <span className="text-2xl">?</span>
+        )}
+      </div>
+    );
+  };
 
   const getCardClassName = (card: MemoryCard) => {
     const baseClasses =
@@ -154,8 +182,8 @@ export default function MemoryGameView() {
         MEMORY MATRIX
       </h2>
       <p className="text-muted-foreground mb-6 max-w-md text-center font-mono text-sm">
-        Match all 8 pairs of system symbols to restore ship memory banks.
-        Complete in under 60 seconds!
+        Match all 8 pairs of system icons to restore ship memory banks. Complete
+        in under 60 seconds!
       </p>
       <Button
         onClick={startGame}
@@ -233,7 +261,8 @@ export default function MemoryGameView() {
         </div>
 
         <div className="text-muted-foreground mt-4 text-center font-mono text-xs">
-          Click cards to flip them. Match pairs to restore ship memory systems!
+          Click cards to flip them. Match icon pairs to restore ship memory
+          systems!
         </div>
       </Card>
     </div>
