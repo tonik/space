@@ -17,7 +17,7 @@ export interface GameContext {
   };
   activeView: AvailableViewKeys;
 
-  viewNotifications: Record<AvailableViewKeys, GameNotification[]>;
+  viewNotifications: Record<AvailableViewKeys, boolean>;
 
   systems: {
     communications: System;
@@ -184,13 +184,6 @@ export interface LogEntry {
   aiGenerated?: boolean;
   hidden?: boolean;
   correlationId?: string;
-}
-
-export interface GameNotification {
-  id: string;
-  type: "info" | "warning" | "critical";
-  message: string;
-  timestamp: number;
 }
 
 export interface SystemManipulation {

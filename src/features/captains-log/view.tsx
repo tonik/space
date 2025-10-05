@@ -46,7 +46,7 @@ export default function CaptainsLogView() {
   const { viewNotifications } = useNavigationState();
 
   const hasNotifications = (id: AvailableViewKeys) => {
-    return viewNotifications[id].length > 0;
+    return viewNotifications[id];
   };
 
   return (
