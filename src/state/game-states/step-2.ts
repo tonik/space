@@ -4,12 +4,16 @@ import { nanoid } from "nanoid";
 import { set, subDays } from "date-fns";
 import { INITIAL_CURRENT_DATE } from "@/lib";
 import { objectives } from "../objectives";
+import { step2CommandContent } from "./command-content";
 
 /**
  * First state where captain gets objective and is onboarded.
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
 export const step2 = gameSetup.createStateConfig({
+  entry: assign({
+    commandContent: () => step2CommandContent,
+  }),
   after: {
     1000: {
       actions: assign({

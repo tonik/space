@@ -1,12 +1,16 @@
 import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
 import { objectives } from "../objectives";
+import { step1CommandContent } from "./command-content";
 
 /**
  * First state where captain gets objective and is onboarded.
  * We are moving to the next state when captain will view the objectives (in captains log)
  */
 export const step1 = gameSetup.createStateConfig({
+  entry: assign({
+    commandContent: () => step1CommandContent,
+  }),
   after: {
     1000: {
       actions: assign({

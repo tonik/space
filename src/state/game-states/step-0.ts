@@ -1,9 +1,14 @@
+import { assign } from "xstate";
 import { gameSetup } from "../game-setup";
+import { step0CommandContent } from "./command-content";
 
 /**
  * State where user can close a system load
  */
 export const step0 = gameSetup.createStateConfig({
+  entry: assign({
+    commandContent: () => step0CommandContent,
+  }),
   initial: "initial",
   states: {
     initial: {

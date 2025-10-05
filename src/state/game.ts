@@ -24,6 +24,16 @@ export const gameMachine = gameSetup.createMachine({
         activeView: ({ event }) => event.view,
       }),
     },
+    SET_AVAILABLE_COMMANDS: {
+      actions: assign({
+        availableCommands: ({ event }) => event.commands,
+      }),
+    },
+    SET_COMMAND_CONTENT: {
+      actions: assign({
+        commandContent: ({ event }) => event.content,
+      }),
+    },
     ADD_MESSAGE: {
       actions: assign({
         messages: ({ context, event }) => [...context.messages, event.message],
