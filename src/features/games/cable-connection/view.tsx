@@ -13,11 +13,12 @@ interface Node {
 }
 
 interface GameState {
-  phase: "menu" | "playing" | "done";
+  phase: "menu" | "playing" | "gameOver" | "victory";
   timeLeft: number;
   nodes: Node[];
   selectedNode: string | null;
   connections: string[][];
+  connectionsMade: number;
 }
 
 const createNodes = (count: number, prefix: string, type: "input" | "output") =>
@@ -41,6 +42,7 @@ export default function CableConnectionView() {
     nodes: [],
     selectedNode: null,
     connections: [],
+    connectionsMade: 0,
   });
   const { changeView } = useGame();
 
@@ -56,13 +58,14 @@ export default function CableConnectionView() {
       nodes,
       selectedNode: null,
       connections: [],
+      connectionsMade: 0,
     });
 
     const timer = setInterval(() => {
       setGame((prev) => {
         if (prev.timeLeft <= 1) {
           clearInterval(timer);
-          return { ...prev, phase: "done" };
+          return { ...prev, phase: "gameOver" };
         }
         return { ...prev, timeLeft: prev.timeLeft - 1 };
       });
@@ -98,11 +101,12 @@ export default function CableConnectionView() {
             nodes: newNodes,
             connections: newConnections,
             selectedNode: null,
+            connectionsMade: prev.connectionsMade + 1,
           }));
 
           if (newNodes.every((n) => n.connected)) {
             setTimeout(
-              () => setGame((prev) => ({ ...prev, phase: "done" })),
+              () => setGame((prev) => ({ ...prev, phase: "victory" })),
               500,
             );
           }
@@ -188,27 +192,49 @@ export default function CableConnectionView() {
             </div>
           )}
 
-          {game.phase === "done" && (
+          {game.phase === "gameOver" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-primary mb-4 font-mono text-lg">
-                {game.nodes.every((n) => n.connected)
-                  ? "All systems restored!"
-                  : "Try again to restore all systems"}
-              </p>
-
-              {!game.nodes.every((n) => n.connected) && (
+              <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+                TIME'S UP!
+              </h2>
+              <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
+                <p>
+                  Connections: {game.connectionsMade}/{GAME_CONFIG.nodeCount}
+                </p>
+              </div>
+              <div className="flex gap-2">
                 <Button
                   onClick={startGame}
                   className="bg-primary text-background hover:bg-primary/80"
                 >
                   PLAY AGAIN
                 </Button>
-              )}
+                <Button
+                  onClick={() => changeView("dashboard")}
+                  className="bg-primary text-background hover:bg-primary/80"
+                >
+                  BACK TO DASHBOARD
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {game.phase === "victory" && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+                ALL SYSTEMS RESTORED!
+              </h2>
+              <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
+                <p>
+                  Connections: {game.connectionsMade}/{GAME_CONFIG.nodeCount}
+                </p>
+                <p className="mt-2 text-green-500">
+                  All ship systems operational!
+                </p>
+              </div>
               <div className="flex gap-2">
                 <Button
-                  onClick={() => {
-                    changeView("dashboard");
-                  }}
+                  onClick={() => changeView("dashboard")}
                   className="bg-primary text-background hover:bg-primary/80"
                 >
                   BACK TO DASHBOARD
