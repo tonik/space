@@ -89,15 +89,7 @@ export const initialContext: GameContext = {
 
   aiChat: {
     hasShownInitialMessage: false,
-    messages: [
-      {
-        id: "1",
-        role: "ai",
-        content:
-          "Hello, Captain. I am JASON, your AI assistant. How may I help you today?",
-        timestamp: Date.now(),
-      },
-    ],
+    messages: [],
   },
 
   repair: {

@@ -63,33 +63,5 @@ export const gameMachine = gameSetup.createMachine({
     RECOVER_ENERGY: {
       actions: "recoverEnergy",
     },
-    AI_CHAT_INITIAL_MESSAGE_SHOWN: {
-      actions: assign({
-        aiChat: ({ context }) => ({
-          ...context.aiChat,
-          hasShownInitialMessage: true,
-        }),
-        viewNotifications: ({ context }) => ({
-          ...context.viewNotifications,
-          "captains-log_log": [
-            ...context.viewNotifications["captains-log_log"],
-            {
-              id: `ai-chat-notification-${Date.now()}`,
-              type: "info" as const,
-              message: "New Captain's Log entries available",
-              timestamp: Date.now(),
-            },
-          ],
-        }),
-      }),
-    },
-    AI_CHAT_ADD_MESSAGE: {
-      actions: assign({
-        aiChat: ({ context, event }) => ({
-          ...context.aiChat,
-          messages: [...context.aiChat.messages, event.message],
-        }),
-      }),
-    },
   },
 });
