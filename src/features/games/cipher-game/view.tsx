@@ -13,6 +13,7 @@ interface CipherGameState {
   shift: number;
   hintsUsed: number;
   maxHints: number;
+  ciphersSolved: number;
 }
 
 const CIPHER_TEXTS = ["HELLO WORLD", "TONIK"];
@@ -35,6 +36,7 @@ export default function CipherGameView() {
     shift: 0,
     hintsUsed: 0,
     maxHints: 3,
+    ciphersSolved: 0,
   });
 
   const [gameTimer, setGameTimer] = useState<number | null>(null);
@@ -106,10 +108,12 @@ export default function CipherGameView() {
     if (gameState.userInput.toUpperCase() === gameState.currentPlaintext) {
       setGameState((prev) => {
         const newLevel = prev.level + 1;
+        const newCiphersSolved = prev.ciphersSolved + 1;
 
         return {
           ...prev,
           level: newLevel,
+          ciphersSolved: newCiphersSolved,
           userInput: "",
         };
       });
@@ -173,7 +177,7 @@ export default function CipherGameView() {
 
   return (
     <div className="flex h-full flex-col">
-      <Card className="border-border/30 bg-background flex-1 p-6">
+      <Card className="flex-1 p-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-primary text-sm font-bold">CIPHER BREAKER</h3>
           <div className="text-primary flex gap-4 font-mono text-sm">
@@ -182,10 +186,10 @@ export default function CipherGameView() {
         </div>
 
         <div className="flex items-center justify-center">
-          <div className="border-primary relative h-[600px] w-full max-w-4xl border-2 bg-black">
+          <div className="relative h-[600px] w-full max-w-4xl">
             <div className="flex h-full flex-col items-center justify-center p-8">
               {gameState.gameState === "menu" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
                     CIPHER BREAKER
                   </h2>
@@ -206,7 +210,7 @@ export default function CipherGameView() {
 
               {gameState.gameState === "playing" && (
                 <div className="w-full max-w-2xl space-y-6 text-center">
-                  <div className="border-primary/30 border bg-black/40 p-6">
+                  <div className="border-primary/30 border p-6">
                     <h3 className="text-primary mb-3 font-mono text-lg">
                       ENCRYPTED MESSAGE:
                     </h3>
@@ -258,26 +262,39 @@ export default function CipherGameView() {
               )}
 
               {gameState.gameState === "gameOver" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h2 className="text-primary mb-2 font-mono text-2xl font-bold">
-                    GAME OVER
+                    TIME'S UP!
                   </h2>
                   <p className="text-primary mb-4 font-mono text-lg">
-                    Ciphers Solved: {gameState.level - 1}/2
+                    Ciphers Solved: {gameState.ciphersSolved - 1}/2
                   </p>
-                  <Button
-                    onClick={() =>
-                      setGameState((prev) => ({ ...prev, gameState: "menu" }))
-                    }
-                    className="bg-primary text-background hover:bg-primary/80"
-                  >
-                    PLAY AGAIN
-                  </Button>
+                  {gameState.ciphersSolved === 2 && (
+                    <p className="mb-4 font-mono text-lg text-green-500">
+                      All ciphers decoded successfully!
+                    </p>
+                  )}
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() =>
+                        setGameState((prev) => ({ ...prev, gameState: "menu" }))
+                      }
+                      className="bg-primary text-background hover:bg-primary/80"
+                    >
+                      PLAY AGAIN
+                    </Button>
+                    <Button
+                      onClick={() => changeView("dashboard")}
+                      className="bg-primary text-background hover:bg-primary/80"
+                    >
+                      BACK TO DASHBOARD
+                    </Button>
+                  </div>
                 </div>
               )}
 
               {gameState.gameState === "victory" && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80">
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <h2 className="text-primary mb-2 font-mono text-2xl font-bold">
                     MISSION COMPLETE
                   </h2>
@@ -285,14 +302,24 @@ export default function CipherGameView() {
                     All ciphers decoded successfully!
                   </p>
                   <p className="text-primary mb-4 font-mono text-lg">
-                    Ciphers Solved: 2/2
+                    Ciphers Solved: {gameState.ciphersSolved - 1}/2
                   </p>
-                  <Button
-                    onClick={() => changeView("dashboard")}
-                    className="bg-primary text-background hover:bg-primary/80"
-                  >
-                    BACK TO DASHBOARD
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() =>
+                        setGameState((prev) => ({ ...prev, gameState: "menu" }))
+                      }
+                      className="bg-primary text-background hover:bg-primary/80"
+                    >
+                      PLAY AGAIN
+                    </Button>
+                    <Button
+                      onClick={() => changeView("dashboard")}
+                      className="bg-primary text-background hover:bg-primary/80"
+                    >
+                      BACK TO DASHBOARD
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
