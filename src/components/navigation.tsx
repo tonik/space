@@ -5,6 +5,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Indicator } from "./ui/indicator";
 import Tonik from "/tonik.svg";
 import { useNavigationState } from "./navigation/selectors";
 import type { AvailableViewKeys } from "@/state/types";
@@ -51,7 +52,7 @@ export default function Navigation({
                 >
                   <Icon className="h-5 w-5" />
                   {hasNotifications(item.id) && (
-                    <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+                    <Indicator className="absolute top-1 right-1" />
                   )}
                 </Button>
               </TooltipTrigger>

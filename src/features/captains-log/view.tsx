@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { ChevronRight, Square, CheckSquare, XSquare } from "lucide-react";
 import type { AvailableViewKeys } from "@/state/types";
 import { useNavigationState } from "@/components/navigation/selectors";
+import { Indicator } from "@/components/ui/indicator";
 
 export default function CaptainsLogView() {
   const { activeView, changeView } = useNavigationState();
@@ -64,7 +65,7 @@ export default function CaptainsLogView() {
           >
             LOG
             {hasNotifications("captains-log_log") && (
-              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+              <Indicator className="absolute top-1 right-1" />
             )}
           </button>
           <button
@@ -77,7 +78,7 @@ export default function CaptainsLogView() {
           >
             OBJECTIVES
             {hasNotifications("captains-log_objectives") && (
-              <span className="border-destructive bg-destructive shadow-destructive absolute top-1 right-1 h-2 w-2 animate-pulse rounded-full border" />
+              <Indicator className="absolute top-1 right-1" />
             )}
           </button>
         </div>
