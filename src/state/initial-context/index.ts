@@ -13,12 +13,12 @@ export const initialContext: GameContext = {
   },
 
   viewNotifications: {
-    dashboard: [],
-    messaging: [],
-    terminal: [],
-    logs: [],
-    "captains-log_objectives": [],
-    "captains-log_log": [],
+    dashboard: false,
+    messaging: false,
+    terminal: false,
+    logs: false,
+    "captains-log_objectives": false,
+    "captains-log_log": false,
   },
 
   // Systems with dynamically generated metrics that are consistent with their status
@@ -88,7 +88,6 @@ export const initialContext: GameContext = {
   },
 
   aiChat: {
-    hasShownInitialMessage: false,
     messages: [],
   },
 

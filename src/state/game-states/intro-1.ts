@@ -40,26 +40,18 @@ export const intro1 = gameSetup.createStateConfig({
         }),
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
-          "captains-log_objectives": [
-            ...context.viewNotifications["captains-log_objectives"],
-            {
-              id: "ai-chat-notification-2",
-              type: "info" as const,
-              message: "New Captain's Log objectives available",
-              timestamp: Date.now(),
-            },
-          ],
+          "captains-log_objectives": true,
+          messaging: true,
         }),
       }),
     },
   },
   on: {
     CHANGE_VIEW: {
-      guard: ({ event }) => event.view === "captains-log_objectives",
       actions: assign({
-        viewNotifications: ({ context }) => ({
+        viewNotifications: ({ event, context }) => ({
           ...context.viewNotifications,
-          "captains-log_objectives": [],
+          [event.view]: false,
         }),
       }),
     },

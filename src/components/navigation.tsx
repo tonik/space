@@ -22,9 +22,9 @@ export default function Navigation({
     if (id.includes("_")) {
       return Object.keys(viewNotifications)
         .filter((x) => x.includes(id.split("_")[0]))
-        .some((v) => viewNotifications[v as AvailableViewKeys].length > 0);
+        .some((v) => viewNotifications[v as AvailableViewKeys]);
     }
-    return viewNotifications[id].length > 0;
+    return viewNotifications[id];
   };
 
   return (
