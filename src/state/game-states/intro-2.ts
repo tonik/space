@@ -31,6 +31,10 @@ export const intro2 = gameSetup.createStateConfig({
             corrupted: false,
           },
         ],
+        viewNotifications: ({ context }) => ({
+          ...context.viewNotifications,
+          communications: true,
+        }),
       }),
     },
   },
