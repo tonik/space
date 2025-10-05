@@ -49,7 +49,7 @@ export function RefreshWarningDialog() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <Card className="border-primary/50 bg-background w-full max-w-md border-2 p-6">
+      <Card className="max-w-4xl p-8">
         <div className="mb-4 flex items-center gap-3">
           <AlertTriangle className="text-primary h-6 w-6" />
           <h2 className="text-primary font-mono text-lg font-bold">

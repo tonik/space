@@ -105,7 +105,7 @@ export const navItems: {
 ];
 
 export const DEFAULT_DATE_FORMAT = "MM/dd/yy";
-export const DEFAULT_DATETIME_FORMAT = "MM/dd/yy HH:mm aa";
+export const DEFAULT_DATETIME_FORMAT = "MM/dd/yyyy HH:mm aa";
 
 export const INITIAL_CURRENT_DATE = new Date("2425-10-14T08:03:00Z");
 
@@ -115,4 +115,9 @@ export function formatToDateFormat(timestamp: number) {
 
 export function formatToDatetimeFormat(timestamp: number) {
   return format(timestamp, DEFAULT_DATETIME_FORMAT);
+}
+
+export function getGameTimestamp(startTimestamp: number) {
+  const diff = Date.now() - startTimestamp;
+  return INITIAL_CURRENT_DATE.getTime() + diff;
 }

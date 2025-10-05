@@ -65,10 +65,10 @@ export function WelcomeScreen({ hidden }: WelcomeScreenProps) {
         isExiting ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="w-full max-w-4xl p-8">
+      <div className="w-full max-w-2xl p-8">
         <div className="bg-background border-primary/30 relative rounded-lg border p-6">
           {/* Terminal content */}
-          <div className="relative z-10 space-y-1 text-sm leading-tight">
+          <div className="relative z-10 h-[250px] space-y-1 text-sm leading-tight">
             {displayedLines.map((line, index) => (
               <div
                 key={index}
