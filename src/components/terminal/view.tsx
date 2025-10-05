@@ -136,6 +136,7 @@ export function Terminal({ className = "" }: TerminalProps) {
             command.toLowerCase() === "anomalies" ||
             command.toLowerCase() === "comms" ||
             command.toLowerCase() === "weapons" ||
+            command.toLowerCase() === "status" ||
             command.toLowerCase() === "override");
 
         if (shouldDelay) {
