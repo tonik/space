@@ -44,7 +44,7 @@ export const intro2 = gameSetup.createStateConfig({
       actions: assign({
         viewNotifications: ({ context }) => ({
           ...context.viewNotifications,
-          messaging: true,
+          communications: false,
         }),
       }),
     },
