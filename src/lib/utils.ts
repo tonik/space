@@ -5,9 +5,9 @@ import {
   TerminalIcon,
   BookOpen,
 } from "lucide-react";
-import type { AvailableViewKeys } from "@/state";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { AvailableViewKeys } from "@/state/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

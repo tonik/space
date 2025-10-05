@@ -1,4 +1,4 @@
-import type { GameContext } from "@/state";
+import type { GameContext } from "@/state/types";
 import React from "react";
 
 export type StoreDataCallback = (data: string) => void;

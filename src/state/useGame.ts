@@ -1,6 +1,6 @@
 import { createActor } from "xstate";
-import { gameMachine, type GameContext } from "./game";
-import type { Message, LogEntry, System } from "./types";
+import { gameMachine } from "./game";
+import type { Message, LogEntry, System, GameContext } from "./types";
 
 // commented out because when we are mutating initial state new keys and changes aren't loaded from localStorage
 // const stateString = localStorage.getItem("gameState");
