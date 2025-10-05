@@ -15,7 +15,7 @@ interface FuelSystem {
 }
 
 interface GameState {
-  phase: "menu" | "playing" | "done";
+  phase: "menu" | "playing" | "gameOver" | "victory";
   timeLeft: number;
   fuelSystems: FuelSystem[];
   totalEfficiency: number;
@@ -125,7 +125,7 @@ export default function FuelFlowControlView() {
       setGame((prev) => {
         if (prev.timeLeft <= 1) {
           clearInterval(timer);
-          return { ...prev, phase: "done" };
+          return { ...prev, phase: "gameOver" };
         }
         return { ...prev, timeLeft: prev.timeLeft - 1 };
       });
@@ -167,7 +167,7 @@ export default function FuelFlowControlView() {
   useEffect(() => {
     if (game.phase === "playing" && game.isStable) {
       setTimeout(() => {
-        setGame((prev) => ({ ...prev, phase: "done" }));
+        setGame((prev) => ({ ...prev, phase: "victory" }));
       }, 1000);
     }
   }, [game.isStable, game.phase]);
@@ -289,26 +289,52 @@ export default function FuelFlowControlView() {
             </div>
           )}
 
-          {game.phase === "done" && (
+          {game.phase === "gameOver" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-primary mb-4 font-mono text-lg">
-                {game.isStable
-                  ? "All fuel systems optimized! Ship performance at maximum efficiency."
-                  : "Fuel systems need fine-tuning - try again to achieve optimal flow rates"}
-              </p>
+              <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+                TIME'S UP!
+              </h2>
+              <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
+                <p>Efficiency: {Math.round(game.totalEfficiency)}%</p>
+                <p>
+                  Systems Optimized:{" "}
+                  {game.fuelSystems.filter((s) => s.isOptimal).length}/
+                  {game.fuelSystems.length}
+                </p>
+              </div>
               <div className="flex gap-2">
-                {!game.isStable && (
-                  <Button
-                    onClick={startGame}
-                    className="bg-primary text-background hover:bg-primary/80"
-                  >
-                    PLAY AGAIN
-                  </Button>
-                )}
                 <Button
-                  onClick={() => {
-                    changeView("dashboard");
-                  }}
+                  onClick={startGame}
+                  className="bg-primary text-background hover:bg-primary/80"
+                >
+                  PLAY AGAIN
+                </Button>
+                <Button
+                  onClick={() => changeView("dashboard")}
+                  className="bg-primary text-background hover:bg-primary/80"
+                >
+                  BACK TO DASHBOARD
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {game.phase === "victory" && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <h2 className="text-primary mb-4 font-mono text-2xl font-bold">
+                ALL SYSTEMS OPTIMIZED!
+              </h2>
+              <div className="text-muted-foreground mb-6 text-center font-mono text-sm">
+                <p>Efficiency: {Math.round(game.totalEfficiency)}%</p>
+                <p>
+                  Systems Optimized:{" "}
+                  {game.fuelSystems.filter((s) => s.isOptimal).length}/
+                  {game.fuelSystems.length}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => changeView("dashboard")}
                   className="bg-primary text-background hover:bg-primary/80"
                 >
                   BACK TO DASHBOARD
