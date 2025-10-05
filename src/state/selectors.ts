@@ -36,3 +36,14 @@ export function useMessagingState() {
     };
   });
 }
+
+export function useDisplayedCommands() {
+  const { actor } = useGameActor();
+  return useSelector(actor, (state) => ({
+    displayedCommands: state.context.displayedCommands,
+    hasDisplayedCommand: (command: string) =>
+      state.context.displayedCommands.has(command.toLowerCase()),
+    displayedCommandsArray: Array.from(state.context.displayedCommands),
+    displayedCommandsCount: state.context.displayedCommands.size,
+  }));
+}

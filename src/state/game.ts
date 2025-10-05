@@ -72,5 +72,9 @@ export const gameMachine = gameSetup.createMachine({
     COMPLETE_OBJECTIVE: {
       actions: "completeObjective",
     },
+    COMMAND_DISPLAYED: {
+      actions: "trackDisplayedCommand",
+    },
+    SHOW_HIDDEN_FILE_MESSAGE: {},
   },
 });

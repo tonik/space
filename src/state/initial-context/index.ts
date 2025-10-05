@@ -180,4 +180,5 @@ export const initialContext: GameContext = {
   ],
   logs: introLogs,
   commandCounts: {},
+  displayedCommands: new Set<string>(),
 };

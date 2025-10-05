@@ -34,6 +34,7 @@ export interface GameContext {
   captainsLog: CaptainsLogEntry[];
   objectives: Objective[];
   commandCounts: Record<string, number>;
+  displayedCommands: Set<string>;
 
   // Dashboard metrics
   diagnostics: {
@@ -147,6 +148,13 @@ export type GameEvent =
   | {
       type: "COMPLETE_OBJECTIVE";
       objectiveId: string;
+    }
+  | {
+      type: "COMMAND_DISPLAYED";
+      command: string;
+    }
+  | {
+      type: "SHOW_HIDDEN_FILE_MESSAGE";
     };
 
 export interface SystemStatus {

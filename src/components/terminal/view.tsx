@@ -27,7 +27,7 @@ type TerminalLine = {
 };
 
 export function Terminal({ className = "" }: TerminalProps) {
-  const { startGame, trackCommand } = useGame();
+  const { startGame, trackCommand, trackDisplayedCommand } = useGame();
   const { commanderName, commandCounts, mission } = useTerminalState();
   const [lines, setLines] = useState<TerminalLine[]>([
     { type: "text", content: "Welcome to Spaceship Terminal v2.4.1" },
@@ -118,7 +118,12 @@ export function Terminal({ className = "" }: TerminalProps) {
     );
 
     if (output) {
+      console.log("Terminal: Command executed with output", {
+        command: command.toLowerCase(),
+        hasOutput: !!output,
+      });
       trackCommand(command.toLowerCase());
+      trackDisplayedCommand(command.toLowerCase());
 
       if (Array.isArray(output)) {
         const shouldDelay =

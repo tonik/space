@@ -20,7 +20,7 @@ export const step3 = gameSetup.createStateConfig({
                 timestamp: getGameTimestamp(context.gameStartTimestamp),
                 title: "Terminal Maintenance Required",
                 preview:
-                  "Execute system diagnostic commands and check for anomalies, attempt to contact Earth Command and check AI memories",
+                  "Execute system diagnostic commands and check for anomalies, attempt to contact Earth Command and check AI memories.",
                 type: "system" as const,
                 priority: "normal" as const,
                 encrypted: false,
@@ -40,13 +40,14 @@ export const step3 = gameSetup.createStateConfig({
   },
   on: {
     CHANGE_VIEW: {
+      guard: ({ event }) => event.view === "terminal",
       actions: assign({
         viewNotifications: ({ event, context }) => ({
           ...context.viewNotifications,
           [event.view]: false,
         }),
       }),
-      // target: "step4",
+      target: "step4",
     },
   },
 });

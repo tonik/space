@@ -402,5 +402,15 @@ export const gameSetup = setup({
         return context.objectives;
       },
     }),
+    trackDisplayedCommand: assign({
+      displayedCommands: ({ context, event }) => {
+        if (event.type === "COMMAND_DISPLAYED") {
+          const newSet = new Set(context.displayedCommands);
+          newSet.add(event.command);
+          return newSet;
+        }
+        return context.displayedCommands;
+      },
+    }),
   },
 });

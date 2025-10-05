@@ -111,6 +111,12 @@ export const useGame = () => {
     completeObjective: (objectiveId: string) =>
       actor.send({ type: "COMPLETE_OBJECTIVE", objectiveId }),
 
+    trackDisplayedCommand: (command: string) =>
+      actor.send({ type: "COMMAND_DISPLAYED", command }),
+
+    showHiddenFileMessage: () =>
+      actor.send({ type: "SHOW_HIDDEN_FILE_MESSAGE" }),
+
     send: actor.send,
   };
 };
